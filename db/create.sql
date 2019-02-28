@@ -20,12 +20,12 @@ CREATE TABLE Tasks (
 	Description TEXT,
 	Type VARCHAR(10),
 	DueDate DATE,
-	Status VARCHAR(10) REFERENCES TaskStatus(Name) 
+	Status VARCHAR(10) REFERENCES TaskStatus(Name)
 );
 
 CREATE TABLE TaskChanges (
 	Id int PRIMARY KEY IDENTITY,
-	TaskId int REFERENCES Tasks(id) ON DELETE CASCADE,
+	TaskId int NOT NULL REFERENCES Tasks(id) ON DELETE CASCADE,
 	Operation VARCHAR(15) NOT NULL,
 	ChangedAt DATETIME NOT NULL,
 	OldValue TEXT,
