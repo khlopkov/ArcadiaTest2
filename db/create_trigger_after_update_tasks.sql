@@ -1,4 +1,4 @@
-CREATE TRIGGER Tasks_AFTER_UDPATE
+ALTER TRIGGER Tasks_AFTER_UDPATE
 	ON Tasks AFTER UPDATE
 	AS
 		DECLARE @newType VARCHAR(10);
@@ -30,3 +30,6 @@ CREATE TRIGGER Tasks_AFTER_UDPATE
 		IF @newName!= @oldName
 			INSERT INTO TaskChanges (TaskId, Operation, ChangedAt, OldValue, NewValue) 
 				VALUES((SELECT Id FROM INSERTED), 'Updated name', CURRENT_TIMESTAMP, @oldName, @newName);
+		IF @newDueDate!= @oldDueDate
+			INSERT INTO TaskChanges (TaskId, Operation, ChangedAt, OldValue, NewValue) 
+				VALUES((SELECT Id FROM INSERTED), 'Updated name', CURRENT_TIMESTAMP, CONVERT(VARCHAR, @oldDueDate, 23), CONVERT(VARCHAR, @newDueDate, 23));
