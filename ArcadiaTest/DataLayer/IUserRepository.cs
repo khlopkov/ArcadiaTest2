@@ -9,8 +9,21 @@ namespace ArcadiaTest.DataLayer
 {
     interface IUserRepository
     {
+        /// <summary>
+        ///     Finds user with specified id
+        /// </summary>
+        /// <param name="id"> id of user needed to be found </param>
+        /// <returns> Found user or null </returns>
         User FindUserByID(int id);
-        IEnumerable<User> FindAllUsers(int id);
+        /// <summary>
+        ///     Finds all users in database
+        /// </summary>
+        /// <returns> IEnumerable containing all existing users </returns>
+        IEnumerable<User> FindAllUsers();
+        /// <summary>
+        ///     Finds first row in user table of database
+        /// </summary>
+        /// <returns> Found user or null </returns>
         User FindFirst();
     }
 }

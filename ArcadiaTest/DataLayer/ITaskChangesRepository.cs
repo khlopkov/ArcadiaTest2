@@ -9,7 +9,18 @@ namespace ArcadiaTest.DataLayer
 {
     interface ITaskChangesRepository
     {
+        /// <summary>
+        ///     Finds tasks changes for task with specified id
+        /// </summary>
+        /// <param name="taskId"> id of task which changes should be queried </param>
+        /// <returns> Enumerable of found task changes </returns>
         IEnumerable<TaskChange> FindChangesByTaskID(int taskId);
+
+        /// <summary>
+        ///     Finds tasks changes for task which belongs to user
+        /// </summary>
+        /// <param name="userId"> id of user which  task changes should be queried </param>
+        /// <returns> Enumerable of found task changes </returns>
         IEnumerable<TaskChange> FindChangesByUserId(int userId);
     }
 }

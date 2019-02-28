@@ -15,7 +15,7 @@ namespace ArcadiaTest.Models.Entities
     public partial class TaskChange
     {
         public int Id { get; set; }
-        public Nullable<int> TaskId { get; set; }
+        public int TaskId { get; set; }
         public string Operation { get; set; }
         public System.DateTime ChangedAt { get; set; }
         public string OldValue { get; set; }
