@@ -4,16 +4,20 @@ CREATE TRIGGER Tasks_AFTER_UDPATE
 		DECLARE @newType VARCHAR(10);
 		DECLARE @newStatus VARCHAR(10);
 		DECLARE @newName VARCHAR(30);
+		DECLARE @newDueDate DATE;
 		SET @newStatus = (SELECT Status FROM INSERTED);
 		SET @newType = (SELECT Type FROM INSERTED);
 		SET @newName = (SELECT Name FROM INSERTED);
+		SET @newDueDate = (SELECT DueDate FROM INSERTED);
 
 		DECLARE @oldStatus VARCHAR(10);
 		DECLARE @oldName VARCHAR(30);
 		DECLARE @oldType VARCHAR(10);
+		DECLARE @oldDueDate DATE;
 		SET @oldStatus = (SELECT Status FROM DELETED);
 		SET @oldType = (SELECT Type FROM DELETED);
 		SET @oldName = (SELECT Name FROM DELETED);
+		SET @oldDueDate = (SELECT DueDate FROM DELETED);
 
 		IF @newStatus != @oldStatus  
 			INSERT INTO TaskChanges (TaskId, Operation, ChangedAt, OldValue, NewValue) 

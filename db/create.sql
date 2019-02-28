@@ -30,3 +30,9 @@ CREATE TABLE TaskChanges (
 	OldValue TEXT,
 	NewValue TEXT
 );
+
+CREATE TABLE UserTasks (
+	UserId INT REFERENCES Users(id),
+	TaskId INT REFERENCES Tasks(id),
+	PRIMARY KEY(UserId, TaskId)
+);
