@@ -1,0 +1,5 @@
+CREATE TRIGGER Tasks_AFTER_INSERT
+	ON Tasks AFTER INSERT
+	AS
+		INSERT INTO TaskChanges (TaskId, Operation, ChangedAt) 
+		VALUES((SELECT id FROM INSERTED), 'Created', CURRENT_TIMESTAMP);
