@@ -13,10 +13,10 @@ namespace ArcadiaTest.Models.Entities
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class arcadia_testEntities : DbContext
+    public partial class ArcadiaTestEntities : DbContext
     {
-        public arcadia_testEntities()
-            : base("name=arcadia_testEntities")
+        public ArcadiaTestEntities()
+            : base("name=ArcadiaTestEntities1")
         {
         }
     
@@ -25,9 +25,9 @@ namespace ArcadiaTest.Models.Entities
             throw new UnintentionalCodeFirstException();
         }
     
-        public virtual DbSet<TaskChange> TaskChanges1 { get; set; }
+        public virtual DbSet<TaskChange> TaskChanges { get; set; }
         public virtual DbSet<Task> Tasks { get; set; }
-        public virtual DbSet<TaskStatus> TaskStatus1 { get; set; }
+        public virtual DbSet<TaskStatus> TaskStatus { get; set; }
         public virtual DbSet<User> Users { get; set; }
     }
 }

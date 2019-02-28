@@ -4,13 +4,14 @@
   <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
     <!-- Diagram content (shape and connector positions) -->
     <edmx:Diagrams>
-      <Diagram DiagramId="ce349c99ddc94688995d6d55c3376711" Name="Diagram1">
-        <EntityTypeShape EntityType="ArcadiaTestModel.TaskChange" Width="1.5" PointX="5.25" PointY="1" IsExpanded="true" />
+      <Diagram DiagramId="105fe0daa1ac4aa19c865301977eeb53" Name="Diagram1">
+        <EntityTypeShape EntityType="ArcadiaTestModel.TaskChange" Width="1.5" PointX="5.25" PointY="1.25" IsExpanded="true" />
         <EntityTypeShape EntityType="ArcadiaTestModel.Task" Width="1.5" PointX="3" PointY="1" IsExpanded="true" />
-        <EntityTypeShape EntityType="ArcadiaTestModel.TaskStatus" Width="1.5" PointX="0.75" PointY="1.5" IsExpanded="true" />
-        <EntityTypeShape EntityType="ArcadiaTestModel.User" Width="1.5" PointX="0.75" PointY="4.75" IsExpanded="true" />
-        <AssociationConnector Association="ArcadiaTestModel.FK__TaskChang__TaskI__5165187F" ManuallyRouted="false" />
-        <AssociationConnector Association="ArcadiaTestModel.FK__Tasks__Status__4E88ABD4" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="ArcadiaTestModel.TaskStatus" Width="1.5" PointX="0.75" PointY="1.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="ArcadiaTestModel.User" Width="1.5" PointX="0.75" PointY="5.5" IsExpanded="true" />
+        <AssociationConnector Association="ArcadiaTestModel.FK__TaskChang__TaskI__6E01572D" ManuallyRouted="false" />
+        <AssociationConnector Association="ArcadiaTestModel.FK__Tasks__Status__6B24EA82" ManuallyRouted="false" />
+        <AssociationConnector Association="ArcadiaTestModel.FK__Tasks__UserId__6A30C649" ManuallyRouted="false" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

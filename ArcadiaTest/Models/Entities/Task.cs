@@ -21,6 +21,7 @@ namespace ArcadiaTest.Models.Entities
         }
     
         public int Id { get; set; }
+        public int UserId { get; set; }
         public string Name { get; set; }
         public string Description { get; set; }
         public string Type { get; set; }
@@ -30,5 +31,6 @@ namespace ArcadiaTest.Models.Entities
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<TaskChange> TaskChanges { get; set; }
         public virtual TaskStatus TaskStatus { get; set; }
+        public virtual User User { get; set; }
     }
 }

@@ -21,6 +21,7 @@
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="Description" Type="text" />
           <Property Name="Type" Type="varchar" MaxLength="10" />
@@ -42,8 +43,10 @@
           <Property Name="Hash" Type="varchar" MaxLength="64" Nullable="false" />
           <Property Name="Name" Type="varchar" MaxLength="30" Nullable="false" />
         </EntityType>
-        <Association Name="FK__TaskChang__TaskI__5165187F">
-          <End Role="Tasks" Type="Self.Tasks" Multiplicity="0..1" />
+        <Association Name="FK__TaskChang__TaskI__6E01572D">
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="TaskChanges" Type="Self.TaskChanges" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Tasks">
@@ -54,7 +57,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tasks__Status__4E88ABD4">
+        <Association Name="FK__Tasks__Status__6B24EA82">
           <End Role="TaskStatus" Type="Self.TaskStatus" Multiplicity="0..1" />
           <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
           <ReferentialConstraint>
@@ -66,17 +69,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK__Tasks__UserId__6A30C649">
+          <End Role="Users" Type="Self.Users" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tasks" Type="Self.Tasks" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <EntityContainer Name="ArcadiaTestModelStoreContainer">
           <EntitySet Name="TaskChanges" EntityType="Self.TaskChanges" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Tasks" EntityType="Self.Tasks" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="TaskStatus" EntityType="Self.TaskStatus" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Users" EntityType="Self.Users" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK__TaskChang__TaskI__5165187F" Association="Self.FK__TaskChang__TaskI__5165187F">
+          <AssociationSet Name="FK__TaskChang__TaskI__6E01572D" Association="Self.FK__TaskChang__TaskI__6E01572D">
             <End Role="Tasks" EntitySet="Tasks" />
             <End Role="TaskChanges" EntitySet="TaskChanges" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tasks__Status__4E88ABD4" Association="Self.FK__Tasks__Status__4E88ABD4">
+          <AssociationSet Name="FK__Tasks__Status__6B24EA82" Association="Self.FK__Tasks__Status__6B24EA82">
             <End Role="TaskStatus" EntitySet="TaskStatus" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__UserId__6A30C649" Association="Self.FK__Tasks__UserId__6A30C649">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
         </EntityContainer>
@@ -95,27 +116,29 @@
           <Property Name="ChangedAt" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="OldValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="NewValue" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="Task" Relationship="Self.FK__TaskChang__TaskI__5165187F" FromRole="TaskChanges" ToRole="Tasks" />
+          <NavigationProperty Name="Task" Relationship="Self.FK__TaskChang__TaskI__6E01572D" FromRole="TaskChanges" ToRole="Tasks" />
         </EntityType>
         <EntityType Name="Task">
           <Key>
             <PropertyRef Name="Id" />
           </Key>
           <Property Name="Id" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Description" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
           <Property Name="Type" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
           <Property Name="DueDate" Type="DateTime" Precision="0" />
           <Property Name="Status" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
-          <NavigationProperty Name="TaskChanges" Relationship="Self.FK__TaskChang__TaskI__5165187F" FromRole="Tasks" ToRole="TaskChanges" />
-          <NavigationProperty Name="TaskStatu" Relationship="Self.FK__Tasks__Status__4E88ABD4" FromRole="Tasks" ToRole="TaskStatus" />
+          <NavigationProperty Name="TaskChanges" Relationship="Self.FK__TaskChang__TaskI__6E01572D" FromRole="Tasks" ToRole="TaskChanges" />
+          <NavigationProperty Name="TaskStatus" Relationship="Self.FK__Tasks__Status__6B24EA82" FromRole="Tasks" ToRole="TaskStatus" />
+          <NavigationProperty Name="User" Relationship="Self.FK__Tasks__UserId__6A30C649" FromRole="Tasks" ToRole="Users" />
         </EntityType>
         <EntityType Name="TaskStatus">
           <Key>
             <PropertyRef Name="Name" />
           </Key>
           <Property Name="Name" Type="String" MaxLength="10" FixedLength="false" Unicode="false" Nullable="false" />
-          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Status__4E88ABD4" FromRole="TaskStatus" ToRole="Tasks" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__Status__6B24EA82" FromRole="TaskStatus" ToRole="Tasks" />
         </EntityType>
         <EntityType Name="User">
           <Key>
@@ -125,9 +148,12 @@
           <Property Name="Email" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Hash" Type="String" MaxLength="64" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="Name" Type="String" MaxLength="30" FixedLength="false" Unicode="false" Nullable="false" />
+          <NavigationProperty Name="Tasks" Relationship="Self.FK__Tasks__UserId__6A30C649" FromRole="Users" ToRole="Tasks" />
         </EntityType>
-        <Association Name="FK__TaskChang__TaskI__5165187F">
-          <End Role="Tasks" Type="Self.Task" Multiplicity="0..1" />
+        <Association Name="FK__TaskChang__TaskI__6E01572D">
+          <End Role="Tasks" Type="Self.Task" Multiplicity="0..1">
+            <OnDelete Action="Cascade" />
+          </End>
           <End Role="TaskChanges" Type="ArcadiaTestModel.TaskChange" Multiplicity="*" />
           <ReferentialConstraint>
             <Principal Role="Tasks">
@@ -138,7 +164,7 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK__Tasks__Status__4E88ABD4">
+        <Association Name="FK__Tasks__Status__6B24EA82">
           <End Role="TaskStatus" Type="ArcadiaTestModel.TaskStatus" Multiplicity="0..1" />
           <End Role="Tasks" Type="Self.Task" Multiplicity="*" />
           <ReferentialConstraint>
@@ -150,17 +176,35 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <EntityContainer Name="arcadia_testEntities" annotation:LazyLoadingEnabled="true">
+        <Association Name="FK__Tasks__UserId__6A30C649">
+          <End Role="Users" Type="Self.User" Multiplicity="1">
+            <OnDelete Action="Cascade" />
+          </End>
+          <End Role="Tasks" Type="Self.Task" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="Id" />
+            </Principal>
+            <Dependent Role="Tasks">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityContainer Name="ArcadiaTestEntities1" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="TaskChanges1" EntityType="ArcadiaTestModel.TaskChange" />
           <EntitySet Name="Tasks" EntityType="Self.Task" />
           <EntitySet Name="TaskStatus1" EntityType="ArcadiaTestModel.TaskStatus" />
           <EntitySet Name="Users" EntityType="Self.User" />
-          <AssociationSet Name="FK__TaskChang__TaskI__5165187F" Association="Self.FK__TaskChang__TaskI__5165187F">
+          <AssociationSet Name="FK__TaskChang__TaskI__6E01572D" Association="Self.FK__TaskChang__TaskI__6E01572D">
             <End Role="Tasks" EntitySet="Tasks" />
             <End Role="TaskChanges" EntitySet="TaskChanges1" />
           </AssociationSet>
-          <AssociationSet Name="FK__Tasks__Status__4E88ABD4" Association="Self.FK__Tasks__Status__4E88ABD4">
+          <AssociationSet Name="FK__Tasks__Status__6B24EA82" Association="Self.FK__Tasks__Status__6B24EA82">
             <End Role="TaskStatus" EntitySet="TaskStatus1" />
+            <End Role="Tasks" EntitySet="Tasks" />
+          </AssociationSet>
+          <AssociationSet Name="FK__Tasks__UserId__6A30C649" Association="Self.FK__Tasks__UserId__6A30C649">
+            <End Role="Users" EntitySet="Users" />
             <End Role="Tasks" EntitySet="Tasks" />
           </AssociationSet>
         </EntityContainer>
@@ -169,7 +213,7 @@
     <!-- C-S mapping content -->
     <edmx:Mappings>
       <Mapping Space="C-S" xmlns="http://schemas.microsoft.com/ado/2009/11/mapping/cs">
-        <EntityContainerMapping StorageEntityContainer="ArcadiaTestModelStoreContainer" CdmEntityContainer="arcadia_testEntities">
+        <EntityContainerMapping StorageEntityContainer="ArcadiaTestModelStoreContainer" CdmEntityContainer="ArcadiaTestEntities1">
           <EntitySetMapping Name="TaskChanges1">
             <EntityTypeMapping TypeName="ArcadiaTestModel.TaskChange">
               <MappingFragment StoreEntitySet="TaskChanges">
@@ -186,6 +230,7 @@
             <EntityTypeMapping TypeName="ArcadiaTestModel.Task">
               <MappingFragment StoreEntitySet="Tasks">
                 <ScalarProperty Name="Id" ColumnName="Id" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
                 <ScalarProperty Name="Name" ColumnName="Name" />
                 <ScalarProperty Name="Description" ColumnName="Description" />
                 <ScalarProperty Name="Type" ColumnName="Type" />
