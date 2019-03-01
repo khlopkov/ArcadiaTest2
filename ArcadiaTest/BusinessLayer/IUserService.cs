@@ -5,9 +5,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArcadiaTest.BuisnessLayer
+namespace ArcadiaTest.BusinessLayer
 {
-    interface IUserService
+    public interface IUserService
     {
         /// <summary>
         ///     Gets current user. In this version returns first found in DB user

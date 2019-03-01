@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 
-namespace ArcadiaTest.BuisnessLayer.Exceptions
+namespace ArcadiaTest.BusinessLayer.Exceptions
 {
     public class TaskNotActiveException : Exception
     {

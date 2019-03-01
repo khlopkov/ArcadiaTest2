@@ -6,9 +6,9 @@ using System.Web;
 using ArcadiaTest.Models.Requests;
 using ArcadiaTest.Models.Responses;
 using ArcadiaTest.Models.Entities;
-using ArcadiaTest.BuisnessLayer.Exceptions;
+using ArcadiaTest.BusinessLayer.Exceptions;
 
-namespace ArcadiaTest.BuisnessLayer
+namespace ArcadiaTest.BusinessLayer
 {
     public class TaskService : ITaskService
     {

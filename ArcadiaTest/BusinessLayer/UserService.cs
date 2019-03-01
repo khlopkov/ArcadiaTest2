@@ -5,7 +5,7 @@ using System.Web;
 using ArcadiaTest.Models.Responses;
 using ArcadiaTest.DataLayer;
 
-namespace ArcadiaTest.BuisnessLayer
+namespace ArcadiaTest.BusinessLayer
 {
     public class UserService : IUserService
     {

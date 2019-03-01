@@ -6,9 +6,9 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace ArcadiaTest.BuisnessLayer
+namespace ArcadiaTest.BusinessLayer
 {
-    interface ITaskService
+    public interface ITaskService
     {
         /// <summary>
         ///     Finds tasks of user with specified id
@@ -28,7 +28,7 @@ namespace ArcadiaTest.BuisnessLayer
         /// <summary>
         ///     Get task with specified id
         /// </summary>
-        /// <exception cref="ArcadiaTest.BuisnessLayer.Exceptions.TaskNotFoundException">
+        /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotFoundException">
         ///     if task with specified id was not found
         /// </exception>
         /// <param name="id">id of required task</param>
@@ -40,10 +40,10 @@ namespace ArcadiaTest.BuisnessLayer
         /// </summary>
         /// <param name="id">id of task needed to be patched</param>
         /// <param name="patchModel">model containing fields with which model should be merged</param>
-        /// <exception cref="ArcadiaTest.BuisnessLayer.Exceptions.TaskNotFoundException">
+        /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotFoundException">
         ///     if task with specified id was not found
         /// </exception>
-        /// <exception cref="ArcadiaTest.BuisnessLayer.Exceptions.TaskNotActiveException">
+        /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotActiveException">
         ///     If status of task that want to be patched is not Active
         /// </exception>
         void PatchTask(int id, MergeTaskRequest patchModel);
@@ -53,7 +53,7 @@ namespace ArcadiaTest.BuisnessLayer
         /// </summary>
         /// <param name="userId"> User for whom task creating </param>
         /// <param name="payload"> Model containing properties of task </param>
-        /// <exception cref="ArcadiaTest.BuisnessLayer.Exceptions.UserNotFoundException">
+        /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.UserNotFoundException">
         ///     if user with specified id was not found
         /// </exception>
         void CreateTask(int userId, CreateTaskRequest payload);
