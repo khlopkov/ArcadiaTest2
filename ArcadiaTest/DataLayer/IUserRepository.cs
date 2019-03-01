@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace ArcadiaTest.DataLayer
 {
-    interface IUserRepository
+    public interface IUserRepository
     {
         /// <summary>
         ///     Finds user with specified id

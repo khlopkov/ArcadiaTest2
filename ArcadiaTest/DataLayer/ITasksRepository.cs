@@ -7,7 +7,7 @@ using System.Text;
 
 namespace ArcadiaTest.DataLayer
 {
-    interface ITasksRepository
+    public interface ITasksRepository
     {
         /// <summary>
         ///     Finds task with specified id
