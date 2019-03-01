@@ -125,6 +125,7 @@
     <Compile Include="DataLayer\ITaskChangesRepository.cs" />
     <Compile Include="DataLayer\ITasksRepository.cs" />
     <Compile Include="DataLayer\IUserRepository.cs" />
+    <Compile Include="DataLayer\TaskChangesRepository.cs" />
     <Compile Include="DataLayer\TaskRepository.cs" />
     <Compile Include="DataLayer\UserRepository.cs" />
     <Compile Include="Global.asax.cs">

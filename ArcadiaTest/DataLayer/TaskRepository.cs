@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using ArcadiaTest.Models.DTO;
 using ArcadiaTest.Models.Entities;
 
 namespace ArcadiaTest.DataLayer
@@ -15,19 +16,11 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbCtx;
         }
 
-        public int CountActiveTasksByUserId(int userId)
+        public IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId)
         {
-            return this._dbCtx.Tasks.Count(t => t.UserId == userId && t.Status == "Active");
-        }
-
-        public int CountClosedTasksByUserId(int userId)
-        {
-            return this._dbCtx.Tasks.Count(t => t.UserId == userId && t.Status == "Closed");
-        }
-
-        public int CountResolvedTasksByUserId(int userId)
-        {
-            return this._dbCtx.Tasks.Count(t => t.UserId == userId && t.Status == "Resolved");
+            return this._dbCtx.Tasks.Where(t => t.UserId == userId)
+                .GroupBy(t => t.Status)
+                .Select(group => new TasksDashboardDTO (group.Key, group.Count())).ToList();
         }
 
         public Task FindTaskById(int id)

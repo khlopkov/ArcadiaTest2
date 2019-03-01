@@ -1,4 +1,5 @@
-﻿using ArcadiaTest.Models.Entities;
+﻿using ArcadiaTest.Models.DTO;
+using ArcadiaTest.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -70,24 +71,10 @@ namespace ArcadiaTest.DataLayer
         IEnumerable<Task> FindTasksByUserId(int userId);
 
         /// <summary>
-        ///     Counts number of tasks of user with specified id where status is Active
+        ///     returns count of tasks grouped by status for user with specified userId
         /// </summary>
-        /// <param name="userId">id of user whose tasks needed to be found</param>
-        /// <returns> number of counted tasks </returns>
-        int CountActiveTasksByUserId(int userId);
-
-        /// <summary>
-        ///     Counts number of tasks of user with specified id where status is Resolved
-        /// </summary>
-        /// <param name="userId">id of user whose tasks needed to be found</param>
-        /// <returns> number of counted tasks </returns>
-        int CountResolvedTasksByUserId(int userId);
-
-        /// <summary>
-        ///     Counts number of tasks of user with specified id where status is Closed
-        /// </summary>
-        /// <param name="userId">id of user whose tasks needed to be found</param>
-        /// <returns> number of counted tasks </returns>
-        int CountClosedTasksByUserId(int userId);
+        /// <param name="userId">ID of user whose taskse should be counted </param>
+        /// <returns>Enumrable TasksDashboardDTO containing in status key of grouping by and in count count of tasks with this status</returns>
+        IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId);
     }
 }
