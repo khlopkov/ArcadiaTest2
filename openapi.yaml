@@ -35,12 +35,11 @@ components:
           enum: [Canceled, Resolved, Active]
     
     Dashboard:
-      type: array
-      items:
-        type: object
-        properties:
-          status: { type: string }
-          count: { type: integer }
+      type: object
+      properties:
+        cancelled: { type: integer }
+        active: { type: integer }
+        resolved:  { type: integer }
   
   responses:
     UserResponse:
