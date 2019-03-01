@@ -34,6 +34,23 @@ components:
           type: string
           enum: [Canceled, Resolved, Active]
     
+    NewTask:
+      type: object
+      properties:
+        dueDate: { type: string, format: date}
+        title: { type: string }
+        description: { type: string }
+        type: { type: string }
+    
+    MergeTask:
+      type: object
+      properties:
+        dueDate: { type: string, format: date }
+        title: { type: string }
+        description: { type: string }
+        type: { type: string }
+        status: { type: string, enum: ['Canceled', 'Active', 'Resolved'] }
+    
     Dashboard:
       type: object
       properties:
@@ -67,26 +84,14 @@ components:
       description: request body for creating task
       content:
         application/json:
-          schema:
-            type: object
-            properties:
-              dueDate: { type: string, format: date}
-              title: { type: string }
-              description: { type: string }
-              type: { type: string }
+          schema: { $ref: '#/components/schemas/NewTask' }
     
     MergeTaskRequest:
       description: request body for updating task
       content:
         application/json:
-          schema:
-            type: object
-            properties:
-              dueDate: { type: string, format: date}
-              title: { type: string }
-              description: { type: string }
-              type: { type: string }
-              status: { type: string, enum: ['Canceled', 'Active', 'Resolved'] }
+          schema: { $ref: '#/components/schemas/MergeTask' }
+          
 paths:
   /user:
     get:
