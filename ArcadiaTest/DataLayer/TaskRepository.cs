@@ -33,6 +33,11 @@ namespace ArcadiaTest.DataLayer
             return this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList();
         }
 
+        public IEnumerable<Task> FindTasksByUserIdAndStatus(int userId, string status)
+        {
+            return this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList();
+        }
+
         public Task Save(Task task)
         {
             var inserted = this._dbCtx.Tasks.Add(task);

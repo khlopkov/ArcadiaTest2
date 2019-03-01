@@ -36,6 +36,13 @@ namespace ArcadiaTest.DataLayer
         /// <param name="userId"> ID of user </param>
         /// <returns> IEnumerable of found tasks </returns>
         IEnumerable<Task> FindTasksByUserId(int userId);
+        /// <summary>
+        ///     Finds tasks by id of user to whom they belongs and status of this tasks
+        /// </summary>
+        /// <param name="userId"> ID of user </param>
+        /// <param name="status"> Status of task</param>
+        /// <returns> IEnumerable of found tasks </returns>
+        IEnumerable<Task> FindTasksByUserIdAndStatus(int userId, string status);
 
         /// <summary>
         ///     returns count of tasks grouped by status for user with specified userId
