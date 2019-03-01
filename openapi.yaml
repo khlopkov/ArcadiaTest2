@@ -32,7 +32,7 @@ components:
         type: { type: string } 
         status: 
           type: string
-          enum: [Canceled, Resolved, Active]
+          enum: [Cancelled, Resolved, Active]
     
     NewTask:
       type: object
@@ -49,7 +49,7 @@ components:
         title: { type: string }
         description: { type: string }
         type: { type: string }
-        status: { type: string, enum: ['Canceled', 'Active', 'Resolved'] }
+        status: { type: string, enum: ['Cancelled', 'Active', 'Resolved'] }
     
     Dashboard:
       type: object
@@ -115,7 +115,7 @@ paths:
           required: false
           schema:
             type: string
-            enum: ["canceled", "active", "resolved"]
+            enum: ["cancelled", "active", "resolved"]
       responses:
         200: { $ref: '#/components/responses/TasksResponse' }
     post:
