@@ -1,0 +1,152 @@
+openapi: "3.0.0"
+info: 
+  description: Openapi for arcadia test task
+  title: Arcadia test task
+  version: "0.1"
+tags:
+- name: "User"
+  description: "User related endpoints"
+  externalDocs:
+    description: "Find out more"
+    url: "http://swagger.io"
+- name: "Task"
+  description: "Tasks related endpoints"
+
+components:
+  schemas:
+    User:
+      type: object
+      properties:
+        id: { type: integer }
+        name: { type: string }
+
+    Task:
+      type: object
+      properties:
+        id: { type: integer }
+        title : { type: string }
+        description: { type: string }
+        dueDate: 
+          type: string
+          format: date
+        type: { type: string } 
+        status: 
+          type: string
+          enum: [Canceled, Resolved, Active]
+    
+    Dashboard:
+      type: array
+      items:
+        type: object
+        properties:
+          status: { type: string }
+          count: { type: integer }
+  
+  responses:
+    UserResponse:
+      description: Response containing info about requested user
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/User' }
+    
+    TasksResponse:
+      description: Response containing array with info about requested tasks
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: '#/components/schemas/Task' }
+
+    DashboardResponse:
+      description: Response containing dashboard with count of tasks grouped by their status
+      content:
+        application/json:
+          schema: { $ref: '#/components/schemas/Dashboard' }
+    
+  requestBodies:
+    CreateTaskRequest:
+      description: request body for creating task
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              dueDate: { type: string, format: date}
+              title: { type: string }
+              description: { type: string }
+              type: { type: string }
+    
+    MergeTaskRequest:
+      description: request body for updating task
+      content:
+        application/json:
+          schema:
+            type: object
+            properties:
+              dueDate: { type: string, format: date}
+              title: { type: string }
+              description: { type: string }
+              type: { type: string }
+              status: { type: string, enum: ['Canceled', 'Active', 'Resolved'] }
+paths:
+  /user:
+    get:
+      tags:
+        - User
+      summary: current user
+      description: Get info about current user
+      responses:
+        200: { $ref: "#/components/responses/UserResponse" }
+  
+  /tasks:
+    get:
+      tags:
+        - Task
+      summary: tasks of current user
+      description: Get info about tasks of current user
+      parameters:
+        - name: status
+          description: This parameter showing tasks with which status should be requested
+          in: query
+          required: false
+          schema:
+            type: string
+            enum: ["canceled", "active", "resolved"]
+      responses:
+        200: { $ref: '#/components/responses/TasksResponse' }
+    post:
+      tags:
+        - Task
+      summary: Create new task
+      description: creates new task for current user
+      requestBody: { $ref: '#/components/requestBodies/CreateTaskRequest' }
+      responses:
+        201: { description: successfully created }
+        400: { description: bad request }
+  
+  /tasks/{id}:
+    patch:
+      tags:
+        - Task
+      summary: Update task
+      description: Merge task with passed in request body parameters
+      parameters:
+        - name: id
+          description: id of required task
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200: { description: successfully merged }
+        403: { description: task not active }
+        404: { description: task with specified id was not found }
+      
+  /tasks/dashboard:
+    get:
+      tags:
+        - Task
+      summary: Task dashboard
+      description: Get dashboard with count of tasks grouped by status
+      responses:
+        200: { $ref: "#/components/responses/DashboardResponse" }
