@@ -99,5 +99,12 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx.SaveChanges();
             return found;
         }
+
+        public Task Update(Task task)
+        {
+            this._dbCtx.Tasks.Attach(task);
+            this._dbCtx.SaveChanges();
+            return task;
+        }
     }
 }
