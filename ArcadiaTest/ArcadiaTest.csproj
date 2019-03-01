@@ -120,8 +120,15 @@
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
     <Compile Include="App_Start\WebApiConfig.cs" />
-    <Compile Include="Controllers\HomeController.cs" />
-    <Compile Include="Controllers\ValuesController.cs" />
+    <Compile Include="BusinessLayer\Exceptions\TaskNotActiveException.cs" />
+    <Compile Include="BusinessLayer\Exceptions\TaskNotFoundException.cs" />
+    <Compile Include="BusinessLayer\Exceptions\UserNotFoundException.cs" />
+    <Compile Include="BusinessLayer\ITaskService.cs" />
+    <Compile Include="BusinessLayer\IUserService.cs" />
+    <Compile Include="BusinessLayer\TaskService.cs" />
+    <Compile Include="BusinessLayer\UserService.cs" />
+    <Compile Include="Controllers\TaskController.cs" />
+    <Compile Include="Controllers\UserController.cs" />
     <Compile Include="DataLayer\ITaskChangesRepository.cs" />
     <Compile Include="DataLayer\ITasksRepository.cs" />
     <Compile Include="DataLayer\IUserRepository.cs" />
@@ -131,6 +138,7 @@
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\DTO\TasksDashboardDTO.cs" />
     <Compile Include="Models\Entities\DataModel.Context.cs">
       <AutoGen>True</AutoGen>
       <DesignTime>True</DesignTime>
@@ -158,6 +166,11 @@
     <Compile Include="Models\Entities\User.cs">
       <DependentUpon>DataModel.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\Requests\CreateTaskRequest.cs" />
+    <Compile Include="Models\Requests\MergeTaskRequest.cs" />
+    <Compile Include="Models\Responses\DashboardResponse.cs" />
+    <Compile Include="Models\Responses\TaskResponse.cs" />
+    <Compile Include="Models\Responses\UserResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
   </ItemGroup>
   <ItemGroup>
