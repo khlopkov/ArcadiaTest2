@@ -87,7 +87,9 @@ components:
           schema: { $ref: '#/components/schemas/NewTask' }
     
     MergeTaskRequest:
-      description: request body for updating task
+      description: |
+        Request body for updating task.
+        If fields of tasks need to be deleted then they should filled with default values ("" for strings and "0001-01-01" for dueDate).
       content:
         application/json:
           schema: { $ref: '#/components/schemas/MergeTask' }
