@@ -107,7 +107,8 @@ namespace ArcadiaTest.DataLayer
 
         public Task Update(Task task)
         {
-            this._dbCtx.Tasks.Attach(task);
+            //this._dbCtx.Tasks.Attach(task);
+            this._dbCtx.Entry(task).State = System.Data.Entity.EntityState.Modified;
             this._dbCtx.SaveChanges();
             return task;
         }

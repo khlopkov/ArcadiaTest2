@@ -137,7 +137,7 @@ namespace ArcadiaTest.BusinessLayer
             }
             if (patchModel.DueDate != null)
             {
-                if (patchModel.DueDate != default(DateTime))
+                if (patchModel.DueDate == default(DateTime))
                     taskEntity.DueDate = null;
                 else
                     taskEntity.DueDate = patchModel.DueDate;

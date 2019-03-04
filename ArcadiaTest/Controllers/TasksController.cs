@@ -57,7 +57,7 @@ namespace ArcadiaTest.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
-            if (DateTime.Now <= requestModel.DueDate && requestModel.DueDate != default(DateTime))
+            if (DateTime.Now.Date > requestModel.DueDate && requestModel.DueDate != default(DateTime))
                 return BadRequest("Due date shoul be later then today or today");
             try
             {
