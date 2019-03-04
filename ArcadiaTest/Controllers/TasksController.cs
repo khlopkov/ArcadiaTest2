@@ -52,7 +52,7 @@ namespace ArcadiaTest.Controllers
         }
 
         [HttpPatch]
-        [Route("/{taskId:int}")]
+        [Route("{taskId:int}")]
         public IHttpActionResult Patch(int taskId, MergeTaskRequest requestModel)
         {
             if (!ModelState.IsValid)
@@ -75,7 +75,7 @@ namespace ArcadiaTest.Controllers
         }
 
         [HttpGet]
-        [Route("/dashboard")]
+        [Route("dashboard")]
         public IHttpActionResult GetTaskDashboard()
         {
             var currentUser = this._userService.GetCurrentUser();
