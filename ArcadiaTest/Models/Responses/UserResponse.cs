@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Newtonsoft.Json;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
@@ -13,10 +14,12 @@ namespace ArcadiaTest.Models.Responses
         /// <summary>
         ///     ID of user
         /// </summary>
+        [JsonProperty("id")]
         public int Id { get; set; }
         /// <summary>
         ///     Name of user
         /// </summary>
+        [JsonProperty("name")]
         public string Name { get; set; }
     }
 }
