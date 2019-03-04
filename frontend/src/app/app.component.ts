@@ -8,4 +8,17 @@ import { Task } from 'src/models/task.model';
 })
 export class AppComponent {
   task = new Task(1, 'Task', 'description', 'Active', '2018-01-01', 'Feature');
+  tasks = new Array<Task>(
+    new Task(1, 'Task', 'description', 'Active', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+    new Task(2, 'Task2', 'description2', 'Active2', '2018-01-01', 'Feature'),
+  );
 }
