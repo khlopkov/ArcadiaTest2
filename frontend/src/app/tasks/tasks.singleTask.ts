@@ -1,4 +1,5 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
+import { Task } from 'src/models/task.model';
 
 @Component({
   selector: 'app-single-task',
@@ -6,15 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./tasks.singleTask.scss']
 })
 export class SingleTaskComponent {
-    title = 'kek'
-    description = 'description'
-    dueDate = '2019-03-03'
-    status = 'Active'
-    type = 'type'
-    isOverdued = () : boolean => {
-      const currentDate = new Date();
-      const dueDate = new Date(this.dueDate)
-      dueDate.setDate(dueDate.getDate() + 1)
-      return this.status == 'Active' && dueDate < currentDate
-    }
+    @Input() task: Task;
 }

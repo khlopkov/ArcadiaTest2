@@ -1,9 +1,9 @@
 <div class="task-wrapper">
     <div class="task">
-        <span class="task-title">Title: {{title}}</span><br>
-        <span *ngIf="description">Description: {{description}}</span><br *ngIf="description">
-        <span *ngIf="dueDate" [ngClass]="{'overdued':isOverdued()}">Due date: {{dueDate}}</span><br *ngIf="dueDate">
-        <span *ngIf="status">Status: {{status}}</span><br *ngIf="status">
-        <span *ngIf="type">Type: {{type}}</span><br *ngIf="type">
+        <span class="task-title">Title: {{task.title}}</span><br>
+        <span *ngIf="task.description">Description: {{task.description}}</span><br *ngIf="task.description">
+        <span *ngIf="task.dueDate" [ngClass]="{'overdued':task.isOverdued()}">Due date: {{task.dueDate}}</span><br *ngIf="task.dueDate">
+        <span *ngIf="task.status">Status: {{task.status}}</span><br *ngIf="task.status">
+        <span *ngIf="task.type">Type: {{task.type}}</span><br *ngIf="task.type">
     </div>
 </div>

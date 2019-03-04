@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { Task } from 'src/models/task.model';
 
 @Component({
   selector: 'app-root',
@@ -6,5 +7,5 @@ import { Component } from '@angular/core';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  title = 'frontend';
+  task = new Task(1, 'Task', 'description', 'Active', '2018-01-01', 'Feature');
 }
