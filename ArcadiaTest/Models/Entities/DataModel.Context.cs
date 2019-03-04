@@ -16,7 +16,7 @@ namespace ArcadiaTest.Models.Entities
     public partial class ArcadiaTestEntities : DbContext
     {
         public ArcadiaTestEntities()
-            : base("name=ArcadiaTestEntities1")
+            : base("name=ArcadiaTestEntities")
         {
         }
     
