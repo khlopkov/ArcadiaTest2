@@ -25,6 +25,8 @@ export class DashboardComponent implements OnInit {
   }
 
   fetchDashboard() {
-    this.taskService.dashboard().subscribe(data => { this.barChartData = this.dashboardToBarData(data) });
+    this.taskService.dashboard().subscribe(data => {
+      this.barChartData = this.dashboardToBarData(data);
+    });
   }
 }
