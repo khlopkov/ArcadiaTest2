@@ -1,5 +1,5 @@
 export class Dashboard {
-    constructor (
+    constructor(
         public active: number,
         public closed: number,
         public resolved: number,

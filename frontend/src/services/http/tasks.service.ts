@@ -5,7 +5,7 @@ import { Task } from 'src/models/task.model';
 import { Observable } from 'rxjs';
 import { Dashboard } from 'src/models/dashboard.model';
 
-const JSON_MIME = {'Content-type': 'application/json; charset=utf-8'}
+const JSON_MIME = {'Content-type': 'application/json; charset=utf-8'};
 
 @Injectable()
 export class TasksService {
@@ -24,7 +24,7 @@ export class TasksService {
     }
 
     patch(task: Task) {
-        return this.http.patch(this.baseUrl + `api/tasks/${task.id}`, task, { headers: new HttpHeaders(JSON_MIME) }); 
+        return this.http.patch(this.baseUrl + `api/tasks/${task.id}`, task, { headers: new HttpHeaders(JSON_MIME) });
     }
 
     dashboard(): Observable<Dashboard> {
