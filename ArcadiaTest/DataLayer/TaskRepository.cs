@@ -20,7 +20,7 @@ namespace ArcadiaTest.DataLayer
         {
             return this._dbCtx.Tasks.Where(t => t.UserId == userId)
                 .GroupBy(t => t.Status)
-                .Select(group => new TasksDashboardDTO (group.Key, group.Count())).ToList();
+                .Select(group => new TasksDashboardDTO(){Status = group.Key, Count = group.Count()}).ToList();
         }
 
         public Task FindTaskById(int id)

@@ -10,11 +10,13 @@ namespace ArcadiaTest.Models.DTO
         /// <summary>
         ///     Status of tasks (e.g. Cancelled, Resolved, Active) 
         /// </summary>
-        public string Status { get;  }
+        public string Status { get; set; }
         /// <summary>
         ///     Count of task with status
         /// </summary>
-        public int Count { get;  }
+        public int Count { get; set; }
+
+        public TasksDashboardDTO() { }
 
         /// <summary>
         ///     Creates new dashboard showing count of task with each status
