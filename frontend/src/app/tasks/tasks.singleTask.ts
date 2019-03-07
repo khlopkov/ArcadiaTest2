@@ -8,4 +8,8 @@ import { Task } from 'src/models/task.model';
 })
 export class SingleTaskComponent {
     @Input() task: Task;
+    isOverdued(): boolean {
+      return this.task &&
+       new Task(this.task.id, this.task.title, this.task.description, this.task.status, this.task.dueDate, this.task.type).isOverdued();
+    }
 }
