@@ -112,5 +112,12 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx.SaveChanges();
             return task;
         }
+
+        public void Delete(Task task)
+        {
+            this._dbCtx.Tasks.Attach(task);
+            this._dbCtx.Tasks.Remove(task);
+            this._dbCtx.SaveChanges();
+        }
     }
 }

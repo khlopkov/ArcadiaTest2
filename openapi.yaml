@@ -131,6 +131,22 @@ paths:
         400: { description: bad request }
   
   /tasks/{id}:
+    delete:
+      tags:
+        - Task
+      summary: Delete task
+      description: Delete task by id
+      parameters:
+        - name: id
+          description: id of required task
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        200: { description: successfully merged }
+        404: { description: task with specified id was not found }
+        
     patch:
       tags:
         - Task

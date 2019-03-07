@@ -74,6 +74,21 @@ namespace ArcadiaTest.Controllers
             return StatusCode(HttpStatusCode.OK);
         }
 
+        [HttpDelete]
+        [Route("{taskId:int}")]
+        public IHttpActionResult Delete(int taskId)
+        {
+            try
+            {
+                this._taskService.DeleteTask(taskId);
+            }
+            catch(TaskNotFoundException)
+            {
+                return NotFound();
+            }
+            return StatusCode(HttpStatusCode.NoContent);
+        }
+
         [HttpGet]
         [Route("dashboard")]
         public IHttpActionResult GetTaskDashboard()

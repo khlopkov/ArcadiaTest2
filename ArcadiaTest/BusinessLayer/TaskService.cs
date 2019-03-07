@@ -42,6 +42,14 @@ namespace ArcadiaTest.BusinessLayer
             this._taskRepository.Save(taskEntity);
         }
 
+        public void DeleteTask(int taskId)
+        {
+            var task = this._taskRepository.FindTaskById(taskId);
+            if (task == null)
+                throw new TaskNotFoundException(taskId);
+            this._taskRepository.Delete(task);
+        }
+
         public TaskResponse GetTask(int id)
         {
             var taskEntity = this._taskRepository.FindTaskById(id);

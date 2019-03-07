@@ -50,5 +50,11 @@ namespace ArcadiaTest.DataLayer
         /// <param name="userId">ID of user whose taskse should be counted </param>
         /// <returns>Enumrable TasksDashboardDTO containing in status key of grouping by and in count count of tasks with this status</returns>
         IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId);
+
+        /// <summary>
+        ///     Deleting task with specified ID
+        /// </summary>
+        /// <param name="id">id of task which wanted to be deleted</param>
+        void Delete(Task task);
     }
 }

@@ -64,5 +64,14 @@ namespace ArcadiaTest.BusinessLayer
         /// <param name="userId">ID of user, whose dashboard is requested</param>
         /// <returns> Response containing count of tasks with each status </returns>
         DashboardResponse GetTasksDashboard(int userId);
+
+        /// <summary>
+        ///     Deletes taks with specified id
+        /// </summary>
+        /// <param name="taskId">id of task that wanted to be deleted</param>
+        /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotFoundException">
+        ///     if task with specified id was not found
+        /// </exception>
+        void DeleteTask(int taskId);
     }
 }
