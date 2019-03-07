@@ -1,7 +1,7 @@
 import { AbstractControl } from '@angular/forms';
 
 export function dateTodayOrAfterValidator(control: AbstractControl): {[key: string]: any} | null {
-  if (control.value === '' || control.value === undefined) {
+  if (control.value === '' || control.value === undefined || control.value === null) {
     return null;
   }
   const currentDate = new Date();

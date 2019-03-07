@@ -7,7 +7,7 @@ import { dateTodayOrAfterValidator } from 'src/validator/date.validator';
 @Component({
   selector: 'app-new-task-form',
   templateUrl: './tasks.createForm.html',
-  styleUrls: ['./tasks.createForm.scss']
+  styleUrls: ['./tasks.form.scss']
 })
 export class CreateTaskFormComponent implements OnInit {
   constructor(private taskService: TasksService) { }

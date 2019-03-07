@@ -7,10 +7,11 @@ import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { RepresentationModule } from '../representation/representation.module';
 import { CreateTaskFormComponent } from './tasks.createForm';
 import { ReactiveFormsModule } from '@angular/forms';
+import { EditTaskFormComponent } from './tasks.editForm';
 
 
 @NgModule({
-  declarations: [ SingleTaskComponent, TasksComponent, CreateTaskFormComponent ],
+  declarations: [ SingleTaskComponent, TasksComponent, CreateTaskFormComponent, EditTaskFormComponent ],
   imports: [
     BrowserModule,
     RepresentationModule,

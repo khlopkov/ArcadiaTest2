@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, Output, EventEmitter } from '@angular/core';
 import { Task } from 'src/models/task.model';
 
 @Component({
@@ -8,8 +8,22 @@ import { Task } from 'src/models/task.model';
 })
 export class SingleTaskComponent {
     @Input() task: Task;
+    @Output() afterPatch = new EventEmitter<void>();
+
+    showEditForm = false;
+
     isOverdued(): boolean {
-      return this.task &&
-       new Task(this.task.id, this.task.title, this.task.description, this.task.status, this.task.dueDate, this.task.type).isOverdued();
+      return this.task && this.task.dueDate !== null &&
+        new Task(this.task.id, this.task.title, this.task.description, this.task.status, this.task.dueDate, this.task.type).isOverdued();
+    }
+    isEditable(): boolean {
+      return this.task.status === 'Active' && !this.isOverdued();
+    }
+    onEditButtonClick(): void {
+      this.showEditForm = true;
+    }
+    onTaskPatched(): void {
+      this.afterPatch.emit();
+      this.showEditForm = false;
     }
 }

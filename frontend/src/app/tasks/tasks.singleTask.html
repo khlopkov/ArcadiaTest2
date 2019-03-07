@@ -1,5 +1,11 @@
 <div class="task-wrapper">
     <div class="task">
+        <div class="task-controls">
+            <button 
+                *ngIf="isEditable()"
+                (click)="onEditButtonClick()"
+            >Edit</button>
+        </div>
         <span class="task-title">Title: {{task.title}}</span><br>
         <span *ngIf="task.description">Description: {{task.description}}</span><br *ngIf="task.description">
         <span *ngIf="task.dueDate" [ngClass]="{'overdued':isOverdued()}">Due date: {{task.dueDate}}</span><br *ngIf="task.dueDate">
@@ -7,3 +13,12 @@
         <span *ngIf="task.type">Type: {{task.type}}</span><br *ngIf="task.type">
     </div>
 </div>
+<app-popup
+    *ngIf="showEditForm"
+    (close)="showEditForm=false">
+    <app-edit-task-form
+        [task]="task"
+        (afterPatch)="onTaskPatched()"    
+    >
+    </app-edit-task-form>
+</app-popup>
