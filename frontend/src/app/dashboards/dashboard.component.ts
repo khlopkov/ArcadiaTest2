@@ -1,4 +1,4 @@
-import {ChangeDetectionStrategy, Component, OnInit} from '@angular/core';
+import {Component, OnInit} from '@angular/core';
 
 import { Dashboard } from 'src/models/dashboard.model';
 import { BarDataModel } from './charts/models/bar.model';
