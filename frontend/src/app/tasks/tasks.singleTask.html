@@ -5,6 +5,9 @@
                 *ngIf="isEditable()"
                 (click)="onEditButtonClick()"
             >Edit</button>
+            <button 
+                (click)="onDeleteButtonClick()"
+            >Delete</button>
         </div>
         <span class="task-title">Title: {{task.title}}</span><br>
         <span *ngIf="task.description">Description: {{task.description}}</span><br *ngIf="task.description">

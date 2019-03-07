@@ -27,6 +27,10 @@ export class TasksService {
         return this.http.patch(this.baseUrl + `api/tasks/${task.id}`, task, { headers: new HttpHeaders(JSON_MIME) });
     }
 
+    delete(task: Task) {
+        return this.http.delete(this.baseUrl + `api/tasks/${task.id}`);
+    }
+
     dashboard(): Observable<Dashboard> {
         return this.http.get<Dashboard>(this.baseUrl + `api/tasks/dashboard`, { headers: new HttpHeaders(JSON_MIME)});
     }

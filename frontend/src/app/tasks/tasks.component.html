@@ -3,6 +3,7 @@
 </div>
 <div class="tasks-wrapper">
     <app-single-task
+        (afterDelete)="fetch()"
         (afterPatch)="fetch()"
         *ngFor="let task of tasks"
         [task]="task">
