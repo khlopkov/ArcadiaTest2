@@ -11,9 +11,12 @@ using System.Web.Http;
 
 namespace ArcadiaTest.Controllers
 {
+
     [RoutePrefix("api/tasks")]
     public class TasksController : ApiController
     {
+        const string DUE_DATE_LATER_TODAY_WARNING = "Due date shoul be later then today or today";
+
         private ITaskService _taskService;
         private IUserService _userService;
 
@@ -39,6 +42,8 @@ namespace ArcadiaTest.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+            if (requestModel.DueDate != default(DateTime) && DateTime.Now.Date > requestModel.DueDate)
+                return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
             var currentUser = this._userService.GetCurrentUser();
             try
             {
@@ -58,7 +63,7 @@ namespace ArcadiaTest.Controllers
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
             if (DateTime.Now.Date > requestModel.DueDate && requestModel.DueDate != default(DateTime))
-                return BadRequest("Due date shoul be later then today or today");
+                return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
             try
             {
                 this._taskService.PatchTask(taskId, requestModel);
