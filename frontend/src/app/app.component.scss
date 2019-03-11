@@ -1,0 +1,29 @@
+.navigation {
+  height: 90px;
+  border: 1px black solid;
+
+  ul {
+    margin: 0px;
+    height: 100%;
+  }
+  li {
+    padding: 20px;
+    display: inline-block;
+    height: #{100% - 40};
+    
+    a {
+      text-align: center;
+      font-size: 20pt;
+      text-decoration: none;
+    }
+  }
+  
+  li:hover{
+    background-color: gray;
+  }
+}
+
+.content {
+  margin: 20px 0 0 0;
+
+}
