@@ -25,5 +25,11 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <returns> Found user or null </returns>
         User FindFirst();
+        /// <summary>
+        ///     Finds user by email
+        /// </summary>
+        /// <param name="email">email of user, who needed to be found</param>
+        /// <returns>Entity describing found user, or null if not found</returns>
+        User FindByEmail(string email);
     }
 }

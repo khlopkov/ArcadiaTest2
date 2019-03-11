@@ -10,6 +10,7 @@ using System.Web.Http;
 namespace ArcadiaTest.Controllers
 {
     [RoutePrefix("api/user")]
+    [Authorize]
     public class UserController : ApiController
     {
         private IUserService _userService;

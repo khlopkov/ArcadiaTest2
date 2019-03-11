@@ -23,6 +23,11 @@ namespace ArcadiaTest.DataLayer
             return this._dbCtx.Users.ToList();
         }
 
+        public User FindByEmail(string email)
+        {
+            return this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault();
+        }
+
         public User FindFirst()
         {
             return this._dbCtx.Users.FirstOrDefault();

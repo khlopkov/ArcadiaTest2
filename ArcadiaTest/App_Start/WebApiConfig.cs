@@ -1,5 +1,6 @@
 ﻿using ArcadiaTest.BusinessLayer;
 using ArcadiaTest.DataLayer;
+using ArcadiaTest.Middlewares;
 using ArcadiaTest.Infrastructure;
 using ArcadiaTest.Models.Entities;
 using System;
@@ -15,22 +16,6 @@ namespace ArcadiaTest
     {
         public static void Register(HttpConfiguration config)
         {
-            // Web API configuration and services
-
-            var container = new UnityContainer();
-            container.RegisterType<ArcadiaTestEntities>();
-            container.RegisterType<IUserRepository, UserRepository>();
-            container.RegisterType<ITasksRepository, TaskRepository>();
-            container.RegisterType<ITaskChangesRepository, TaskChangesRepository>();
-
-            container.RegisterType<IUserService, UserService>();
-            container.RegisterType<ITaskService, TaskService>();
-            config.DependencyResolver = new DependencyResolver(container);
-
-            // Configuring CORS
-            var cors = new EnableCorsAttribute("http://localhost:4200", "*", "*");
-            config.EnableCors(cors);
-
             // Web API routes
             config.MapHttpAttributeRoutes();
 
@@ -39,6 +24,20 @@ namespace ArcadiaTest
                 routeTemplate: "api/{controller}/{id}",
                 defaults: new { id = RouteParameter.Optional }
             );
+        }
+        public static IUnityContainer Container()
+        {
+            var container = new UnityContainer();
+            container.RegisterType<ArcadiaTestEntities>();
+            container.RegisterType<IUserRepository, UserRepository>();
+            container.RegisterType<ITasksRepository, TaskRepository>();
+            container.RegisterType<ITaskChangesRepository, TaskChangesRepository>();
+
+            container.RegisterType<IUserService, UserService>();
+            container.RegisterType<ITaskService, TaskService>();
+            container.RegisterType<IAuthService, AuthService>();
+
+            return container;
         }
     }
 }

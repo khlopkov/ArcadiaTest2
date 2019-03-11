@@ -13,6 +13,7 @@ namespace ArcadiaTest.Controllers
 {
 
     [RoutePrefix("api/tasks")]
+    [Authorize]
     public class TasksController : ApiController
     {
         const string DUE_DATE_LATER_TODAY_WARNING = "Due date shoul be later then today or today";
