@@ -12,6 +12,10 @@ namespace ArcadiaTest.BusinessLayer
 {
     public class TaskService : ITaskService
     {
+        public const string ACTIVE = "Active";
+        public const string RESOLVED = "Resolved";
+        public const string CANCELLED = "Cancelled";
+
         private ITasksRepository _taskRepository;
         private IUserRepository _userRepository;
 
@@ -35,7 +39,7 @@ namespace ArcadiaTest.BusinessLayer
                 UserId = userId,
                 Name = payload.Title,
                 Description = payload.Description,
-                Status = "Active",
+                Status = ACTIVE,
                 Type = payload.Type,
                 DueDate = payload.DueDate,
             };
@@ -74,13 +78,13 @@ namespace ArcadiaTest.BusinessLayer
             {
                 switch (taskCount.Status)
                 {
-                    case "Active":
+                    case ACTIVE:
                         response.Active = taskCount.Count;
                         break;
-                    case "Resolved":
+                    case RESOLVED:
                         response.Resolved = taskCount.Count;
                         break;
-                    case "Cancelled":
+                    case CANCELLED:
                         response.Cancelled = taskCount.Count;
                         break;
                     default:
@@ -133,7 +137,7 @@ namespace ArcadiaTest.BusinessLayer
             var taskEntity = this._taskRepository.FindTaskById(id);
             if (taskEntity == null)
                 throw new TaskNotFoundException(id);
-            if (taskEntity.Status != "Active")
+            if (taskEntity.Status != ACTIVE)
                 throw new TaskNotActiveException();
             taskEntity.Name = !String.IsNullOrEmpty(patchModel.Title) ?  patchModel.Title : taskEntity.Name;
             if (patchModel.Description != null)
