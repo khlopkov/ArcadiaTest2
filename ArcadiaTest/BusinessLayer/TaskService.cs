@@ -132,41 +132,41 @@ namespace ArcadiaTest.BusinessLayer
             return response;
         }
 
-        public void PatchTask(int id, MergeTaskRequest patchModel)
+        public void UpdateTask(int id, MergeTaskRequest updateModel)
         {
             var taskEntity = this._taskRepository.FindTaskById(id);
             if (taskEntity == null)
                 throw new TaskNotFoundException(id);
             if (taskEntity.Status != ACTIVE)
                 throw new TaskNotActiveException();
-            taskEntity.Name = !String.IsNullOrEmpty(patchModel.Title) ?  patchModel.Title : taskEntity.Name;
-            if (patchModel.Description != null)
+            taskEntity.Name = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskEntity.Name;
+            if (updateModel.Description != null)
             {
-                if (patchModel.Description == "")
+                if (updateModel.Description == "")
                     taskEntity.Description = null;
                 else
-                    taskEntity.Description = patchModel.Description;
+                    taskEntity.Description = updateModel.Description;
             }
-            if (patchModel.DueDate != null)
+            if (updateModel.DueDate != null)
             {
-                if (patchModel.DueDate == default(DateTime))
+                if (updateModel.DueDate == default(DateTime))
                     taskEntity.DueDate = null;
                 else
-                    taskEntity.DueDate = patchModel.DueDate;
+                    taskEntity.DueDate = updateModel.DueDate;
             }
-            if (patchModel.Status != null)
+            if (updateModel.Status != null)
             {
-                if (patchModel.Status == "")
+                if (updateModel.Status == "")
                     taskEntity.Status = null;
                 else
-                    taskEntity.Status = patchModel.Status;
+                    taskEntity.Status = updateModel.Status;
             }
-            if (patchModel.Type != null)
+            if (updateModel.Type != null)
             {
-                if (patchModel.Type == "")
+                if (updateModel.Type == "")
                     taskEntity.Type = null;
                 else
-                    taskEntity.Type = patchModel.Type;
+                    taskEntity.Type = updateModel.Type;
             }
             this._taskRepository.Update(taskEntity);
         }

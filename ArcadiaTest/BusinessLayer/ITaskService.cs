@@ -46,7 +46,7 @@ namespace ArcadiaTest.BusinessLayer
         /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotActiveException">
         ///     If status of task that want to be patched is not Active
         /// </exception>
-        void PatchTask(int id, MergeTaskRequest patchModel);
+        void UpdateTask(int id, MergeTaskRequest updateModel);
 
         /// <summary>
         ///     Creates new task for user

@@ -66,7 +66,7 @@ namespace ArcadiaTest.Controllers
                 return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
             try
             {
-                this._taskService.PatchTask(taskId, requestModel);
+                this._taskService.UpdateTask(taskId, requestModel);
             }
             catch(TaskNotFoundException)
             {
