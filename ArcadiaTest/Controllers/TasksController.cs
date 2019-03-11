@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Net;
 using System.Net.Http;
+using System.Security.Claims;
 using System.Web.Http;
 
 namespace ArcadiaTest.Controllers
@@ -34,7 +35,17 @@ namespace ArcadiaTest.Controllers
         [HttpGet]
         public IHttpActionResult Get()
         {
-            var currentUser = this._userService.GetCurrentUser();
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
+            UserResponse currentUser;
+            try
+            {
+                currentUser = this._userService.GetUserWithEmail(email);
+            }
+            catch(UserNotFoundException)
+            {
+                return Unauthorized();
+            }
             return Content(HttpStatusCode.OK, this._taskService.GetTasksOfUser(currentUser.Id));
         }
 
@@ -45,7 +56,17 @@ namespace ArcadiaTest.Controllers
                 return BadRequest(ModelState);
             if (requestModel.DueDate != default(DateTime) && DateTime.Now.Date > requestModel.DueDate)
                 return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
-            var currentUser = this._userService.GetCurrentUser();
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
+            UserResponse currentUser;
+            try
+            {
+                currentUser = this._userService.GetUserWithEmail(email);
+            }
+            catch(UserNotFoundException)
+            {
+                return Unauthorized();
+            }
             try
             {
                 this._taskService.CreateTask(currentUser.Id, requestModel);
@@ -65,8 +86,20 @@ namespace ArcadiaTest.Controllers
                 return BadRequest(ModelState);
             if (DateTime.Now.Date > requestModel.DueDate && requestModel.DueDate != default(DateTime))
                 return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
+            UserResponse currentUser;
             try
             {
+                currentUser = this._userService.GetUserWithEmail(email);
+            }
+            catch(UserNotFoundException)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
                 this._taskService.UpdateTask(taskId, requestModel);
             }
             catch(TaskNotFoundException)
@@ -84,8 +117,20 @@ namespace ArcadiaTest.Controllers
         [Route("{taskId:int}")]
         public IHttpActionResult Delete(int taskId)
         {
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
+            UserResponse currentUser;
             try
             {
+                currentUser = this._userService.GetUserWithEmail(email);
+            }
+            catch(UserNotFoundException)
+            {
+                return Unauthorized();
+            }
+            try
+            {
+                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
                 this._taskService.DeleteTask(taskId);
             }
             catch(TaskNotFoundException)
@@ -99,7 +144,17 @@ namespace ArcadiaTest.Controllers
         [Route("dashboard")]
         public IHttpActionResult GetTaskDashboard()
         {
-            var currentUser = this._userService.GetCurrentUser();
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
+            UserResponse currentUser;
+            try
+            {
+                currentUser = this._userService.GetUserWithEmail(email);
+            }
+            catch(UserNotFoundException)
+            {
+                return Unauthorized();
+            }
             DashboardResponse response;
             try
             {

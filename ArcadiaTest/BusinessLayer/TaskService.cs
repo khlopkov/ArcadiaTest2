@@ -70,6 +70,24 @@ namespace ArcadiaTest.BusinessLayer
             };
         }
 
+        public TaskResponse GetTaskOfUser(int userId, int taskId)
+        {
+            var taskEntity = this._taskRepository.FindTaskById(taskId);
+            if (taskEntity != null || taskEntity.UserId != userId)
+            {
+                throw new TaskNotFoundException();
+            }
+            return new TaskResponse()
+            {
+                Id = taskEntity.Id,
+                Title = taskEntity.Name,
+                Description = taskEntity.Description,
+                Status = taskEntity.Status,
+                DueDate = taskEntity.DueDate,
+                Type = taskEntity.Type,
+            };
+        }
+
         public DashboardResponse GetTasksDashboard(int userId)
         {
             DashboardResponse response = new DashboardResponse();

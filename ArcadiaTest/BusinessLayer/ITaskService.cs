@@ -24,6 +24,16 @@ namespace ArcadiaTest.BusinessLayer
         /// <param name="status">Status with which tasks should be found</param>
         /// <returns></returns>
         IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status);
+        /// <summary>
+        ///     Finds task which belongs to user
+        /// </summary>
+        /// <param name="userId">ID of user, whose task trying to find</param>
+        /// <param name="taskId">ID of task wanted to be found</param>
+        /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotFoundException">
+        ///     if task with specified id was not found
+        /// </exception>
+        /// <returns>Found taks which belongs to user</returns>
+        TaskResponse GetTaskOfUser(int userId, int taskId);
 
         /// <summary>
         ///     Get task with specified id

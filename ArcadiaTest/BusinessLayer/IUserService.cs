@@ -10,9 +10,9 @@ namespace ArcadiaTest.BusinessLayer
     public interface IUserService
     {
         /// <summary>
-        ///     Gets current user. In this version returns first found in DB user
+        ///     Gets user with specified email
         /// </summary>
         /// <returns>Response containing user</returns>
-        UserResponse GetCurrentUser(); 
+        UserResponse GetUserWithEmail(string email); 
     }
 }

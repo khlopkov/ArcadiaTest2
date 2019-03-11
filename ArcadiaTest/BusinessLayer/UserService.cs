@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using ArcadiaTest.Models.Responses;
 using ArcadiaTest.DataLayer;
+using ArcadiaTest.BusinessLayer.Exceptions;
 
 namespace ArcadiaTest.BusinessLayer
 {
@@ -16,14 +17,14 @@ namespace ArcadiaTest.BusinessLayer
             this._userRepository = userRepository;
         }
 
-        public UserResponse GetCurrentUser()
+        public UserResponse GetUserWithEmail(string email)
         {
-            var userEntity = this._userRepository.FindFirst();
-            return new UserResponse
+            var foundUser = this._userRepository.FindByEmail(email);
+            if (foundUser == null)
             {
-                Id = userEntity.Id,
-                Name = userEntity.Name,
-            };
+                throw new UserNotFoundException();
+            }
+            return new UserResponse() { Id = foundUser.Id, Name = foundUser.Name };
         }
     }
 }
