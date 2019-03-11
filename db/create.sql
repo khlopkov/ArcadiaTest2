@@ -15,7 +15,6 @@ INSERT INTO TaskStatus (name) VALUES ('Active'), ('Cancelled'), ('Resolved');
 
 CREATE TABLE Tasks (
 	Id int PRIMARY KEY IDENTITY,
-	UserId int NOT NULL REFERENCES Users(id) ON DELETE CASCADE,
 	Name VARCHAR(50) NOT NULL,
 	Description TEXT,
 	Type VARCHAR(10),
@@ -25,7 +24,7 @@ CREATE TABLE Tasks (
 
 CREATE TABLE TaskChanges (
 	Id int PRIMARY KEY IDENTITY,
-	TaskId int NOT NULL REFERENCES Tasks(id) ON DELETE CASCADE,
+	TaskId int REFERENCES Tasks(id),
 	Operation VARCHAR(15) NOT NULL,
 	ChangedAt DATETIME NOT NULL,
 	OldValue TEXT,
