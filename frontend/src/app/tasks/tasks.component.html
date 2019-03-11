@@ -1,0 +1,19 @@
+<div class="tasks-controls">
+    <button (click)="onOpenCreateFormClick()">create</button>
+</div>
+<div class="tasks-wrapper">
+    <app-single-task
+        (afterDelete)="fetch()"
+        (afterPatch)="fetch()"
+        *ngFor="let task of tasks"
+        [task]="task">
+    </app-single-task>
+</div>
+<app-popup
+    *ngIf="showCreateForm"
+    (close)="showCreateForm=false">
+    <app-new-task-form
+        (afterPost)="onTaskCreated()"    
+    >
+    </app-new-task-form>
+</app-popup>
