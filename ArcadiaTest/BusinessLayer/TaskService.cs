@@ -73,7 +73,7 @@ namespace ArcadiaTest.BusinessLayer
         public TaskResponse GetTaskOfUser(int userId, int taskId)
         {
             var taskEntity = this._taskRepository.FindTaskById(taskId);
-            if (taskEntity != null || taskEntity.UserId != userId)
+            if (taskEntity == null || taskEntity.UserId != userId)
             {
                 throw new TaskNotFoundException();
             }
