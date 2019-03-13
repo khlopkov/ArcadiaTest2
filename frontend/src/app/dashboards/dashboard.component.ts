@@ -18,9 +18,7 @@ export class DashboardComponent implements OnInit {
   }
 
   dashboardToBarData(dashboard: Dashboard): BarDataModel[] {
-    console.log(dashboard);
     const data = Object.keys(dashboard).map(key => new BarDataModel(key, dashboard[key]));
-    console.log(data);
     return data;
   }
 
