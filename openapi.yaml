@@ -57,6 +57,12 @@ components:
         cancelled: { type: integer }
         active: { type: integer }
         resolved:  { type: integer }
+    
+    TaskChange:
+      type: object
+      properties:
+        message: { type: string }
+        when: { type: string, format: date }
   
   responses:
     UserResponse:
@@ -78,6 +84,14 @@ components:
       content:
         application/json:
           schema: { $ref: '#/components/schemas/Dashboard' }
+    
+    HistoryResponse:
+      description: Response containing history of task changes
+      content:
+        application/json:
+          schema:
+            type: array
+            items: { $ref: '#/components/schemas/TaskChange' }
     
   requestBodies:
     CreateTaskRequest:
@@ -172,3 +186,12 @@ paths:
       description: Get dashboard with count of tasks grouped by status
       responses:
         200: { $ref: "#/components/responses/DashboardResponse" }
+  
+  /tasks/history:
+    get:
+      tags:
+        - Task
+      summary: Task history of task changes
+      description: Get history of task changesfro current user
+      responses:
+        200: { $ref: "#/components/responses/HistoryResponse" }

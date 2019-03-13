@@ -187,6 +187,7 @@
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
     <Compile Include="Infrastructure\DependencyResolver.cs" />
+    <Compile Include="Models\DTO\TaskChangeDTO.cs" />
     <Compile Include="Models\DTO\TasksDashboardDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />
     <Compile Include="Models\Entities\DataModel.Context.cs">
@@ -219,6 +220,7 @@
     <Compile Include="Models\Requests\CreateTaskRequest.cs" />
     <Compile Include="Models\Requests\MergeTaskRequest.cs" />
     <Compile Include="Models\Responses\DashboardResponse.cs" />
+    <Compile Include="Models\Responses\TaskChangeResponse.cs" />
     <Compile Include="Models\Responses\TaskResponse.cs" />
     <Compile Include="Models\Responses\UserResponse.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />

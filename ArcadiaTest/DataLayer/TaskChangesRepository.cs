@@ -1,4 +1,5 @@
-﻿using ArcadiaTest.Models.Entities;
+﻿using ArcadiaTest.Models.DTO;
+using ArcadiaTest.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -20,9 +21,9 @@ namespace ArcadiaTest.DataLayer
             return this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToList();
         }
 
-        public IEnumerable<TaskChange> FindChangesByUserId(int userId)
+        public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
         {
-            return this._dbCtx.TaskChanges.Select(tc => new TaskChange()
+            return this._dbCtx.TaskChanges.Select(tc => new TaskChangeDTO()
             {
                 Id = tc.Id,
                 TaskId = tc.TaskId,

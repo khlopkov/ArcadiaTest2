@@ -166,5 +166,23 @@ namespace ArcadiaTest.Controllers
             }
             return Content(HttpStatusCode.OK, response);
         }
+
+        [HttpGet]
+        [Route("history")]
+        public IHttpActionResult GetTasksHistory()
+        {
+            var claims = ((ClaimsIdentity)User.Identity).Claims;
+            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
+            UserResponse currentUser;
+            try
+            {
+                currentUser = this._userService.GetUserWithEmail(email);
+            }
+            catch(UserNotFoundException)
+            {
+                return Unauthorized();
+            }
+            return Content(HttpStatusCode.OK, this._taskService.GetTasksHistory(currentUser.Id));
+        }
     }
 }

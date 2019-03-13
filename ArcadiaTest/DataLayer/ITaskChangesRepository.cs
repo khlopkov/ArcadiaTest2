@@ -1,4 +1,5 @@
-﻿using ArcadiaTest.Models.Entities;
+﻿using ArcadiaTest.Models.DTO;
+using ArcadiaTest.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,7 +8,7 @@ using System.Threading.Tasks;
 
 namespace ArcadiaTest.DataLayer
 {
-    interface ITaskChangesRepository
+    public interface ITaskChangesRepository
     {
         /// <summary>
         ///     Finds tasks changes for task with specified id
@@ -21,6 +22,6 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <param name="userId"> id of user which  task changes should be queried </param>
         /// <returns> Enumerable of found task changes </returns>
-        IEnumerable<TaskChange> FindChangesByUserId(int userId);
+        IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId);
     }
 }

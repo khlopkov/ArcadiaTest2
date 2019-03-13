@@ -18,13 +18,16 @@ namespace ArcadiaTest.BusinessLayer
 
         private ITasksRepository _taskRepository;
         private IUserRepository _userRepository;
+        private ITaskChangesRepository _taskChangesRepository;
 
         public TaskService
         (
+            ITaskChangesRepository taskChangesRepository,
             ITasksRepository taskRepository,
             IUserRepository userRepository
         )
         {
+            this._taskChangesRepository = taskChangesRepository;
             this._taskRepository = taskRepository;
             this._userRepository = userRepository;
         }
@@ -68,6 +71,24 @@ namespace ArcadiaTest.BusinessLayer
                 DueDate = taskEntity.DueDate,
                 Type = taskEntity.Type,
             };
+        }
+
+        public IEnumerable<TaskChangeResponse> GetTasksHistory(int userId)
+        {
+            var changes = this._taskChangesRepository.FindChangesByUserId(userId);
+            var response = new List<TaskChangeResponse>(changes.Count());
+            foreach(var change in changes)
+            {
+                var message = change.Operation;
+                message += change.OldValue == null ? "" : " from: " + change.OldValue;
+                message += change.NewValue == null ? "" : " to: " + change.NewValue;
+                response.Add(new TaskChangeResponse()
+                {
+                    Message = message,
+                    When = change.ChangedAt,
+                });
+            }
+            return response;
         }
 
         public TaskResponse GetTaskOfUser(int userId, int taskId)
