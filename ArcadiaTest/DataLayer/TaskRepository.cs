@@ -15,48 +15,10 @@ namespace ArcadiaTest.DataLayer
         {
             this._dbCtx = dbCtx;
         }
-        private TaskDTO entityToTaskDto(Task entity)
-        {
-            return entity == null ? null :
-                new TaskDTO()
-                {
-                    Id = entity.Id,
-                    UserId = entity.UserId,
-                    Status = entity.Status,
-                    Description = entity.Description,
-                    Title = entity.Name,
-                    Type = entity.Type,
-                    DueDate = entity.DueDate
-                };
-        }
-        
-        private Task taskDtoToEntity(TaskDTO dto)
-        {
-            return new Task()
-            {
-                Description = dto.Description,
-                DueDate = dto.DueDate,
-                Id = dto.Id,
-                Name = dto.Title,
-                Status = dto.Status,
-                Type = dto.Type,
-                UserId = dto.UserId
-            };
-        }
         
         private Task findTaskById(int id)
         {
             return this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefault();
-        }
-
-        private IEnumerable<TaskDTO> entityEnumerableToTaskDTOEnumerable(IReadOnlyCollection<Task> entities)
-        {
-            var taskDtos = new List<TaskDTO>(entities.Count);
-            foreach (var entity in entities)
-            {
-                taskDtos.Add(this.entityToTaskDto(entity));
-            }
-            return taskDtos;
         }
 
         public IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId)
@@ -69,29 +31,26 @@ namespace ArcadiaTest.DataLayer
         public TaskDTO FindTaskById(int id)
         {
             var foundTask = this.findTaskById(id);
-            return this.entityToTaskDto(foundTask);
+            return foundTask.ToDto();
         }
 
         public IEnumerable<TaskDTO> FindTasksByUserId(int userId)
         {
-            return entityEnumerableToTaskDTOEnumerable(
-                this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList()
-            );
+            return this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList().ToDtos();
         }
 
         public IEnumerable<TaskDTO> FindTasksByUserIdAndStatus(int userId, string status)
         {
-            return entityEnumerableToTaskDTOEnumerable(
-                this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList()
-            );
+            return this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList().ToDtos();
         }
 
         public TaskDTO Save(TaskDTO task)
         {
-            var taskEntity = taskDtoToEntity(task);
+            var taskEntity = new Task();
+            taskEntity.MergeWithDto(task);
             var inserted = this._dbCtx.Tasks.Add(taskEntity);
             this._dbCtx.SaveChanges();
-            return entityToTaskDto(inserted);
+            return inserted.ToDto();
         }
 
         public TaskDTO Update(TaskDTO task)
@@ -101,13 +60,9 @@ namespace ArcadiaTest.DataLayer
             {
                 return null;
             }
-            taskEntity.Description = task.Description;
-            taskEntity.Name = task.Title;
-            taskEntity.DueDate = task.DueDate;
-            taskEntity.Type = task.Type;
-            taskEntity.Status = task.Status;
+            taskEntity.MergeWithDto(task);
             this._dbCtx.SaveChanges();
-            return this.entityToTaskDto(taskEntity);
+            return taskEntity.ToDto();
         }
 
         public void Delete(TaskDTO task)
@@ -115,6 +70,43 @@ namespace ArcadiaTest.DataLayer
             var taskEntity =this.findTaskById(task?.Id ?? 0);
             this._dbCtx.Tasks.Remove(taskEntity);
             this._dbCtx.SaveChanges();
+        }
+    }
+
+    public static class TaskExtensions
+    {
+        public static TaskDTO ToDto(this Task taskEntity)
+        {
+            return taskEntity == null ? null :
+                new TaskDTO()
+                {
+                    Id = taskEntity.Id,
+                    UserId = taskEntity.UserId,
+                    Status = taskEntity.Status,
+                    Description = taskEntity.Description,
+                    Title = taskEntity.Name,
+                    Type = taskEntity.Type,
+                    DueDate = taskEntity.DueDate
+                };
+        }
+        public static void MergeWithDto(this Task taskEntity, TaskDTO dto)
+        {
+            taskEntity.Id = dto.Id;
+            taskEntity.UserId = dto.UserId == 0 ? taskEntity.UserId : dto.UserId;
+            taskEntity.Status = dto.Status;
+            taskEntity.Description = dto.Description;
+            taskEntity.Name = dto.Title;
+            taskEntity.Type = dto.Type;
+            taskEntity.DueDate = dto.DueDate;
+        }
+        public static IEnumerable<TaskDTO> ToDtos(this IReadOnlyCollection<Task> taskEntities)
+        {
+            var taskDtos = new List<TaskDTO>(taskEntities.Count);
+            foreach (var entity in taskEntities)
+            {
+                taskDtos.Add(entity.ToDto());
+            }
+            return taskDtos;
         }
     }
 }
