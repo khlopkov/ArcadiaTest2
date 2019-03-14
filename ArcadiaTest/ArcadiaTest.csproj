@@ -188,6 +188,7 @@
     </Compile>
     <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="Models\DTO\TaskChangeDTO.cs" />
+    <Compile Include="Models\DTO\TaskDTO.cs" />
     <Compile Include="Models\DTO\TasksDashboardDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />
     <Compile Include="Models\Entities\DataModel.Context.cs">

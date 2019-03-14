@@ -15,108 +15,105 @@ namespace ArcadiaTest.DataLayer
         {
             this._dbCtx = dbCtx;
         }
+        private TaskDTO entityToTaskDto(Task entity)
+        {
+            return entity == null ? null :
+                new TaskDTO()
+                {
+                    Id = entity.Id,
+                    UserId = entity.UserId,
+                    Status = entity.Status,
+                    Description = entity.Description,
+                    Title = entity.Name,
+                    Type = entity.Type,
+                    DueDate = entity.DueDate
+                };
+        }
+        
+        private Task taskDtoToEntity(TaskDTO dto)
+        {
+            return new Task()
+            {
+                Description = dto.Description,
+                DueDate = dto.DueDate,
+                Id = dto.Id,
+                Name = dto.Title,
+                Status = dto.Status,
+                Type = dto.Type,
+                UserId = dto.UserId
+            };
+        }
+        
+        private Task findTaskById(int id)
+        {
+            return this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefault();
+        }
+
+        private IEnumerable<TaskDTO> entityEnumerableToTaskDTOEnumerable(IReadOnlyCollection<Task> entities)
+        {
+            var taskDtos = new List<TaskDTO>(entities.Count);
+            foreach (var entity in entities)
+            {
+                taskDtos.Add(this.entityToTaskDto(entity));
+            }
+            return taskDtos;
+        }
 
         public IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId)
         {
             return this._dbCtx.Tasks.Where(t => t.UserId == userId)
                 .GroupBy(t => t.Status)
-                .Select(group => new TasksDashboardDTO(){Status = group.Key, Count = group.Count()}).ToList();
+                .Select(group => new TasksDashboardDTO() { Status = group.Key, Count = group.Count() }).ToList();
         }
 
-        public Task FindTaskById(int id)
+        public TaskDTO FindTaskById(int id)
         {
-            return this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefault();
+            var foundTask = this.findTaskById(id);
+            return this.entityToTaskDto(foundTask);
         }
 
-        public IEnumerable<Task> FindTasksByUserId(int userId)
+        public IEnumerable<TaskDTO> FindTasksByUserId(int userId)
         {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList();
+            return entityEnumerableToTaskDTOEnumerable(
+                this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList()
+            );
         }
 
-        public IEnumerable<Task> FindTasksByUserIdAndStatus(int userId, string status)
+        public IEnumerable<TaskDTO> FindTasksByUserIdAndStatus(int userId, string status)
         {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList();
+            return entityEnumerableToTaskDTOEnumerable(
+                this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList()
+            );
         }
 
-        public Task Save(Task task)
+        public TaskDTO Save(TaskDTO task)
         {
-            var inserted = this._dbCtx.Tasks.Add(task);
+            var taskEntity = taskDtoToEntity(task);
+            var inserted = this._dbCtx.Tasks.Add(taskEntity);
             this._dbCtx.SaveChanges();
-            return inserted;
+            return entityToTaskDto(inserted);
         }
 
-        public Task UpdateDescription(int taskId, string description)
+        public TaskDTO Update(TaskDTO task)
         {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
+            var taskEntity = this.findTaskById(task?.Id ?? 0);
+            if (taskEntity == null)
             {
                 return null;
             }
-            found.Description = description;
+            taskEntity.Description = task.Description;
+            taskEntity.Name = task.Title;
+            taskEntity.DueDate = task.DueDate;
+            taskEntity.Type = task.Type;
+            taskEntity.Status = task.Status;
             this._dbCtx.SaveChanges();
-            return found;
+            return this.entityToTaskDto(taskEntity);
         }
 
-        public Task UpdateDueDate(int taskId, DateTime? dueDate)
+        public void Delete(TaskDTO task)
         {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.DueDate = dueDate;
-            this._dbCtx.SaveChanges();
-            return found;
-        }
-
-        public Task UpdateName(int taskId, string name)
-        {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.Name = name;
-            this._dbCtx.SaveChanges();
-            return found;
-        }
-
-        public Task UpdateStatus(int taskId, string status)
-        {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.Status = status;
-            this._dbCtx.SaveChanges();
-            return found;
-        }
-
-        public Task UpdateType(int taskId, string type)
-        {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.Type = type;
-            this._dbCtx.SaveChanges();
-            return found;
-        }
-
-        public Task Update(Task task)
-        {
-            //this._dbCtx.Tasks.Attach(task);
-            this._dbCtx.Entry(task).State = System.Data.Entity.EntityState.Modified;
-            this._dbCtx.SaveChanges();
-            return task;
-        }
-
-        public void Delete(Task task)
-        {
-            this._dbCtx.Tasks.Attach(task);
-            this._dbCtx.Tasks.Remove(task);
+            var taskEntity =this.findTaskById(task?.Id ?? 0);
+            this._dbCtx.Tasks.Remove(taskEntity);
             this._dbCtx.SaveChanges();
         }
     }
