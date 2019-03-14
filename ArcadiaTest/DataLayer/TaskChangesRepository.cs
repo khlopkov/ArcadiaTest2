@@ -31,7 +31,7 @@ namespace ArcadiaTest.DataLayer
                 NewValue = tc.NewValue,
                 OldValue = tc.OldValue,
                 Operation = tc.Operation,
-                Task = this._dbCtx.Tasks.Where(t => t.Id == tc.TaskId).FirstOrDefault(),
+                Task = this._dbCtx.Tasks.Where(t => t.Id == tc.TaskId).FirstOrDefault().ToDto(),
             })
                 .Where(tc => tc.Task.UserId == userId).ToList();
         }
@@ -49,7 +49,7 @@ namespace ArcadiaTest.DataLayer
                     NewValue = entity.NewValue,
                     OldValue = entity.OldValue,
                     Operation = entity.Operation,
-                    Task = entity.Task,
+                    Task = entity.Task.ToDto(),
                     TaskId = entity.TaskId
                 };
         }
