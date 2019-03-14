@@ -176,6 +176,7 @@
     <Compile Include="BusinessLayer\UserService.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DataLayer\Exceptions\IdWasNotSpecifiedException.cs" />
     <Compile Include="DataLayer\ITaskChangesRepository.cs" />
     <Compile Include="DataLayer\ITasksRepository.cs" />
     <Compile Include="DataLayer\IUserRepository.cs" />
