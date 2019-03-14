@@ -19,36 +19,37 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbContext;
         }
 
-        private UserDTO userEntityToDto(User userEntity)
-        {
-            return new UserDTO(userEntity.Id, userEntity.Name, userEntity.Email, userEntity.Hash);
-        }
-
-        private IEnumerable<UserDTO> userEntitiesToUserDtos(IReadOnlyCollection<User> userEntities)
-        {
-            var userDtos = new List<UserDTO>(userEntities.Count);
-            foreach(var entity in userEntities)
-            {
-                userDtos.Add(this.userEntityToDto(entity));
-            }
-            return userDtos;
-        }
-
         public IEnumerable<UserDTO> FindAllUsers()
         {
-            return userEntitiesToUserDtos(
-               this._dbCtx.Users.ToList()
-            );
+            return this._dbCtx.Users.ToList().ToDtos();
         }
 
         public UserDTO FindByEmail(string email)
         {
-            return userEntityToDto(this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault());
+            return this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault().ToDto();
         }
 
         public UserDTO FindUserByID(int id)
         {
-            return userEntityToDto(this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault());
+            return this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault().ToDto();
+        }
+    }
+    
+    public static class UserExtension
+    {
+        public static UserDTO ToDto(this User userEntity)
+        {
+            return new UserDTO(userEntity.Id, userEntity.Name, userEntity.Email, userEntity.Hash);
+        }
+
+        public static IEnumerable<UserDTO> ToDtos(this IReadOnlyCollection<User> userEntities)
+        {
+            var userDtos = new List<UserDTO>(userEntities.Count);
+            foreach(var entity in userEntities)
+            {
+                userDtos.Add(entity.ToDto());
+            }
+            return userDtos;
         }
     }
 }
