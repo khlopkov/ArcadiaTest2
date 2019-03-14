@@ -14,35 +14,35 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <param name="id"> ID of task needed to found </param>
         /// <returns> Found task or null if task was not found </returns>
-        Task FindTaskById(int id);
+        TaskDTO FindTaskById(int id);
 
         /// <summary>
         ///     Adds new task into database
         /// </summary>
         /// <param name="task"> Object describing task needed to be updated </param>
         /// <returns> Saved task </returns>
-        Task Save(Task task);
+        TaskDTO Save(TaskDTO task);
 
         /// <summary>
         ///     Updates task with passed param
         /// </summary>
         /// <param name="task">task should be updated</param>
         /// <returns>updated task, if updated successfully</returns>
-        Task Update(Task task);
+        TaskDTO Update(TaskDTO task);
 
         /// <summary>
         ///     Finds tasks by id of user to whom they belongs
         /// </summary>
         /// <param name="userId"> ID of user </param>
         /// <returns> IEnumerable of found tasks </returns>
-        IEnumerable<Task> FindTasksByUserId(int userId);
+        IEnumerable<TaskDTO> FindTasksByUserId(int userId);
         /// <summary>
         ///     Finds tasks by id of user to whom they belongs and status of this tasks
         /// </summary>
         /// <param name="userId"> ID of user </param>
         /// <param name="status"> Status of task</param>
         /// <returns> IEnumerable of found tasks </returns>
-        IEnumerable<Task> FindTasksByUserIdAndStatus(int userId, string status);
+        IEnumerable<TaskDTO> FindTasksByUserIdAndStatus(int userId, string status);
 
         /// <summary>
         ///     returns count of tasks grouped by status for user with specified userId
@@ -55,6 +55,6 @@ namespace ArcadiaTest.DataLayer
         ///     Deleting task with specified ID
         /// </summary>
         /// <param name="id">id of task which wanted to be deleted</param>
-        void Delete(Task task);
+        void Delete(TaskDTO task);
     }
 }
