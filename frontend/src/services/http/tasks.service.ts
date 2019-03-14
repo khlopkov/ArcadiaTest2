@@ -4,6 +4,7 @@ import { REST_URL } from '../../config';
 import { Task } from 'src/models/task.model';
 import { Observable } from 'rxjs';
 import { Dashboard } from 'src/models/dashboard.model';
+import { TaskChange } from 'src/models/task-change.model';
 
 const JSON_MIME = {'Content-type': 'application/json; charset=utf-8'};
 
@@ -33,6 +34,10 @@ export class TasksService {
 
     dashboard(): Observable<Dashboard> {
         return this.http.get<Dashboard>(this.baseUrl + `api/tasks/dashboard`, { headers: new HttpHeaders(JSON_MIME)});
+    }
+
+    history(): Observable<TaskChange[]> {
+        return this.http.get<TaskChange[]>(this.baseUrl + 'api/tasks/history', { headers: new HttpHeaders(JSON_MIME)});
     }
 
     private jsonMimeHeaders() {
