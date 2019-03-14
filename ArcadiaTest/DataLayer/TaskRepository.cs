@@ -89,6 +89,7 @@ namespace ArcadiaTest.DataLayer
                     DueDate = taskEntity.DueDate
                 };
         }
+
         public static void MergeWithDto(this Task taskEntity, TaskDTO dto)
         {
             taskEntity.Id = dto.Id;
@@ -99,6 +100,7 @@ namespace ArcadiaTest.DataLayer
             taskEntity.Type = dto.Type;
             taskEntity.DueDate = dto.DueDate;
         }
+
         public static IEnumerable<TaskDTO> ToDtos(this IReadOnlyCollection<Task> taskEntities)
         {
             return taskEntities.Select(te => te.ToDto()).ToList();
