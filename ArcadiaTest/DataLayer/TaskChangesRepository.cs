@@ -16,21 +16,6 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbCtx;
         }
 
-        private TaskChangeDTO taskChangeEntityToDTO(TaskChange entity)
-        {
-            return entity == null ? null :
-                new TaskChangeDTO()
-                {
-                    Id = entity.Id,
-                    ChangedAt = entity.ChangedAt,
-                    NewValue = entity.NewValue,
-                    OldValue = entity.OldValue,
-                    Operation = entity.Operation,
-                    Task = entity.Task,
-                    TaskId = entity.TaskId
-                };
-        }
-
         public IEnumerable<TaskChangeDTO> FindChangesByTaskID(int taskId)
         {
             return this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToList().ToDtos();
