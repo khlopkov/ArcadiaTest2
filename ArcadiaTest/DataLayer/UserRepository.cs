@@ -44,12 +44,7 @@ namespace ArcadiaTest.DataLayer
 
         public static IEnumerable<UserDTO> ToDtos(this IReadOnlyCollection<User> userEntities)
         {
-            var userDtos = new List<UserDTO>(userEntities.Count);
-            foreach(var entity in userEntities)
-            {
-                userDtos.Add(entity.ToDto());
-            }
-            return userDtos;
+            return userEntities.Select(ue => ue.ToDto()).ToList();
         }
     }
 }
