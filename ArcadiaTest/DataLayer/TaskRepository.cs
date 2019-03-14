@@ -101,12 +101,7 @@ namespace ArcadiaTest.DataLayer
         }
         public static IEnumerable<TaskDTO> ToDtos(this IReadOnlyCollection<Task> taskEntities)
         {
-            var taskDtos = new List<TaskDTO>(taskEntities.Count);
-            foreach (var entity in taskEntities)
-            {
-                taskDtos.Add(entity.ToDto());
-            }
-            return taskDtos;
+            return taskEntities.Select(te => te.ToDto()).ToList();
         }
     }
 }
