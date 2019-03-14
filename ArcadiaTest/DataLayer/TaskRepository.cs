@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using ArcadiaTest.Models.DTO;
 using ArcadiaTest.Models.Entities;
+using ArcadiaTest.DataLayer.Exceptions;
 
 namespace ArcadiaTest.DataLayer
 {
@@ -46,6 +47,8 @@ namespace ArcadiaTest.DataLayer
 
         public TaskDTO Save(TaskDTO task)
         {
+            if (task == null)
+                throw new ArgumentNullException("task");
             var taskEntity = new Task();
             taskEntity.MergeWithDto(task);
             var inserted = this._dbCtx.Tasks.Add(taskEntity);
@@ -55,7 +58,11 @@ namespace ArcadiaTest.DataLayer
 
         public TaskDTO Update(TaskDTO task)
         {
-            var taskEntity = this.FindTaskEntityById(task?.Id ?? 0);
+            if (task == null)
+                throw new ArgumentNullException("task");
+            if (task.Id == 0)
+                throw new IdWasNotSpecifiedException();
+            var taskEntity = this.FindTaskEntityById(task.Id);
             if (taskEntity == null)
             {
                 return null;
@@ -67,7 +74,11 @@ namespace ArcadiaTest.DataLayer
 
         public void Delete(TaskDTO task)
         {
-            var taskEntity = this.FindTaskEntityById(task?.Id ?? 0);
+            if (task == null)
+                throw new ArgumentNullException("task");
+            if (task.Id == 0)
+                throw new IdWasNotSpecifiedException();
+            var taskEntity = this.FindTaskEntityById(task.Id);
             this._dbCtx.Tasks.Remove(taskEntity);
             this._dbCtx.SaveChanges();
         }
