@@ -1,4 +1,5 @@
-﻿using ArcadiaTest.Models.Entities;
+﻿using ArcadiaTest.Models.DTO;
+using ArcadiaTest.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,22 +15,17 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <param name="id"> id of user needed to be found </param>
         /// <returns> Found user or null </returns>
-        User FindUserByID(int id);
+        UserDTO FindUserByID(int id);
         /// <summary>
         ///     Finds all users in database
         /// </summary>
         /// <returns> IEnumerable containing all existing users </returns>
-        IEnumerable<User> FindAllUsers();
-        /// <summary>
-        ///     Finds first row in user table of database
-        /// </summary>
-        /// <returns> Found user or null </returns>
-        User FindFirst();
+        IEnumerable<UserDTO> FindAllUsers();
         /// <summary>
         ///     Finds user by email
         /// </summary>
         /// <param name="email">email of user, who needed to be found</param>
         /// <returns>Entity describing found user, or null if not found</returns>
-        User FindByEmail(string email);
+        UserDTO FindByEmail(string email);
     }
 }

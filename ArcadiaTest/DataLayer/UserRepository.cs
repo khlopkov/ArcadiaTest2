@@ -1,4 +1,5 @@
-﻿using ArcadiaTest.Models.Entities;
+﻿using ArcadiaTest.Models.DTO;
+using ArcadiaTest.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -18,24 +19,36 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbContext;
         }
 
-        public IEnumerable<User> FindAllUsers()
+        private UserDTO userEntityToDto(User userEntity)
         {
-            return this._dbCtx.Users.ToList();
+            return new UserDTO(userEntity.Id, userEntity.Name, userEntity.Email, userEntity.Hash);
         }
 
-        public User FindByEmail(string email)
+        private IEnumerable<UserDTO> userEntitiesToUserDtos(IReadOnlyCollection<User> userEntities)
         {
-            return this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault();
+            var userDtos = new List<UserDTO>(userEntities.Count);
+            foreach(var entity in userEntities)
+            {
+                userDtos.Add(this.userEntityToDto(entity));
+            }
+            return userDtos;
         }
 
-        public User FindFirst()
+        public IEnumerable<UserDTO> FindAllUsers()
         {
-            return this._dbCtx.Users.FirstOrDefault();
+            return userEntitiesToUserDtos(
+               this._dbCtx.Users.ToList()
+            );
         }
 
-        public User FindUserByID(int id)
+        public UserDTO FindByEmail(string email)
         {
-            return this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault();
+            return userEntityToDto(this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault());
+        }
+
+        public UserDTO FindUserByID(int id)
+        {
+            return userEntityToDto(this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault());
         }
     }
 }
