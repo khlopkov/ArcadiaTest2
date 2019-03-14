@@ -4,6 +4,7 @@ using System.Linq;
 using System.Web;
 using ArcadiaTest.Models.DTO;
 using ArcadiaTest.Models.Entities;
+using ArcadiaTest.DataLayer.Exceptions;
 
 namespace ArcadiaTest.DataLayer
 {
@@ -16,108 +17,104 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbCtx;
         }
 
-        public IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId)
-        {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId)
-                .GroupBy(t => t.Status)
-                .Select(group => new TasksDashboardDTO(){Status = group.Key, Count = group.Count()}).ToList();
-        }
-
-        public Task FindTaskById(int id)
+        private Task FindTaskEntityById(int id)
         {
             return this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefault();
         }
 
-        public IEnumerable<Task> FindTasksByUserId(int userId)
+        public IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId)
         {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList();
+            return this._dbCtx.Tasks.Where(t => t.UserId == userId)
+                .GroupBy(t => t.Status)
+                .Select(group => new TasksDashboardDTO() { Status = group.Key, Count = group.Count() }).ToList();
         }
 
-        public IEnumerable<Task> FindTasksByUserIdAndStatus(int userId, string status)
+        public TaskDTO FindTaskById(int id)
         {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList();
+            var foundTask = this.FindTaskEntityById(id);
+            return foundTask.ToDto();
         }
 
-        public Task Save(Task task)
+        public IEnumerable<TaskDTO> FindTasksByUserId(int userId)
         {
-            var inserted = this._dbCtx.Tasks.Add(task);
+            return this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList().ToDtos();
+        }
+
+        public IEnumerable<TaskDTO> FindTasksByUserIdAndStatus(int userId, string status)
+        {
+            return this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList().ToDtos();
+        }
+
+        public TaskDTO Save(TaskDTO task)
+        {
+            if (task == null)
+                throw new ArgumentNullException("task");
+            var taskEntity = new Task();
+            taskEntity.MergeWithDto(task);
+            var inserted = this._dbCtx.Tasks.Add(taskEntity);
             this._dbCtx.SaveChanges();
-            return inserted;
+            return inserted.ToDto();
         }
 
-        public Task UpdateDescription(int taskId, string description)
+        public TaskDTO Update(TaskDTO task)
         {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
+            if (task == null)
+                throw new ArgumentNullException("task");
+            if (task.Id == 0)
+                throw new IdWasNotSpecifiedException();
+            var taskEntity = this.FindTaskEntityById(task.Id);
+            if (taskEntity == null)
             {
                 return null;
             }
-            found.Description = description;
+            taskEntity.MergeWithDto(task);
             this._dbCtx.SaveChanges();
-            return found;
+            return taskEntity.ToDto();
         }
 
-        public Task UpdateDueDate(int taskId, DateTime? dueDate)
+        public void Delete(TaskDTO task)
         {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.DueDate = dueDate;
+            if (task == null)
+                throw new ArgumentNullException("task");
+            if (task.Id == 0)
+                throw new IdWasNotSpecifiedException();
+            var taskEntity = this.FindTaskEntityById(task.Id);
+            this._dbCtx.Tasks.Remove(taskEntity);
             this._dbCtx.SaveChanges();
-            return found;
+        }
+    }
+
+    public static class TaskExtensions
+    {
+        public static TaskDTO ToDto(this Task taskEntity)
+        {
+            return taskEntity == null ? null :
+                new TaskDTO()
+                {
+                    Id = taskEntity.Id,
+                    UserId = taskEntity.UserId,
+                    Status = taskEntity.Status,
+                    Description = taskEntity.Description,
+                    Title = taskEntity.Name,
+                    Type = taskEntity.Type,
+                    DueDate = taskEntity.DueDate
+                };
         }
 
-        public Task UpdateName(int taskId, string name)
+        public static void MergeWithDto(this Task taskEntity, TaskDTO dto)
         {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.Name = name;
-            this._dbCtx.SaveChanges();
-            return found;
+            taskEntity.Id = dto.Id;
+            taskEntity.UserId = dto.UserId == 0 ? taskEntity.UserId : dto.UserId;
+            taskEntity.Status = dto.Status;
+            taskEntity.Description = dto.Description;
+            taskEntity.Name = dto.Title;
+            taskEntity.Type = dto.Type;
+            taskEntity.DueDate = dto.DueDate;
         }
 
-        public Task UpdateStatus(int taskId, string status)
+        public static IEnumerable<TaskDTO> ToDtos(this IReadOnlyCollection<Task> taskEntities)
         {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.Status = status;
-            this._dbCtx.SaveChanges();
-            return found;
-        }
-
-        public Task UpdateType(int taskId, string type)
-        {
-            var found = this._dbCtx.Tasks.Where(t => t.Id == taskId).FirstOrDefault();
-            if (found == null)
-            {
-                return null;
-            }
-            found.Type = type;
-            this._dbCtx.SaveChanges();
-            return found;
-        }
-
-        public Task Update(Task task)
-        {
-            //this._dbCtx.Tasks.Attach(task);
-            this._dbCtx.Entry(task).State = System.Data.Entity.EntityState.Modified;
-            this._dbCtx.SaveChanges();
-            return task;
-        }
-
-        public void Delete(Task task)
-        {
-            this._dbCtx.Tasks.Attach(task);
-            this._dbCtx.Tasks.Remove(task);
-            this._dbCtx.SaveChanges();
+            return taskEntities.Select(te => te.ToDto()).ToList();
         }
     }
 }
