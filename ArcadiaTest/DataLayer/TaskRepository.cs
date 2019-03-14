@@ -16,7 +16,7 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbCtx;
         }
         
-        private Task findTaskById(int id)
+        private Task FindTaskEntityById(int id)
         {
             return this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefault();
         }
@@ -30,7 +30,7 @@ namespace ArcadiaTest.DataLayer
 
         public TaskDTO FindTaskById(int id)
         {
-            var foundTask = this.findTaskById(id);
+            var foundTask = this.FindTaskEntityById(id);
             return foundTask.ToDto();
         }
 
@@ -55,7 +55,7 @@ namespace ArcadiaTest.DataLayer
 
         public TaskDTO Update(TaskDTO task)
         {
-            var taskEntity = this.findTaskById(task?.Id ?? 0);
+            var taskEntity = this.FindTaskEntityById(task?.Id ?? 0);
             if (taskEntity == null)
             {
                 return null;
@@ -67,7 +67,7 @@ namespace ArcadiaTest.DataLayer
 
         public void Delete(TaskDTO task)
         {
-            var taskEntity =this.findTaskById(task?.Id ?? 0);
+            var taskEntity =this.FindTaskEntityById(task?.Id ?? 0);
             this._dbCtx.Tasks.Remove(taskEntity);
             this._dbCtx.SaveChanges();
         }
