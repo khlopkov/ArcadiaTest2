@@ -5,6 +5,7 @@ using System.Web;
 using ArcadiaTest.Models.DTO;
 using ArcadiaTest.Models.Entities;
 using ArcadiaTest.DataLayer.Exceptions;
+using System.Data.Entity;
 
 namespace ArcadiaTest.DataLayer
 {
@@ -81,6 +82,70 @@ namespace ArcadiaTest.DataLayer
             var taskEntity = this.FindTaskEntityById(task.Id);
             this._dbCtx.Tasks.Remove(taskEntity);
             this._dbCtx.SaveChanges();
+        }
+        public async System.Threading.Tasks.Task<TaskDTO> FindTaskByIdAsync(int id)
+        {
+            var entity =  await this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefaultAsync();
+            return entity.ToDto();
+        }
+
+        public async System.Threading.Tasks.Task<TaskDTO> SaveAsync(TaskDTO task)
+        {
+            if (task == null)
+                throw new ArgumentNullException("task");
+            var taskEntity = new Models.Entities.Task();
+            taskEntity.MergeWithDto(task);
+            var inserted = this._dbCtx.Tasks.Add(taskEntity);
+            await this._dbCtx.SaveChangesAsync();
+            return inserted.ToDto();
+        }
+
+        public async System.Threading.Tasks.Task<TaskDTO> UpdateAsync(TaskDTO task)
+        {
+            if (task == null)
+                throw new ArgumentNullException("task");
+            if (task.Id == 0)
+                throw new IdWasNotSpecifiedException();
+            var taskEntity = this.FindTaskEntityById(task.Id);
+            if (taskEntity == null)
+            {
+                return null;
+            }
+            taskEntity.MergeWithDto(task);
+            await this._dbCtx.SaveChangesAsync();
+            return taskEntity.ToDto();
+        }
+
+        public async System.Threading.Tasks.Task<IEnumerable<TaskDTO>> FindTasksByUserIdAsync(int userId)
+        {
+            Console.WriteLine("jkfdsl");
+            var tasks = await this._dbCtx.Tasks.Where(t => t.UserId == userId).ToListAsync();
+            Console.WriteLine("jkfdsl");
+            return tasks.ToDtos();
+        }
+
+        public async System.Threading.Tasks.Task<IEnumerable<TaskDTO>> FindTasksByUserIdAndStatusAsync(int userId, string status)
+        {
+            var tasks = await this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToListAsync();
+            return tasks.ToDtos();
+        }
+
+        public async System.Threading.Tasks.Task<IEnumerable<TasksDashboardDTO>> CountTasksGroupedByStatusAsync(int userId)
+        {
+            return await this._dbCtx.Tasks.Where(t => t.UserId == userId)
+                .GroupBy(t => t.Status)
+                .Select(group => new TasksDashboardDTO() { Status = group.Key, Count = group.Count() }).ToListAsync();
+        }
+
+        public async System.Threading.Tasks.Task DeleteAsync(TaskDTO task)
+        {
+            if (task == null)
+                throw new ArgumentNullException("task");
+            if (task.Id == 0)
+                throw new IdWasNotSpecifiedException();
+            var taskEntity = this.FindTaskEntityById(task.Id);
+            this._dbCtx.Tasks.Remove(taskEntity);
+            await this._dbCtx.SaveChangesAsync();
         }
     }
 
