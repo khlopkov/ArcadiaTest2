@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace ArcadiaTest.DataLayer
 {
@@ -21,6 +23,12 @@ namespace ArcadiaTest.DataLayer
             return this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToList().ToDtos();
         }
 
+        public async Task<IEnumerable<TaskChangeDTO>> FindChangesByTaskIDAsync(int taskId)
+        {
+            var changes = await this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToListAsync();
+            return changes.ToDtos();
+        }
+
         public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
         {
             return this._dbCtx.TaskChanges.Select(tc => new TaskChangeDTO()
@@ -34,6 +42,11 @@ namespace ArcadiaTest.DataLayer
                 Task = this._dbCtx.Tasks.Where(t => t.Id == tc.TaskId).FirstOrDefault(),
             })
                 .Where(tc => tc.Task.UserId == userId).ToList();
+        }
+
+        public async Task<IEnumerable<TaskChangeDTO>> FindChangesByUserIdAsync(int userId)
+        {
+            throw new NotImplementedException();
         }
     }
 
