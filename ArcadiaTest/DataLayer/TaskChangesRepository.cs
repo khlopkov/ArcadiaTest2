@@ -81,7 +81,7 @@ namespace ArcadiaTest.DataLayer
                 };
         }
 
-        public static IEnumerable<TaskChangeDTO> ToDtos(this IReadOnlyCollection<TaskChange> taskChangeEntities)
+        public static IEnumerable<TaskChangeDTO> ToDtos(this IEnumerable<TaskChange> taskChangeEntities)
         {
             return taskChangeEntities.Select(tce => tce.ToDto()).ToList();
         }
