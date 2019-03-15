@@ -7,6 +7,7 @@ using ArcadiaTest.Models.Requests;
 using ArcadiaTest.Models.Responses;
 using ArcadiaTest.Models.Entities;
 using ArcadiaTest.BusinessLayer.Exceptions;
+using ArcadiaTest.Models.DTO;
 
 namespace ArcadiaTest.BusinessLayer
 {
@@ -37,16 +38,16 @@ namespace ArcadiaTest.BusinessLayer
             if (this._userRepository.FindUserByID(userId) == null)
                 throw new UserNotFoundException(userId);
 
-            var taskEntity = new Task
+            var task = new TaskDTO
             {
                 UserId = userId,
-                Name = payload.Title,
+                Title = payload.Title,
                 Description = payload.Description,
                 Status = ACTIVE,
                 Type = payload.Type,
                 DueDate = payload.DueDate,
             };
-            this._taskRepository.Save(taskEntity);
+            this._taskRepository.Save(task);
         }
 
         public void DeleteTask(int taskId)
@@ -65,7 +66,7 @@ namespace ArcadiaTest.BusinessLayer
             return new TaskResponse
             {
                 Id = taskEntity.Id,
-                Title = taskEntity.Name,
+                Title = taskEntity.Title,
                 Description = taskEntity.Description,
                 Status = taskEntity.Status,
                 DueDate = taskEntity.DueDate,
@@ -101,7 +102,7 @@ namespace ArcadiaTest.BusinessLayer
             return new TaskResponse()
             {
                 Id = taskEntity.Id,
-                Title = taskEntity.Name,
+                Title = taskEntity.Title,
                 Description = taskEntity.Description,
                 Status = taskEntity.Status,
                 DueDate = taskEntity.DueDate,
@@ -142,7 +143,7 @@ namespace ArcadiaTest.BusinessLayer
                 response.Add(new TaskResponse
                 {
                     Id = taskEntity.Id,
-                    Title = taskEntity.Name,
+                    Title = taskEntity.Title,
                     Description = taskEntity.Description,
                     DueDate = taskEntity.DueDate,
                     Status = taskEntity.Status,
@@ -161,7 +162,7 @@ namespace ArcadiaTest.BusinessLayer
                 response.Add(new TaskResponse
                 {
                     Id = taskEntity.Id,
-                    Title = taskEntity.Name,
+                    Title = taskEntity.Title,
                     Description = taskEntity.Description,
                     DueDate = taskEntity.DueDate,
                     Status = taskEntity.Status,
@@ -178,7 +179,7 @@ namespace ArcadiaTest.BusinessLayer
                 throw new TaskNotFoundException(id);
             if (taskEntity.Status != ACTIVE)
                 throw new TaskNotActiveException();
-            taskEntity.Name = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskEntity.Name;
+            taskEntity.Title = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskEntity.Title;
             if (updateModel.Description != null)
             {
                 if (updateModel.Description == "")

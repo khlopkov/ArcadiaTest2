@@ -176,6 +176,7 @@
     <Compile Include="BusinessLayer\UserService.cs" />
     <Compile Include="Controllers\TasksController.cs" />
     <Compile Include="Controllers\UserController.cs" />
+    <Compile Include="DataLayer\Exceptions\IdWasNotSpecifiedException.cs" />
     <Compile Include="DataLayer\ITaskChangesRepository.cs" />
     <Compile Include="DataLayer\ITasksRepository.cs" />
     <Compile Include="DataLayer\IUserRepository.cs" />
@@ -188,6 +189,7 @@
     </Compile>
     <Compile Include="Infrastructure\DependencyResolver.cs" />
     <Compile Include="Models\DTO\TaskChangeDTO.cs" />
+    <Compile Include="Models\DTO\TaskDTO.cs" />
     <Compile Include="Models\DTO\TasksDashboardDTO.cs" />
     <Compile Include="Models\DTO\UserDTO.cs" />
     <Compile Include="Models\Entities\DataModel.Context.cs">
