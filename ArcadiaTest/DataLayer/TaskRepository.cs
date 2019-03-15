@@ -85,6 +85,7 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx.Tasks.Remove(taskEntity);
             this._dbCtx.SaveChanges();
         }
+
         public async Task<TaskDTO> FindTaskByIdAsync(int id)
         {
             var entity =  await this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefaultAsync();

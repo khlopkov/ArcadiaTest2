@@ -24,6 +24,7 @@ namespace ArcadiaTest.DataLayer
         /// <param name="task"> Object describing task needed to be updated </param>
         /// <returns> Saved task </returns>
         TaskDTO Save(TaskDTO task);
+
         Task<TaskDTO> SaveAsync(TaskDTO task);
 
         /// <summary>
