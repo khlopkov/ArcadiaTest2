@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace ArcadiaTest.DataLayer
 {
@@ -24,14 +26,32 @@ namespace ArcadiaTest.DataLayer
             return this._dbCtx.Users.ToList().ToDtos();
         }
 
+        public async Task<IEnumerable<UserDTO>> FindAllUsersAsync()
+        {
+            var users = await this._dbCtx.Users.ToListAsync();
+            return users.ToDtos();
+        }
+
         public UserDTO FindByEmail(string email)
         {
             return this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault()?.ToDto();
         }
 
+        public async Task<UserDTO> FindByEmailAsync(string email)
+        {
+            var foundUser = await this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
+            return foundUser?.ToDto();
+        }
+
         public UserDTO FindUserByID(int id)
         {
             return this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault()?.ToDto();
+        }
+
+        public async Task<UserDTO> FindUserByIDAsync(int id)
+        {
+            var foundUser = await this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefaultAsync();
+            return foundUser?.ToDto();
         }
     }
     

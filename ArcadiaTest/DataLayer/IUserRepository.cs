@@ -17,11 +17,15 @@ namespace ArcadiaTest.DataLayer
         /// <returns> Found user or null </returns>
         UserDTO FindUserByID(int id);
 
+        Task<UserDTO> FindUserByIDAsync(int id);
+
         /// <summary>
         ///     Finds all users in database
         /// </summary>
         /// <returns> IEnumerable containing all existing users </returns>
         IEnumerable<UserDTO> FindAllUsers();
+
+        Task<IEnumerable<UserDTO>> FindAllUsersAsync();
 
         /// <summary>
         ///     Finds user by email
@@ -29,5 +33,7 @@ namespace ArcadiaTest.DataLayer
         /// <param name="email">email of user, who needed to be found</param>
         /// <returns>Entity describing found user, or null if not found</returns>
         UserDTO FindByEmail(string email);
+
+        Task<UserDTO> FindByEmailAsync(string email);
     }
 }
