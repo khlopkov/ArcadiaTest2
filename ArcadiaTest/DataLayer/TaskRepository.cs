@@ -4,8 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Web;
 using ArcadiaTest.Models.DTO;
-using ArcadiaTestEntities = ArcadiaTest.Models.Entities.ArcadiaTestEntities;
-using TaskEntity = ArcadiaTest.Models.Entities.Task;
+using Entities = ArcadiaTest.Models.Entities;
 using ArcadiaTest.DataLayer.Exceptions;
 using System.Data.Entity;
 
@@ -13,14 +12,14 @@ namespace ArcadiaTest.DataLayer
 {
     public class TaskRepository : ITasksRepository
     {
-        ArcadiaTestEntities _dbCtx;
+        Entities.ArcadiaTestEntities _dbCtx;
 
-        public TaskRepository(ArcadiaTestEntities dbCtx)
+        public TaskRepository(Entities.ArcadiaTestEntities dbCtx)
         {
             this._dbCtx = dbCtx;
         }
 
-        private TaskEntity FindTaskEntityById(int id)
+        private Entities.Task FindTaskEntityById(int id)
         {
             return this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefault();
         }
@@ -53,7 +52,7 @@ namespace ArcadiaTest.DataLayer
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
-            var taskEntity = new TaskEntity();
+            var taskEntity = new Entities.Task();
             taskEntity.MergeWithDto(task);
 
             var inserted = this._dbCtx.Tasks.Add(taskEntity);
@@ -106,7 +105,7 @@ namespace ArcadiaTest.DataLayer
             if (task == null)
                 throw new ArgumentNullException(nameof(task));
 
-            var taskEntity = new TaskEntity();
+            var taskEntity = new Entities.Task();
             taskEntity.MergeWithDto(task);
 
             var inserted = this._dbCtx.Tasks.Add(taskEntity);
@@ -170,7 +169,7 @@ namespace ArcadiaTest.DataLayer
 
     public static class TaskExtensions
     {
-        public static TaskDTO ToDto(this TaskEntity taskEntity)
+        public static TaskDTO ToDto(this Entities.Task taskEntity)
         {
             return taskEntity == null ? null :
                 new TaskDTO()
@@ -185,7 +184,7 @@ namespace ArcadiaTest.DataLayer
                 };
         }
 
-        public static void MergeWithDto(this TaskEntity taskEntity, TaskDTO dto)
+        public static void MergeWithDto(this Entities.Task taskEntity, TaskDTO dto)
         {
             taskEntity.Id = dto.Id;
             taskEntity.UserId = dto.UserId == 0 ? taskEntity.UserId : dto.UserId;
@@ -196,7 +195,7 @@ namespace ArcadiaTest.DataLayer
             taskEntity.DueDate = dto.DueDate;
         }
 
-        public static IEnumerable<TaskDTO> ToDtos(this IEnumerable<TaskEntity> taskEntities)
+        public static IEnumerable<TaskDTO> ToDtos(this IEnumerable<Entities.Task> taskEntities)
         {
             return taskEntities.Select(te => te.ToDto()).ToList();
         }
