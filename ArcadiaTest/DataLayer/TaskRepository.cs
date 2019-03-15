@@ -196,7 +196,7 @@ namespace ArcadiaTest.DataLayer
             taskEntity.DueDate = dto.DueDate;
         }
 
-        public static IEnumerable<TaskDTO> ToDtos(this IReadOnlyCollection<TaskEntity> taskEntities)
+        public static IEnumerable<TaskDTO> ToDtos(this IEnumerable<TaskEntity> taskEntities)
         {
             return taskEntities.Select(te => te.ToDto()).ToList();
         }
