@@ -96,7 +96,6 @@ namespace ArcadiaTest.DataLayer
         public async Task<TaskDTO> FindTaskByIdAsync(int id)
         {
             var entity =  await this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefaultAsync();
-
             return entity.ToDto();
         }
 
@@ -135,14 +134,12 @@ namespace ArcadiaTest.DataLayer
         public async Task<IEnumerable<TaskDTO>> FindTasksByUserIdAsync(int userId)
         {
             var tasks = await this._dbCtx.Tasks.Where(t => t.UserId == userId).ToListAsync();
-
             return tasks.ToDtos();
         }
 
         public async Task<IEnumerable<TaskDTO>> FindTasksByUserIdAndStatusAsync(int userId, string status)
         {
             var tasks = await this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToListAsync();
-
             return tasks.ToDtos();
         }
 
