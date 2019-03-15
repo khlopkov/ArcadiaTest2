@@ -31,17 +31,19 @@ namespace ArcadiaTest.DataLayer
 
         public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
         {
-            return this._dbCtx.TaskChanges.Select(tc => new TaskChangeDTO()
-            {
-                Id = tc.Id,
-                TaskId = tc.TaskId,
-                ChangedAt = tc.ChangedAt,
-                NewValue = tc.NewValue,
-                OldValue = tc.OldValue,
-                Operation = tc.Operation,
-                Task = this._dbCtx.Tasks.Where(t => t.Id == tc.TaskId).FirstOrDefault(),
-            })
-                .Where(tc => tc.Task.UserId == userId).ToList();
+            return this._dbCtx.TaskChanges
+                .Where(tc => tc.Task.UserId == userId).ToList()
+                .Join(
+                    this._dbCtx.Tasks,
+                    tc => tc.TaskId,
+                    t => t.Id,
+                    (tc, t) =>
+                    {
+                        var tcDto = tc.ToDto();
+                        tcDto.Task = t.ToDto();
+                        return tcDto;
+                    }
+                );
         }
 
         public async Task<IEnumerable<TaskChangeDTO>> FindChangesByUserIdAsync(int userId)
@@ -62,7 +64,7 @@ namespace ArcadiaTest.DataLayer
                     NewValue = entity.NewValue,
                     OldValue = entity.OldValue,
                     Operation = entity.Operation,
-                    Task = entity.Task,
+                    Task = entity.Task.ToDto(),
                     TaskId = entity.TaskId
                 };
         }

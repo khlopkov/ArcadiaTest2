@@ -15,6 +15,6 @@ namespace ArcadiaTest.Models.DTO
         public string OldValue { get; set; }
         public string NewValue { get; set; }
     
-        public virtual Task Task { get; set; }
+        public TaskDTO Task { get; set; }
     }
 }
