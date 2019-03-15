@@ -26,12 +26,12 @@ namespace ArcadiaTest.DataLayer
 
         public UserDTO FindByEmail(string email)
         {
-            return this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault().ToDto();
+            return this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault()?.ToDto();
         }
 
         public UserDTO FindUserByID(int id)
         {
-            return this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault().ToDto();
+            return this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault()?.ToDto();
         }
     }
     
