@@ -42,7 +42,7 @@ namespace ArcadiaTest.DataLayer
             return new UserDTO(userEntity.Id, userEntity.Name, userEntity.Email, userEntity.Hash);
         }
 
-        public static IEnumerable<UserDTO> ToDtos(this IReadOnlyCollection<User> userEntities)
+        public static IEnumerable<UserDTO> ToDtos(this IEnumerable<User> userEntities)
         {
             return userEntities.Select(ue => ue.ToDto()).ToList();
         }
