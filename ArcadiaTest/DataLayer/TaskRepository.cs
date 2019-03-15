@@ -51,7 +51,7 @@ namespace ArcadiaTest.DataLayer
         public TaskDTO Save(TaskDTO task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             var taskEntity = new TaskEntity();
             taskEntity.MergeWithDto(task);
@@ -65,7 +65,7 @@ namespace ArcadiaTest.DataLayer
         public TaskDTO Update(TaskDTO task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             if (task.Id == 0)
                 throw new IdWasNotSpecifiedException();
@@ -83,7 +83,7 @@ namespace ArcadiaTest.DataLayer
         public void Delete(TaskDTO task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             if (task.Id == 0)
                 throw new IdWasNotSpecifiedException();
@@ -104,7 +104,7 @@ namespace ArcadiaTest.DataLayer
         public async Task<TaskDTO> SaveAsync(TaskDTO task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             var taskEntity = new TaskEntity();
             taskEntity.MergeWithDto(task);
@@ -118,7 +118,7 @@ namespace ArcadiaTest.DataLayer
         public async Task<TaskDTO> UpdateAsync(TaskDTO task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             if (task.Id == 0)
                 throw new IdWasNotSpecifiedException();
@@ -157,7 +157,7 @@ namespace ArcadiaTest.DataLayer
         public async Task DeleteAsync(TaskDTO task)
         {
             if (task == null)
-                throw new ArgumentNullException("task");
+                throw new ArgumentNullException(nameof(task));
 
             if (task.Id == 0)
                 throw new IdWasNotSpecifiedException();
