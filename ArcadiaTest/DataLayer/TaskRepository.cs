@@ -120,9 +120,7 @@ namespace ArcadiaTest.DataLayer
 
         public async Task<IEnumerable<TaskDTO>> FindTasksByUserIdAsync(int userId)
         {
-            Console.WriteLine("jkfdsl");
             var tasks = await this._dbCtx.Tasks.Where(t => t.UserId == userId).ToListAsync();
-            Console.WriteLine("jkfdsl");
             return tasks.ToDtos();
         }
 
