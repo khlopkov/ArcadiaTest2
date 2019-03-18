@@ -35,6 +35,9 @@ namespace ArcadiaTest.BusinessLayer
 
         public void CreateTask(int userId, CreateTaskRequest payload)
         {
+            if (payload == null)
+                throw new ArgumentNullException(nameof(payload));
+
             if (this._userRepository.FindUserByID(userId) == null)
                 throw new UserNotFoundException(userId);
 
@@ -145,28 +148,28 @@ namespace ArcadiaTest.BusinessLayer
             if (updateModel == null)
                 throw new ArgumentNullException(nameof(updateModel));
 
-            var taskEntity = this._taskRepository.FindTaskById(id);
-            if (taskEntity == null)
+            var taskDto = this._taskRepository.FindTaskById(id);
+            if (taskDto == null)
                 throw new TaskNotFoundException(id);
 
-            if (taskEntity.Status != ACTIVE)
+            if (taskDto.Status != ACTIVE)
                 throw new TaskNotActiveException();
 
-            taskEntity.Title = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskEntity.Title;
+            taskDto.Title = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskDto.Title;
 
-            taskEntity.Description = updateModel.Description == "" ? 
+            taskDto.Description = updateModel.Description == "" ? 
                  null : updateModel.Description;
 
-            taskEntity.DueDate = updateModel.DueDate == null ?
+            taskDto.DueDate = updateModel.DueDate == null ?
                 null : updateModel.DueDate;
 
-            taskEntity.Status = updateModel.Status == "" ?
-                taskEntity.Status = null : updateModel.Status;
+            taskDto.Status = updateModel.Status == "" ?
+                taskDto.Status = null : updateModel.Status;
 
-            taskEntity.Type = updateModel.Type == "" ?
+            taskDto.Type = updateModel.Type == "" ?
                 null : updateModel.Type;
 
-            this._taskRepository.Update(taskEntity);
+            this._taskRepository.Update(taskDto);
         }
     }
 }
