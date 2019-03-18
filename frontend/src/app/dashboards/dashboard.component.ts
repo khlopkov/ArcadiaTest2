@@ -16,7 +16,7 @@ export class DashboardComponent implements OnInit {
     this.fetchDashboard();
   }
 
-  dashboardToBarData(dashboard: any): BarDataModel[] {
+  dashboardToBarData(dashboard: { [ key: string ]: number }): BarDataModel[] {
     return Object.keys(dashboard).map(key => new BarDataModel(key, dashboard[key]));
   }
 
