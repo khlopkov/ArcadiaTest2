@@ -151,35 +151,21 @@ namespace ArcadiaTest.BusinessLayer
 
             if (taskEntity.Status != ACTIVE)
                 throw new TaskNotActiveException();
+
             taskEntity.Title = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskEntity.Title;
-            if (updateModel.Description != null)
-            {
-                if (updateModel.Description == "")
-                    taskEntity.Description = null;
-                else
-                    taskEntity.Description = updateModel.Description;
-            }
-            if (updateModel.DueDate != null)
-            {
-                if (updateModel.DueDate == default(DateTime))
-                    taskEntity.DueDate = null;
-                else
-                    taskEntity.DueDate = updateModel.DueDate;
-            }
-            if (updateModel.Status != null)
-            {
-                if (updateModel.Status == "")
-                    taskEntity.Status = null;
-                else
-                    taskEntity.Status = updateModel.Status;
-            }
-            if (updateModel.Type != null)
-            {
-                if (updateModel.Type == "")
-                    taskEntity.Type = null;
-                else
-                    taskEntity.Type = updateModel.Type;
-            }
+
+            taskEntity.Description = updateModel.Description == "" ? 
+                 null : updateModel.Description;
+
+            taskEntity.DueDate = updateModel.DueDate == null ?
+                null : updateModel.DueDate;
+
+            taskEntity.Status = updateModel.Status == "" ?
+                taskEntity.Status = null : updateModel.Status;
+
+            taskEntity.Type = updateModel.Type == "" ?
+                null : updateModel.Type;
+
             this._taskRepository.Update(taskEntity);
         }
     }
