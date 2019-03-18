@@ -92,30 +92,6 @@ namespace ArcadiaTest.BusinessLayer
             };
         }
 
-        public DashboardResponse GetTasksDashboard(int userId)
-        {
-            DashboardResponse response = new DashboardResponse();
-            var groupedCounts = this._taskRepository.CountTasksGroupedByStatus(userId);
-            foreach (var taskCount in groupedCounts)
-            {
-                switch (taskCount.Status)
-                {
-                    case ACTIVE:
-                        response.Active = taskCount.Count;
-                        break;
-                    case RESOLVED:
-                        response.Resolved = taskCount.Count;
-                        break;
-                    case CANCELLED:
-                        response.Cancelled = taskCount.Count;
-                        break;
-                    default:
-                        continue;
-                }
-            }
-            return response;
-        }
-
         public IEnumerable<TaskResponse> GetTasksOfUser(int userId)
         {
             var taskEntities = this._taskRepository.FindTasksByUserId(userId);
