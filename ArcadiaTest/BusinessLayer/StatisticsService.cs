@@ -1,4 +1,5 @@
-﻿using ArcadiaTest.DataLayer;
+﻿using System.Linq;
+using ArcadiaTest.DataLayer;
 using System.Collections.Generic;
 using System.Threading.Tasks;
 
@@ -9,7 +10,7 @@ namespace ArcadiaTest.BusinessLayer
         private ITasksRepository _taskRepository;
         private ITaskStatusRepository _taskStatusRepository;
 
-        public StatisticsService (
+        public StatisticsService(
             ITasksRepository taskRepository,
             ITaskStatusRepository taskStatusRepository
         )
@@ -20,23 +21,13 @@ namespace ArcadiaTest.BusinessLayer
 
         public async Task<IDictionary<string, int>> GetStatisticsOfTaskCountGroupedByStatus(int userId)
         {
-            var result = new Dictionary<string, int>();
-
             var statuses = await this._taskStatusRepository.GetAllTaskStatusesAsync();
             var groupedCounts = await this._taskRepository.CountTasksGroupedByStatusAsync(userId);
 
-            foreach (var taskCount in groupedCounts)
-            {
-                result.Add(taskCount.Status, taskCount.Count);
-            }
-
-            foreach (var status in statuses)
-            {
-                if (!result.ContainsKey(status))
-                    result.Add(status, 0);
-            }
-
-            return result;
+            return statuses.ToDictionary(
+                s => s,
+                s => groupedCounts.Where(gc => gc.Status == s).FirstOrDefault()?.Count ?? 0
+            );
         }
     }
 }
