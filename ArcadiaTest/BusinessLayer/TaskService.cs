@@ -58,37 +58,44 @@ namespace ArcadiaTest.BusinessLayer
             this._taskRepository.Delete(task);
         }
 
+        private TaskDTO FindTaskDtoById(int id)
+        {
+            var taskDto = this._taskRepository.FindTaskById(id);
+            if (taskDto == null)
+                throw new TaskNotFoundException(id);
+
+            return taskDto;
+        }
+
         public TaskResponse GetTask(int id)
         {
-            var taskEntity = this._taskRepository.FindTaskById(id);
-            if (taskEntity == null)
-                throw new TaskNotFoundException(id);
+            var taskDto = this.FindTaskDtoById(id);
+
             return new TaskResponse
             {
-                Id = taskEntity.Id,
-                Title = taskEntity.Title,
-                Description = taskEntity.Description,
-                Status = taskEntity.Status,
-                DueDate = taskEntity.DueDate,
-                Type = taskEntity.Type,
+                Id = taskDto.Id,
+                Title = taskDto.Title,
+                Description = taskDto.Description,
+                Status = taskDto.Status,
+                DueDate = taskDto.DueDate,
+                Type = taskDto.Type,
             };
         }
 
         public TaskResponse GetTaskOfUser(int userId, int taskId)
         {
-            var taskEntity = this._taskRepository.FindTaskById(taskId);
-            if (taskEntity == null || taskEntity.UserId != userId)
-            {
+            var taskDto = this.FindTaskDtoById(taskId);
+            if (taskDto == null || taskDto.UserId != userId)
                 throw new TaskNotFoundException();
-            }
+
             return new TaskResponse()
             {
-                Id = taskEntity.Id,
-                Title = taskEntity.Title,
-                Description = taskEntity.Description,
-                Status = taskEntity.Status,
-                DueDate = taskEntity.DueDate,
-                Type = taskEntity.Type,
+                Id = taskDto.Id,
+                Title = taskDto.Title,
+                Description = taskDto.Description,
+                Status = taskDto.Status,
+                DueDate = taskDto.DueDate,
+                Type = taskDto.Type,
             };
         }
 
