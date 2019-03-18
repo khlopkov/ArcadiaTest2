@@ -74,24 +74,6 @@ namespace ArcadiaTest.BusinessLayer
             };
         }
 
-        public IEnumerable<TaskChangeResponse> GetTasksHistory(int userId)
-        {
-            var changes = this._taskChangesRepository.FindChangesByUserId(userId);
-            var response = new List<TaskChangeResponse>(changes.Count());
-            foreach(var change in changes)
-            {
-                var message = change.Operation;
-                message += change.OldValue == null ? "" : " from: " + change.OldValue;
-                message += change.NewValue == null ? "" : " to: " + change.NewValue;
-                response.Add(new TaskChangeResponse()
-                {
-                    Message = message,
-                    When = change.ChangedAt,
-                });
-            }
-            return response;
-        }
-
         public TaskResponse GetTaskOfUser(int userId, int taskId)
         {
             var taskEntity = this._taskRepository.FindTaskById(taskId);
@@ -108,30 +90,6 @@ namespace ArcadiaTest.BusinessLayer
                 DueDate = taskEntity.DueDate,
                 Type = taskEntity.Type,
             };
-        }
-
-        public DashboardResponse GetTasksDashboard(int userId)
-        {
-            DashboardResponse response = new DashboardResponse();
-            var groupedCounts = this._taskRepository.CountTasksGroupedByStatus(userId);
-            foreach (var taskCount in groupedCounts)
-            {
-                switch (taskCount.Status)
-                {
-                    case ACTIVE:
-                        response.Active = taskCount.Count;
-                        break;
-                    case RESOLVED:
-                        response.Resolved = taskCount.Count;
-                        break;
-                    case CANCELLED:
-                        response.Cancelled = taskCount.Count;
-                        break;
-                    default:
-                        continue;
-                }
-            }
-            return response;
         }
 
         public IEnumerable<TaskResponse> GetTasksOfUser(int userId)

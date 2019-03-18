@@ -11,33 +11,32 @@ const PREFIX = 'api/user/tasks';
 
 @Injectable()
 export class TasksService {
-
     constructor(
         private httpConfig: HttpConfig,
         private http: HttpClient
     ) { }
 
-    private get baseUrl(): string {
-        return this.httpConfig.restUrl;
+    private get baseUrlWithPrefix(): string {
+        return this.httpConfig.restUrl + PREFIX;
     }
 
     get(): Observable<Task[]> {
-        return this.http.get<Task[]>(this.baseUrl + PREFIX, { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.get<Task[]>(this.baseUrlWithPrefix, { headers: new HttpHeaders(JSON_MIME) });
     }
 
     post(task: Task) {
-        return this.http.post(this.baseUrl + PREFIX, task, { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.post(this.baseUrlWithPrefix, task, { headers: new HttpHeaders(JSON_MIME) });
     }
 
     patch(task: Task) {
-        return this.http.patch(this.baseUrl + PREFIX + `/${task.id}`, task, { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.patch(this.baseUrlWithPrefix + `/${task.id}`, task, { headers: new HttpHeaders(JSON_MIME) });
     }
 
     delete(task: Task) {
-        return this.http.delete(this.baseUrl + PREFIX + `/${task.id}`);
+        return this.http.delete(this.baseUrlWithPrefix + `/${task.id}`);
     }
 
     history(): Observable<TaskChange[]> {
-        return this.http.get<TaskChange[]>(this.baseUrl + PREFIX + '/history', { headers: new HttpHeaders(JSON_MIME)});
+        return this.http.get<TaskChange[]>(this.baseUrlWithPrefix + '/history', { headers: new HttpHeaders(JSON_MIME)});
     }
 }

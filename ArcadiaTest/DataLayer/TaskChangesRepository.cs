@@ -16,9 +16,9 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbCtx;
         }
 
-        public IEnumerable<TaskChange> FindChangesByTaskID(int taskId)
+        public IEnumerable<TaskChangeDTO> FindChangesByTaskID(int taskId)
         {
-            return this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToList();
+            return this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToList().ToDtos();
         }
 
         public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
@@ -31,9 +31,32 @@ namespace ArcadiaTest.DataLayer
                 NewValue = tc.NewValue,
                 OldValue = tc.OldValue,
                 Operation = tc.Operation,
-                Task = this._dbCtx.Tasks.Where(t => t.Id == tc.TaskId).FirstOrDefault(),
+                Task = this._dbCtx.Tasks.Where(t => t.Id == tc.TaskId).FirstOrDefault().ToDto(),
             })
                 .Where(tc => tc.Task.UserId == userId).ToList();
+        }
+    }
+
+    public static class TaskChangeExtension
+    {
+        public static TaskChangeDTO ToDto(this TaskChange entity)
+        {
+            return entity == null ? null :
+                new TaskChangeDTO()
+                {
+                    Id = entity.Id,
+                    ChangedAt = entity.ChangedAt,
+                    NewValue = entity.NewValue,
+                    OldValue = entity.OldValue,
+                    Operation = entity.Operation,
+                    Task = entity.Task.ToDto(),
+                    TaskId = entity.TaskId
+                };
+        }
+
+        public static IEnumerable<TaskChangeDTO> ToDtos(this IReadOnlyCollection<TaskChange> taskChangeEntities)
+        {
+            return taskChangeEntities.Select(tce => tce.ToDto()).ToList();
         }
     }
 }
