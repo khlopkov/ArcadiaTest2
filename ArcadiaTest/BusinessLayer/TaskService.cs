@@ -99,7 +99,7 @@ namespace ArcadiaTest.BusinessLayer
             };
         }
 
-        public IEnumerable<TaskResponse> GetTasksOfUser(int userId)
+        private IEnumerable<TaskResponse> GetTasksOfUser(int userId)
         {
             var taskEntities = this._taskRepository.FindTasksByUserId(userId);
             var response = new List<TaskResponse>();
@@ -118,8 +118,11 @@ namespace ArcadiaTest.BusinessLayer
             return response;
         }
 
-        public IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status)
+        public IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status = null)
         {
+            if (status == null)
+                return this.GetTasksOfUser(userId);
+
             var taskEntities = this._taskRepository.FindTasksByUserIdAndStatus(userId, status);
             var response = new List<TaskResponse>();
             foreach (var taskEntity in taskEntities)

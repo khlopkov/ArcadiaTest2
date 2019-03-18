@@ -11,19 +11,12 @@ namespace ArcadiaTest.BusinessLayer
     public interface ITaskService
     {
         /// <summary>
-        ///     Finds tasks of user with specified id
-        /// </summary>
-        /// <param name="userId">ID of user, whose tasks should be found</param>
-        /// <returns></returns>
-        IEnumerable<TaskResponse> GetTasksOfUser(int userId);
-
-        /// <summary>
         ///     Get tasks with specified status of user with specified id
         /// </summary>
         /// <param name="userId">ID of user, whose tasks should be found</param>
         /// <param name="status">Status with which tasks should be found</param>
         /// <returns></returns>
-        IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status);
+        IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status = null);
         /// <summary>
         ///     Finds task which belongs to user
         /// </summary>
