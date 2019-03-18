@@ -142,9 +142,13 @@ namespace ArcadiaTest.BusinessLayer
 
         public void UpdateTask(int id, MergeTaskRequest updateModel)
         {
+            if (updateModel == null)
+                throw new ArgumentNullException(nameof(updateModel));
+
             var taskEntity = this._taskRepository.FindTaskById(id);
             if (taskEntity == null)
                 throw new TaskNotFoundException(id);
+
             if (taskEntity.Status != ACTIVE)
                 throw new TaskNotActiveException();
             taskEntity.Title = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskEntity.Title;
