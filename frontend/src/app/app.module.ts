@@ -9,6 +9,7 @@ import { BasicAuthInterceptor } from 'src/services/http/basic-auth.interceptor';
 import { ErrorInterceptor } from 'src/services/http/error.interceptor';
 import { AuthService } from 'src/services/http/auth.service';
 import { UserService } from 'src/services/http/user.service';
+import { HttpConfig } from 'src/config';
 
 @NgModule({
   declarations: [
@@ -22,6 +23,7 @@ import { UserService } from 'src/services/http/user.service';
   ],
   providers: [
     HttpClient,
+    HttpConfig,
     UserService,
     AuthService,
     { provide: HTTP_INTERCEPTORS, useClass: BasicAuthInterceptor, multi: true },

@@ -118,7 +118,7 @@ paths:
       responses:
         200: { $ref: "#/components/responses/UserResponse" }
   
-  /tasks:
+  /user/tasks:
     get:
       tags:
         - Task
@@ -144,7 +144,7 @@ paths:
         201: { description: successfully created }
         400: { description: bad request }
   
-  /tasks/{id}:
+  /user/tasks/{id}:
     delete:
       tags:
         - Task
@@ -178,7 +178,7 @@ paths:
         403: { description: task not active }
         404: { description: task with specified id was not found }
       
-  /tasks/dashboard:
+  /user/tasks/dashboard/byStatus:
     get:
       tags:
         - Task
@@ -187,7 +187,7 @@ paths:
       responses:
         200: { $ref: "#/components/responses/DashboardResponse" }
   
-  /tasks/history:
+  /users/tasks/history:
     get:
       tags:
         - Task
