@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { HttpClient, HttpHeaders } from '@angular/common/http';
-import { REST_URL } from '../../config';
+import { HttpConfig } from '../../config';
 import { Task } from 'src/models/task.model';
 import { Observable } from 'rxjs';
 import { TaskChange } from 'src/models/task-change.model';
@@ -11,12 +11,14 @@ const PREFIX = 'api/user/tasks';
 
 @Injectable()
 export class TasksService {
-
-    private baseUrlWithPrefix: string = REST_URL + PREFIX;
-
     constructor(
+        private httpConfig: HttpConfig,
         private http: HttpClient
     ) { }
+
+    private get baseUrlWithPrefix(): string {
+        return this.httpConfig.restUrl + PREFIX;
+    }
 
     get(): Observable<Task[]> {
         return this.http.get<Task[]>(this.baseUrlWithPrefix, { headers: new HttpHeaders(JSON_MIME) });
