@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpConfig } from '../../config';
 import { Task } from 'src/models/task.model';
 import { Observable } from 'rxjs';
-import { TaskChange } from 'src/models/task-change.model';
 
 const JSON_MIME = {'Content-type': 'application/json; charset=utf-8'};
 
