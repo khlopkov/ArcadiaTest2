@@ -27,7 +27,7 @@ namespace ArcadiaTest.DataLayer
                 .Where(tc => tc.Task.UserId == userId)
                 .ToList()
                 .Join(
-                    this._dbCtx.Tasks,
+                    this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList(),
                     tc => tc.TaskId,
                     t => t.Id,
                     (tc, t) =>
