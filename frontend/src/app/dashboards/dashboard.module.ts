@@ -3,7 +3,7 @@ import { NgModule } from '@angular/core';
 
 import { DashboardComponent } from './dashboard.component';
 import { BarChartModule } from './charts/barChart/barChart.module';
-import { TasksService } from 'src/services/http/tasks.service';
+import { StatisticsService } from 'src/services/http/statistics.service';
 
 @NgModule({
   declarations: [
@@ -13,7 +13,7 @@ import { TasksService } from 'src/services/http/tasks.service';
     BrowserModule,
     BarChartModule,
   ],
-  providers: [TasksService],
+  providers: [StatisticsService],
   bootstrap: [DashboardComponent],
   exports: [DashboardComponent],
 })

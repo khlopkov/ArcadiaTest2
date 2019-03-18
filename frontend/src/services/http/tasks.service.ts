@@ -37,12 +37,6 @@ export class TasksService {
         return this.http.delete(this.baseUrl + PREFIX + `/${task.id}`);
     }
 
-    dashboard(): Observable<{ [ key: string ]: number }> {
-        return this.http.get<{ [ key: string ]: number }>(
-            this.baseUrl + PREFIX + `/dashboard/byStatus`, { headers: new HttpHeaders(JSON_MIME)}
-        );
-    }
-
     history(): Observable<TaskChange[]> {
         return this.http.get<TaskChange[]>(this.baseUrl + PREFIX + '/history', { headers: new HttpHeaders(JSON_MIME)});
     }
