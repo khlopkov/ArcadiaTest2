@@ -150,10 +150,9 @@ namespace ArcadiaTest.Controllers
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-            UserResponse currentUser;
             try
             {
-                currentUser = this._userService.GetUserWithEmail(email);
+                var currentUser = this._userService.GetUserWithEmail(email);
                 var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatus(currentUser.Id);
                 return Content(HttpStatusCode.OK, response);
             }
