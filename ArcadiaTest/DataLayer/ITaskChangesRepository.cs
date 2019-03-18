@@ -1,5 +1,4 @@
 ﻿using ArcadiaTest.Models.DTO;
-using ArcadiaTest.Models.Entities;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -15,7 +14,7 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <param name="taskId"> id of task which changes should be queried </param>
         /// <returns> Enumerable of found task changes </returns>
-        IEnumerable<TaskChange> FindChangesByTaskID(int taskId);
+        IEnumerable<TaskChangeDTO> FindChangesByTaskID(int taskId);
 
         /// <summary>
         ///     Finds tasks changes for task which belongs to user

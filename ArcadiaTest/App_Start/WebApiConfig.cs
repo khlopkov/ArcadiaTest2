@@ -32,10 +32,12 @@ namespace ArcadiaTest
             container.RegisterType<IUserRepository, UserRepository>();
             container.RegisterType<ITasksRepository, TaskRepository>();
             container.RegisterType<ITaskChangesRepository, TaskChangesRepository>();
+            container.RegisterType<ITaskStatusRepository, TaskStatusRepository>();
 
             container.RegisterType<IUserService, UserService>();
             container.RegisterType<ITaskService, TaskService>();
             container.RegisterType<IAuthService, AuthService>();
+            container.RegisterType<IStatisticsService, StatisticsService>();
 
             return container;
         }
