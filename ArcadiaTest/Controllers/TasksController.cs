@@ -14,7 +14,7 @@ using System.Web.Http;
 namespace ArcadiaTest.Controllers
 {
 
-    [RoutePrefix("api/tasks")]
+    [RoutePrefix("api/user/tasks")]
     [Authorize]
     public class TasksController : ApiController
     {
@@ -40,6 +40,7 @@ namespace ArcadiaTest.Controllers
         }
 
         [HttpGet]
+        [Route("")]
         public IHttpActionResult Get()
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
@@ -57,6 +58,7 @@ namespace ArcadiaTest.Controllers
         }
 
         [HttpPost]
+        [Route("")]
         public IHttpActionResult Post(CreateTaskRequest requestModel)
         {
             if (!ModelState.IsValid)
@@ -148,7 +150,7 @@ namespace ArcadiaTest.Controllers
         }
 
         [HttpGet]
-        [Route("dashboard")]
+        [Route("dashboard/byStatus")]
         public async Task<IHttpActionResult> GetTaskDashboard()
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;

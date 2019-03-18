@@ -7,45 +7,40 @@ import { TaskChange } from 'src/models/task-change.model';
 
 const JSON_MIME = {'Content-type': 'application/json; charset=utf-8'};
 
+const PREFIX = 'api/user/tasks';
+
 @Injectable()
 export class TasksService {
-
     constructor(
         private httpConfig: HttpConfig,
         private http: HttpClient
     ) { }
 
-    private get baseUrl(): string {
-        return this.httpConfig.restUrl;
+    private get baseUrlWithPrefix(): string {
+        return this.httpConfig.restUrl + PREFIX;
     }
 
     get(): Observable<Task[]> {
-        return this.http.get<Task[]>(this.baseUrl + 'api/tasks', { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.get<Task[]>(this.baseUrlWithPrefix, { headers: new HttpHeaders(JSON_MIME) });
     }
 
     post(task: Task) {
-        return this.http.post(this.baseUrl + 'api/tasks', task, { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.post(this.baseUrlWithPrefix, task, { headers: new HttpHeaders(JSON_MIME) });
     }
 
     patch(task: Task) {
-        return this.http.patch(this.baseUrl + `api/tasks/${task.id}`, task, { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.patch(this.baseUrlWithPrefix + `/${task.id}`, task, { headers: new HttpHeaders(JSON_MIME) });
     }
 
     delete(task: Task) {
-        return this.http.delete(this.baseUrl + `api/tasks/${task.id}`);
+        return this.http.delete(this.baseUrlWithPrefix + `/${task.id}`);
     }
 
     dashboard(): Observable<{ [ key: string ]: number }> {
-        return this.http.get<{ [ key: string ]: number }>(this.baseUrl + `api/tasks/dashboard`, { headers: new HttpHeaders(JSON_MIME)});
+        return this.http.get<{ [ key: string ]: number }>(this.baseUrlWithPrefix + `/dashboard/byStatus`);
     }
 
     history(): Observable<TaskChange[]> {
-        return this.http.get<TaskChange[]>(this.baseUrl + 'api/tasks/history', { headers: new HttpHeaders(JSON_MIME)});
-    }
-
-    private jsonMimeHeaders() {
-        const headers = new HttpHeaders();
-        headers.set('Content-Type', 'application/json; charset=utf-8');
-        return headers;
+        return this.http.get<TaskChange[]>(this.baseUrlWithPrefix + '/history', { headers: new HttpHeaders(JSON_MIME)});
     }
 }
