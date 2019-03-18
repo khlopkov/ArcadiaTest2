@@ -22,7 +22,7 @@ namespace ArcadiaTest.BusinessLayer
         {
             var result = new Dictionary<string, int>();
 
-            var statuses = await this._taskStatusRepository.FindAllTaskStatusesAsync();
+            var statuses = await this._taskStatusRepository.GetAllTaskStatusesAsync();
             var groupedCounts = await this._taskRepository.CountTasksGroupedByStatusAsync(userId);
 
             foreach (var taskCount in groupedCounts)

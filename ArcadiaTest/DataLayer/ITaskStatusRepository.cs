@@ -8,6 +8,6 @@ namespace ArcadiaTest.DataLayer
 {
     public interface ITaskStatusRepository
     {
-        Task<IEnumerable<string>> FindAllTaskStatusesAsync();
+        Task<IEnumerable<string>> GetAllTaskStatusesAsync();
     }
 }

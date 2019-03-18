@@ -17,7 +17,7 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbContext;
         }
 
-        public async Task<IEnumerable<string>> FindAllTaskStatusesAsync()
+        public async Task<IEnumerable<string>> GetAllTaskStatusesAsync()
         {
             var taskStatuses = await this._dbCtx.TaskStatus.ToListAsync();
             return taskStatuses.Select(ts => ts.Name);
