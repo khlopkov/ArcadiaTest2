@@ -1,6 +1,5 @@
 import {Component, OnInit} from '@angular/core';
 
-import { Dashboard } from 'src/models/dashboard.model';
 import { BarDataModel } from './charts/models/bar.model';
 import { TasksService } from 'src/services/http/tasks.service';
 
@@ -17,9 +16,8 @@ export class DashboardComponent implements OnInit {
     this.fetchDashboard();
   }
 
-  dashboardToBarData(dashboard: Dashboard): BarDataModel[] {
-    const data = Object.keys(dashboard).map(key => new BarDataModel(key, dashboard[key]));
-    return data;
+  dashboardToBarData(dashboard: any): BarDataModel[] {
+    return Object.keys(dashboard).map(key => new BarDataModel(key, dashboard[key]));
   }
 
   fetchDashboard() {
