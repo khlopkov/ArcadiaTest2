@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TasksService } from 'src/services/http/tasks.service';
+import { HistoryService } from 'src/services/http/history.service';
 import { TaskChange } from 'src/models/task-change.model';
 
 @Component({
@@ -8,11 +8,11 @@ import { TaskChange } from 'src/models/task-change.model';
 })
 
 export class HistoryComponent implements OnInit {
-  constructor(private taskService: TasksService) {}
+  constructor(private historyService: HistoryService) {}
 
   history: TaskChange[];
 
   ngOnInit(): void {
-    this.taskService.history().subscribe((data) => this.history = data);
+    this.historyService.tasksHistoryOfCurrentUser().subscribe((data) => this.history = data);
   }
 }
