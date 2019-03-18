@@ -35,7 +35,7 @@ namespace ArcadiaTest.DataLayer
                         tcDto.Task = t.ToDto();
                         return tcDto;
                     }
-                );
+                ).ToList();
         }
     }
 
