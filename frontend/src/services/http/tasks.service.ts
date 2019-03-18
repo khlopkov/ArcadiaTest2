@@ -18,7 +18,7 @@ export class TasksService {
     private readonly baseUrlWithPrefix = this.httpConfig.restUrl + PREFIX;
 
     get(): Observable<Task[]> {
-        return this.http.get<Task[]>(this.baseUrlWithPrefix, { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.get<Task[]>(this.baseUrlWithPrefix);
     }
 
     post(task: Task) {
