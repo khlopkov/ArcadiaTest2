@@ -24,7 +24,8 @@ namespace ArcadiaTest.DataLayer
         public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
         {
             return this._dbCtx.TaskChanges
-                .Where(tc => tc.Task.UserId == userId).ToList()
+                .Where(tc => tc.Task.UserId == userId)
+                .ToList()
                 .Join(
                     this._dbCtx.Tasks,
                     tc => tc.TaskId,
