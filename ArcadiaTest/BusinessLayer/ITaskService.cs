@@ -83,12 +83,5 @@ namespace ArcadiaTest.BusinessLayer
         ///     if task with specified id was not found
         /// </exception>
         void DeleteTask(int taskId);
-
-        /// <summary>
-        ///     Returns task history of user with specified ID
-        /// </summary>
-        /// <param name="userId">Id of user, whose task should be found</param>
-        /// <returns></returns>
-        IEnumerable<TaskChangeResponse> GetTasksHistory(int userId);
     }
 }

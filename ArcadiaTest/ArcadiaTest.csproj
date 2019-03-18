@@ -170,8 +170,10 @@
     <Compile Include="BusinessLayer\Exceptions\TaskNotFoundException.cs" />
     <Compile Include="BusinessLayer\Exceptions\UserNotFoundException.cs" />
     <Compile Include="BusinessLayer\IAuthService.cs" />
+    <Compile Include="BusinessLayer\ITaskHistoryService.cs" />
     <Compile Include="BusinessLayer\ITaskService.cs" />
     <Compile Include="BusinessLayer\IUserService.cs" />
+    <Compile Include="BusinessLayer\TaskHistoryService.cs" />
     <Compile Include="BusinessLayer\TaskService.cs" />
     <Compile Include="BusinessLayer\UserService.cs" />
     <Compile Include="Controllers\TasksController.cs" />

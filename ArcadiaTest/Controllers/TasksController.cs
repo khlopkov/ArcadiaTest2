@@ -21,15 +21,18 @@ namespace ArcadiaTest.Controllers
 
         private ITaskService _taskService;
         private IUserService _userService;
+        private ITaskHistoryService _taskHistoryService;
 
         public TasksController
         (
             ITaskService taskSerivce,
-            IUserService userSerivce
+            IUserService userSerivce,
+            ITaskHistoryService taskHistoryService
         )
         {
             this._taskService = taskSerivce;
             this._userService = userSerivce;
+            this._taskHistoryService = taskHistoryService;
         }
 
         [HttpGet]
@@ -182,7 +185,7 @@ namespace ArcadiaTest.Controllers
             {
                 return Unauthorized();
             }
-            return Content(HttpStatusCode.OK, this._taskService.GetTasksHistory(currentUser.Id));
+            return Content(HttpStatusCode.OK, this._taskHistoryService.GetTasksHistoryOfUser(currentUser.Id));
         }
     }
 }
