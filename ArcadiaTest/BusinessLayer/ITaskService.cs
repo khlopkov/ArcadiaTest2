@@ -69,13 +69,6 @@ namespace ArcadiaTest.BusinessLayer
         void CreateTask(int userId, CreateTaskRequest payload);
 
         /// <summary>
-        ///     Get dashboard with count of tasks with each status
-        /// </summary>
-        /// <param name="userId">ID of user, whose dashboard is requested</param>
-        /// <returns> Response containing count of tasks with each status </returns>
-        DashboardResponse GetTasksDashboard(int userId);
-
-        /// <summary>
         ///     Deletes taks with specified id
         /// </summary>
         /// <param name="taskId">id of task that wanted to be deleted</param>

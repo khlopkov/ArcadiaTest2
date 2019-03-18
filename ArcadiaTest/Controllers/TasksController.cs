@@ -8,6 +8,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace ArcadiaTest.Controllers
@@ -21,15 +22,18 @@ namespace ArcadiaTest.Controllers
 
         private ITaskService _taskService;
         private IUserService _userService;
+        private IStatisticsService _statisticsService;
 
         public TasksController
         (
             ITaskService taskSerivce,
-            IUserService userSerivce
+            IUserService userSerivce,
+            IStatisticsService statisticsService
         )
         {
             this._taskService = taskSerivce;
             this._userService = userSerivce;
+            this._statisticsService = statisticsService;
         }
 
         [HttpGet]
@@ -142,7 +146,7 @@ namespace ArcadiaTest.Controllers
 
         [HttpGet]
         [Route("dashboard")]
-        public IHttpActionResult GetTaskDashboard()
+        public async Task<IHttpActionResult> GetTaskDashboard()
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
@@ -150,21 +154,13 @@ namespace ArcadiaTest.Controllers
             try
             {
                 currentUser = this._userService.GetUserWithEmail(email);
+                var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatus(currentUser.Id);
+                return Content(HttpStatusCode.OK, response);
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
             }
-            DashboardResponse response;
-            try
-            {
-                response = this._taskService.GetTasksDashboard(currentUser.Id);
-            }
-            catch(UserNotFoundException)
-            {
-                return Unauthorized();
-            }
-            return Content(HttpStatusCode.OK, response);
         }
 
         [HttpGet]
