@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { REST_URL } from '../../config';
 import { Task } from 'src/models/task.model';
 import { Observable } from 'rxjs';
-import { Dashboard } from 'src/models/dashboard.model';
 import { TaskChange } from 'src/models/task-change.model';
 
 const JSON_MIME = {'Content-type': 'application/json; charset=utf-8'};
@@ -35,8 +34,8 @@ export class TasksService {
         return this.http.delete(this.baseUrlWithPrefix + `/${task.id}`);
     }
 
-    dashboard(): Observable<Dashboard> {
-        return this.http.get<Dashboard>(this.baseUrlWithPrefix + `/dashboard/byStatus`, { headers: new HttpHeaders(JSON_MIME)});
+    dashboard(): Observable<{ [ key: string ]: number }> {
+        return this.http.get<{ [ key: string ]: number }>(this.baseUrlWithPrefix + `/dashboard/byStatus`);
     }
 
     history(): Observable<TaskChange[]> {
