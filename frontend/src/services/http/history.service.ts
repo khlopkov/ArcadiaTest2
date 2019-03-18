@@ -11,7 +11,7 @@ export class HistoryService {
         private http: HttpClient
     ) { }
 
-    tasksHistoryOfCurrentUserUrl: string = this.httpConfig.restUrl + 'api/user/tasks/history';
+    private readonly tasksHistoryOfCurrentUserUrl: string = this.httpConfig.restUrl + 'api/user/tasks/history';
 
     tasksHistoryOfCurrentUser(): Observable<TaskChange[]> {
         return this.http.get<TaskChange[]>(

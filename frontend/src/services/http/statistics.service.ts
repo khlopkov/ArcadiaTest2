@@ -12,9 +12,7 @@ export class StatisticsService {
         private http: HttpClient
     ) { }
 
-    private get baseUrl(): string {
-        return this.httpConfig.restUrl;
-    }
+    private readonly baseUrl: string = this.httpConfig.restUrl;
 
     statisticsTasksCountByStatus(): Observable<{ [ key: string ]: number }> {
         return this.http.get<{ [ key: string ]: number }>(

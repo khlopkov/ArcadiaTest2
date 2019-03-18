@@ -16,9 +16,7 @@ export class TasksService {
         private http: HttpClient
     ) { }
 
-    private get baseUrlWithPrefix(): string {
-        return this.httpConfig.restUrl + PREFIX;
-    }
+    private readonly baseUrlWithPrefix = this.httpConfig.restUrl + PREFIX;
 
     get(): Observable<Task[]> {
         return this.http.get<Task[]>(this.baseUrlWithPrefix, { headers: new HttpHeaders(JSON_MIME) });
@@ -34,9 +32,5 @@ export class TasksService {
 
     delete(task: Task) {
         return this.http.delete(this.baseUrlWithPrefix + `/${task.id}`);
-    }
-
-    history(): Observable<TaskChange[]> {
-        return this.http.get<TaskChange[]>(this.baseUrlWithPrefix + '/history', { headers: new HttpHeaders(JSON_MIME)});
     }
 }
