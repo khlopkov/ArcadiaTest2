@@ -11,19 +11,12 @@ namespace ArcadiaTest.BusinessLayer
     public interface ITaskService
     {
         /// <summary>
-        ///     Finds tasks of user with specified id
-        /// </summary>
-        /// <param name="userId">ID of user, whose tasks should be found</param>
-        /// <returns></returns>
-        IEnumerable<TaskResponse> GetTasksOfUser(int userId);
-
-        /// <summary>
         ///     Get tasks with specified status of user with specified id
         /// </summary>
         /// <param name="userId">ID of user, whose tasks should be found</param>
         /// <param name="status">Status with which tasks should be found</param>
         /// <returns></returns>
-        IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status);
+        IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status = null);
         /// <summary>
         ///     Finds task which belongs to user
         /// </summary>
@@ -69,13 +62,6 @@ namespace ArcadiaTest.BusinessLayer
         void CreateTask(int userId, CreateTaskRequest payload);
 
         /// <summary>
-        ///     Get dashboard with count of tasks with each status
-        /// </summary>
-        /// <param name="userId">ID of user, whose dashboard is requested</param>
-        /// <returns> Response containing count of tasks with each status </returns>
-        DashboardResponse GetTasksDashboard(int userId);
-
-        /// <summary>
         ///     Deletes taks with specified id
         /// </summary>
         /// <param name="taskId">id of task that wanted to be deleted</param>
@@ -83,12 +69,5 @@ namespace ArcadiaTest.BusinessLayer
         ///     if task with specified id was not found
         /// </exception>
         void DeleteTask(int taskId);
-
-        /// <summary>
-        ///     Returns task history of user with specified ID
-        /// </summary>
-        /// <param name="userId">Id of user, whose task should be found</param>
-        /// <returns></returns>
-        IEnumerable<TaskChangeResponse> GetTasksHistory(int userId);
     }
 }
