@@ -5,7 +5,6 @@ using System.Linq;
 using System.Web;
 using ArcadiaTest.Models.Requests;
 using ArcadiaTest.Models.Responses;
-using ArcadiaTest.Models.Entities;
 using ArcadiaTest.BusinessLayer.Exceptions;
 using ArcadiaTest.Models.DTO;
 
@@ -71,17 +70,7 @@ namespace ArcadiaTest.BusinessLayer
 
         public TaskResponse GetTask(int id)
         {
-            var taskDto = this.FindTaskDtoById(id);
-
-            return new TaskResponse
-            {
-                Id = taskDto.Id,
-                Title = taskDto.Title,
-                Description = taskDto.Description,
-                Status = taskDto.Status,
-                DueDate = taskDto.DueDate,
-                Type = taskDto.Type,
-            };
+            return this.FindTaskDtoById(id).ToResponse();
         }
 
         public TaskResponse GetTaskOfUser(int userId, int taskId)
@@ -90,34 +79,13 @@ namespace ArcadiaTest.BusinessLayer
             if (taskDto == null || taskDto.UserId != userId)
                 throw new TaskNotFoundException();
 
-            return new TaskResponse()
-            {
-                Id = taskDto.Id,
-                Title = taskDto.Title,
-                Description = taskDto.Description,
-                Status = taskDto.Status,
-                DueDate = taskDto.DueDate,
-                Type = taskDto.Type,
-            };
+            return taskDto.ToResponse();
         }
 
         private IEnumerable<TaskResponse> GetTasksOfUser(int userId)
         {
-            var taskEntities = this._taskRepository.FindTasksByUserId(userId);
-            var response = new List<TaskResponse>();
-            foreach (var taskEntity in taskEntities)
-            {
-                response.Add(new TaskResponse
-                {
-                    Id = taskEntity.Id,
-                    Title = taskEntity.Title,
-                    Description = taskEntity.Description,
-                    DueDate = taskEntity.DueDate,
-                    Status = taskEntity.Status,
-                    Type = taskEntity.Type,
-                });
-            }
-            return response;
+            var taskDtos = this._taskRepository.FindTasksByUserId(userId);
+            return taskDtos.Select(t => t.ToResponse());
         }
 
         public IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status = null)
@@ -125,21 +93,8 @@ namespace ArcadiaTest.BusinessLayer
             if (status == null)
                 return this.GetTasksOfUser(userId);
 
-            var taskEntities = this._taskRepository.FindTasksByUserIdAndStatus(userId, status);
-            var response = new List<TaskResponse>();
-            foreach (var taskEntity in taskEntities)
-            {
-                response.Add(new TaskResponse
-                {
-                    Id = taskEntity.Id,
-                    Title = taskEntity.Title,
-                    Description = taskEntity.Description,
-                    DueDate = taskEntity.DueDate,
-                    Status = taskEntity.Status,
-                    Type = taskEntity.Type,
-                });
-            }
-            return response;
+            var taskDtos = this._taskRepository.FindTasksByUserIdAndStatus(userId, status);
+            return taskDtos.Select(t => t.ToResponse());
         }
 
         public void UpdateTask(int id, MergeTaskRequest updateModel)
@@ -154,9 +109,9 @@ namespace ArcadiaTest.BusinessLayer
             if (taskDto.Status != ACTIVE)
                 throw new TaskNotActiveException();
 
-            taskDto.Title = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskDto.Title;
+            taskDto.Title = !String.IsNullOrEmpty(updateModel.Title) ? updateModel.Title : taskDto.Title;
 
-            taskDto.Description = updateModel.Description == "" ? 
+            taskDto.Description = updateModel.Description == "" ?
                  null : updateModel.Description;
 
             taskDto.DueDate = updateModel.DueDate == null ?
@@ -169,6 +124,22 @@ namespace ArcadiaTest.BusinessLayer
                 null : updateModel.Type;
 
             this._taskRepository.Update(taskDto);
+        }
+    }
+
+    public static class TaskDTOExtension
+    {
+        public static TaskResponse ToResponse(this TaskDTO taskDto)
+        {
+            return new TaskResponse
+            {
+                Id = taskDto.Id,
+                Title = taskDto.Title,
+                Description = taskDto.Description,
+                Status = taskDto.Status,
+                DueDate = taskDto.DueDate,
+                Type = taskDto.Type,
+            };
         }
     }
 }
