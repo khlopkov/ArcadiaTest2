@@ -21,16 +21,15 @@ namespace ArcadiaTest.BusinessLayer
         {
             var user = this._userRepository.FindByEmail(email);
             if (user == null)
-            {
                 return null;
-            }
+
             var sha1 = System.Security.Cryptography.SHA1.Create();
             var passedPasswordHash = sha1.ComputeHash(Encoding.ASCII.GetBytes(password));
             var passedPasswordHashString = BitConverter.ToString(passedPasswordHash).ToLower().Replace("-", string.Empty);
+
             if (passedPasswordHashString != user.Hash)
-            {
                 return null;
-            }
+
             return new UserDTO(user.Id, user.Name, user.Email, user.Hash);
         }
     }
