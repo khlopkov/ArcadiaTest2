@@ -19,7 +19,7 @@ namespace ArcadiaTest.BusinessLayer
             this._taskStatusRepository = taskStatusRepository;
         }
 
-        public async Task<IDictionary<string, int>> GetStatisticsOfTaskCountGroupedByStatus(int userId)
+        public async Task<IDictionary<string, int>> GetStatisticsOfTaskCountGroupedByStatusAsync(int userId)
         {
             var statuses = await this._taskStatusRepository.GetAllTaskStatusesAsync();
             var groupedCounts = await this._taskRepository.CountTasksGroupedByStatusAsync(userId);
