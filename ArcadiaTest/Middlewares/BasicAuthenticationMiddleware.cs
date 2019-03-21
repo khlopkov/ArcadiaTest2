@@ -39,7 +39,7 @@ namespace ArcadiaTest.Middlewares
                 return;
             }
 
-            var user = this._authService.Authenticate(splittedToken[0], splittedToken[1]);
+            var user = this._authService.GetUserByCredentials(splittedToken[0], splittedToken[1]);
             if (user != null)
             {
                 context.Set<UserDTO>("user", user);

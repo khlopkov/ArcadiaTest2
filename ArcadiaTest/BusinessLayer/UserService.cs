@@ -5,6 +5,7 @@ using System.Web;
 using ArcadiaTest.Models.Responses;
 using ArcadiaTest.DataLayer;
 using ArcadiaTest.BusinessLayer.Exceptions;
+using System.Threading.Tasks;
 
 namespace ArcadiaTest.BusinessLayer
 {
@@ -24,6 +25,15 @@ namespace ArcadiaTest.BusinessLayer
             {
                 throw new UserNotFoundException();
             }
+            return new UserResponse() { Id = foundUser.Id, Name = foundUser.Name };
+        }
+
+        public async Task<UserResponse> GetUserWithEmailAsync(string email)
+        {
+            var foundUser = await this._userRepository.FindByEmailAsync(email);
+            if (foundUser == null)
+                throw new UserNotFoundException();
+
             return new UserResponse() { Id = foundUser.Id, Name = foundUser.Name };
         }
     }

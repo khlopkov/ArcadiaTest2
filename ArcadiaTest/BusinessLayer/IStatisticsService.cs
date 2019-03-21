@@ -8,6 +8,6 @@ namespace ArcadiaTest.BusinessLayer
 {
     public interface IStatisticsService
     {
-        Task<IDictionary<string, int>> GetStatisticsOfTaskCountGroupedByStatus(int userId);
+        Task<IDictionary<string, int>> GetStatisticsOfTaskCountGroupedByStatusAsync(int userId);
     }
 }

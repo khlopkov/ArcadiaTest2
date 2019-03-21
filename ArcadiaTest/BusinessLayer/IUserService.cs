@@ -14,5 +14,7 @@ namespace ArcadiaTest.BusinessLayer
         /// </summary>
         /// <returns>Response containing user</returns>
         UserResponse GetUserWithEmail(string email); 
+
+        Task<UserResponse> GetUserWithEmailAsync(string email); 
     }
 }

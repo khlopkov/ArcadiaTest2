@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace ArcadiaTest.DataLayer
 {
@@ -21,19 +23,44 @@ namespace ArcadiaTest.DataLayer
             return this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToList().ToDtos();
         }
 
+        public async Task<IEnumerable<TaskChangeDTO>> FindChangesByTaskIDAsync(int taskId)
+        {
+            var changes = await this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToListAsync();
+            return changes.ToDtos();
+        }
+
         public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
         {
-            return this._dbCtx.TaskChanges.Select(tc => new TaskChangeDTO()
-            {
-                Id = tc.Id,
-                TaskId = tc.TaskId,
-                ChangedAt = tc.ChangedAt,
-                NewValue = tc.NewValue,
-                OldValue = tc.OldValue,
-                Operation = tc.Operation,
-                Task = this._dbCtx.Tasks.Where(t => t.Id == tc.TaskId).FirstOrDefault().ToDto(),
-            })
-                .Where(tc => tc.Task.UserId == userId).ToList();
+            return this._dbCtx.TaskChanges
+                .Where(tc => tc.Task.UserId == userId).ToList()
+                .Join(
+                    this._dbCtx.Tasks,
+                    tc => tc.TaskId,
+                    t => t.Id,
+                    (tc, t) =>
+                    {
+                        var tcDto = tc.ToDto();
+                        tcDto.Task = t.ToDto();
+                        return tcDto;
+                    }
+                );
+        }
+
+        public async Task<IEnumerable<TaskChangeDTO>> FindChangesByUserIdAsync(int userId)
+        {
+            var taskChangesOfUser = await this._dbCtx.TaskChanges
+                .Where(tc => tc.Task.UserId == userId).ToListAsync();
+            return taskChangesOfUser.Join(
+                    this._dbCtx.Tasks,
+                    tc => tc.TaskId,
+                    t => t.Id,
+                    (tc, t) =>
+                    {
+                        var tcDto = tc.ToDto();
+                        tcDto.Task = t.ToDto();
+                        return tcDto;
+                    }
+                );
         }
     }
 
@@ -54,7 +81,7 @@ namespace ArcadiaTest.DataLayer
                 };
         }
 
-        public static IEnumerable<TaskChangeDTO> ToDtos(this IReadOnlyCollection<TaskChange> taskChangeEntities)
+        public static IEnumerable<TaskChangeDTO> ToDtos(this IEnumerable<TaskChange> taskChangeEntities)
         {
             return taskChangeEntities.Select(tce => tce.ToDto()).ToList();
         }

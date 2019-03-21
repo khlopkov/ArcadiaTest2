@@ -5,17 +5,15 @@ using System.Linq;
 using System.Web;
 using ArcadiaTest.Models.Requests;
 using ArcadiaTest.Models.Responses;
-using ArcadiaTest.Models.Entities;
 using ArcadiaTest.BusinessLayer.Exceptions;
 using ArcadiaTest.Models.DTO;
+using System.Threading.Tasks;
 
 namespace ArcadiaTest.BusinessLayer
 {
     public class TaskService : ITaskService
     {
         public const string ACTIVE = "Active";
-        public const string RESOLVED = "Resolved";
-        public const string CANCELLED = "Cancelled";
 
         private ITasksRepository _taskRepository;
         private IUserRepository _userRepository;
@@ -35,6 +33,9 @@ namespace ArcadiaTest.BusinessLayer
 
         public void CreateTask(int userId, CreateTaskRequest payload)
         {
+            if (payload == null)
+                throw new ArgumentNullException(nameof(payload));
+
             if (this._userRepository.FindUserByID(userId) == null)
                 throw new UserNotFoundException(userId);
 
@@ -50,123 +51,193 @@ namespace ArcadiaTest.BusinessLayer
             this._taskRepository.Save(task);
         }
 
+        public async Task CreateTaskAsync(int userId, CreateTaskRequest payload)
+        {
+            if (payload == null)
+                throw new ArgumentNullException(nameof(payload));
+
+            if (await this._userRepository.FindUserByIDAsync(userId) == null)
+                throw new UserNotFoundException(userId);
+
+            var task = new TaskDTO
+            {
+                UserId = userId,
+                Title = payload.Title,
+                Description = payload.Description,
+                Status = ACTIVE,
+                Type = payload.Type,
+                DueDate = payload.DueDate,
+            };
+            await this._taskRepository.SaveAsync(task);
+        }
+
         public void DeleteTask(int taskId)
         {
             var task = this._taskRepository.FindTaskById(taskId);
             if (task == null)
                 throw new TaskNotFoundException(taskId);
+
             this._taskRepository.Delete(task);
+        }
+
+        public async Task DeleteTaskAsync(int taskId)
+        {
+            var task = await this._taskRepository.FindTaskByIdAsync(taskId);
+            if (task == null)
+                throw new TaskNotFoundException(taskId);
+
+            await this._taskRepository.DeleteAsync(task);
+        }
+
+        private TaskDTO FindTaskDtoById(int id)
+        {
+            var taskDto = this._taskRepository.FindTaskById(id);
+            if (taskDto == null)
+                throw new TaskNotFoundException(id);
+
+            return taskDto;
+        }
+
+        private async Task<TaskDTO> FindTaskDtoByIdAsync(int id)
+        {
+            var taskDto = await this._taskRepository.FindTaskByIdAsync(id);
+            if (taskDto == null)
+                throw new TaskNotFoundException(id);
+
+            return taskDto;
         }
 
         public TaskResponse GetTask(int id)
         {
-            var taskEntity = this._taskRepository.FindTaskById(id);
-            if (taskEntity == null)
-                throw new TaskNotFoundException(id);
-            return new TaskResponse
-            {
-                Id = taskEntity.Id,
-                Title = taskEntity.Title,
-                Description = taskEntity.Description,
-                Status = taskEntity.Status,
-                DueDate = taskEntity.DueDate,
-                Type = taskEntity.Type,
-            };
+            return this.FindTaskDtoById(id).ToResponse();
+        }
+
+        public async Task<TaskResponse> GetTaskAsync(int id)
+        {
+            var taskDto = await this.FindTaskDtoByIdAsync(id);
+            return taskDto.ToResponse();
         }
 
         public TaskResponse GetTaskOfUser(int userId, int taskId)
         {
-            var taskEntity = this._taskRepository.FindTaskById(taskId);
-            if (taskEntity == null || taskEntity.UserId != userId)
-            {
+            var taskDto = this.FindTaskDtoById(taskId);
+            if (taskDto == null || taskDto.UserId != userId)
                 throw new TaskNotFoundException();
-            }
-            return new TaskResponse()
-            {
-                Id = taskEntity.Id,
-                Title = taskEntity.Title,
-                Description = taskEntity.Description,
-                Status = taskEntity.Status,
-                DueDate = taskEntity.DueDate,
-                Type = taskEntity.Type,
-            };
+
+            return taskDto.ToResponse();
         }
 
-        public IEnumerable<TaskResponse> GetTasksOfUser(int userId)
+        public async Task<TaskResponse> GetTaskOfUserAsync(int userId, int taskId)
         {
-            var taskEntities = this._taskRepository.FindTasksByUserId(userId);
-            var response = new List<TaskResponse>();
-            foreach (var taskEntity in taskEntities)
-            {
-                response.Add(new TaskResponse
-                {
-                    Id = taskEntity.Id,
-                    Title = taskEntity.Title,
-                    Description = taskEntity.Description,
-                    DueDate = taskEntity.DueDate,
-                    Status = taskEntity.Status,
-                    Type = taskEntity.Type,
-                });
-            }
-            return response;
+            var taskDto = await this.FindTaskDtoByIdAsync(taskId);
+            if (taskDto == null || taskDto.UserId != userId)
+                throw new TaskNotFoundException();
+
+            return taskDto.ToResponse();
         }
 
-        public IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status)
+        private IEnumerable<TaskResponse> GetTasksOfUser(int userId)
         {
-            var taskEntities = this._taskRepository.FindTasksByUserIdAndStatus(userId, status);
-            var response = new List<TaskResponse>();
-            foreach (var taskEntity in taskEntities)
-            {
-                response.Add(new TaskResponse
-                {
-                    Id = taskEntity.Id,
-                    Title = taskEntity.Title,
-                    Description = taskEntity.Description,
-                    DueDate = taskEntity.DueDate,
-                    Status = taskEntity.Status,
-                    Type = taskEntity.Type,
-                });
-            }
-            return response;
+            var taskDtos = this._taskRepository.FindTasksByUserId(userId);
+            return taskDtos.Select(t => t.ToResponse());
+        }
+
+        private async Task<IEnumerable<TaskResponse>> GetTasksOfUserAsync(int userId)
+        {
+            var taskDtos = await this._taskRepository.FindTasksByUserIdAsync(userId);
+            return taskDtos.Select(t => t.ToResponse());
+        }
+
+        public IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status = null)
+        {
+            if (status == null)
+                return this.GetTasksOfUser(userId);
+
+            var taskDtos = this._taskRepository.FindTasksByUserIdAndStatus(userId, status);
+            return taskDtos.Select(t => t.ToResponse());
+        }
+
+        public async Task<IEnumerable<TaskResponse>> GetTasksOfUserAsync(int userId, string status = null)
+        {
+            if (status == null)
+                return this.GetTasksOfUser(userId);
+
+            var taskDtos = await this._taskRepository.FindTasksByUserIdAndStatusAsync(userId, status);
+            return taskDtos.Select(t => t.ToResponse());
         }
 
         public void UpdateTask(int id, MergeTaskRequest updateModel)
         {
-            var taskEntity = this._taskRepository.FindTaskById(id);
-            if (taskEntity == null)
+            if (updateModel == null)
+                throw new ArgumentNullException(nameof(updateModel));
+
+            var taskDto = this._taskRepository.FindTaskById(id);
+            if (taskDto == null)
                 throw new TaskNotFoundException(id);
-            if (taskEntity.Status != ACTIVE)
+
+            if (taskDto.Status != ACTIVE)
                 throw new TaskNotActiveException();
-            taskEntity.Title = !String.IsNullOrEmpty(updateModel.Title) ?  updateModel.Title : taskEntity.Title;
-            if (updateModel.Description != null)
+
+            taskDto.Title = !String.IsNullOrEmpty(updateModel.Title) ? updateModel.Title : taskDto.Title;
+
+            taskDto.Description = updateModel.Description == "" ?
+                 null : updateModel.Description;
+
+            taskDto.DueDate = updateModel.DueDate == null ?
+                null : updateModel.DueDate;
+
+            taskDto.Status = updateModel.Status == "" ?
+                taskDto.Status = null : updateModel.Status;
+
+            taskDto.Type = updateModel.Type == "" ?
+                null : updateModel.Type;
+
+            this._taskRepository.Update(taskDto);
+        }
+
+        public async Task UpdateTaskAsync(int id, MergeTaskRequest updateModel)
+        {
+            if (updateModel == null)
+                throw new ArgumentNullException(nameof(updateModel));
+
+            var taskDto = await this._taskRepository.FindTaskByIdAsync(id);
+            if (taskDto == null)
+                throw new TaskNotFoundException(id);
+
+            if (taskDto.Status != ACTIVE)
+                throw new TaskNotActiveException();
+
+            taskDto.Title = !String.IsNullOrEmpty(updateModel.Title) ? updateModel.Title : taskDto.Title;
+
+            taskDto.Description = updateModel.Description == "" ?
+                 null : updateModel.Description;
+
+            taskDto.DueDate = updateModel.DueDate == null ?
+                null : updateModel.DueDate;
+
+            taskDto.Status = updateModel.Status == "" ?
+                taskDto.Status = null : updateModel.Status;
+
+            taskDto.Type = updateModel.Type == "" ?
+                null : updateModel.Type;
+
+            await this._taskRepository.UpdateAsync(taskDto);
+        }
+    }
+
+    public static class TaskDTOExtension
+    {
+        public static TaskResponse ToResponse(this TaskDTO taskDto)
+        {
+            return new TaskResponse
             {
-                if (updateModel.Description == "")
-                    taskEntity.Description = null;
-                else
-                    taskEntity.Description = updateModel.Description;
-            }
-            if (updateModel.DueDate != null)
-            {
-                if (updateModel.DueDate == default(DateTime))
-                    taskEntity.DueDate = null;
-                else
-                    taskEntity.DueDate = updateModel.DueDate;
-            }
-            if (updateModel.Status != null)
-            {
-                if (updateModel.Status == "")
-                    taskEntity.Status = null;
-                else
-                    taskEntity.Status = updateModel.Status;
-            }
-            if (updateModel.Type != null)
-            {
-                if (updateModel.Type == "")
-                    taskEntity.Type = null;
-                else
-                    taskEntity.Type = updateModel.Type;
-            }
-            this._taskRepository.Update(taskEntity);
+                Id = taskDto.Id,
+                Title = taskDto.Title,
+                Description = taskDto.Description,
+                Status = taskDto.Status,
+                DueDate = taskDto.DueDate,
+                Type = taskDto.Type,
+            };
         }
     }
 }
