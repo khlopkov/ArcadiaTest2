@@ -7,6 +7,7 @@ using System.Linq;
 using System.Net;
 using System.Net.Http;
 using System.Security.Claims;
+using System.Threading.Tasks;
 using System.Web.Http;
 
 namespace ArcadiaTest.Controllers
@@ -23,21 +24,21 @@ namespace ArcadiaTest.Controllers
         }
 
         [HttpGet]
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault().Value;
 
             try
             {
-                var currentUser = this._userService.GetUserWithEmail(email);
+                var currentUser = await this._userService.GetUserWithEmailAsync(email);
             }
             catch(UserNotFoundException)
             {
                 Unauthorized();
             }
 
-            return Content(HttpStatusCode.OK, this._userService.GetUserWithEmail(email));
+            return Content(HttpStatusCode.OK, await this._userService.GetUserWithEmailAsync(email));
         }
     }
 }
