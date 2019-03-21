@@ -17,7 +17,7 @@ namespace ArcadiaTest.BusinessLayer
             this._userRepository = userRepository;
         }
 
-        public UserDTO Authenticate(string email, string password)
+        public UserDTO GetUserByCredentials(string email, string password)
         {
             var user = this._userRepository.FindByEmail(email);
             if (user == null)
