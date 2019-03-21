@@ -16,8 +16,6 @@ namespace ArcadiaTest.BusinessLayer
         /// <param name="userId">ID of user, whose tasks should be found</param>
         /// <param name="status">Status with which tasks should be found</param>
         /// <returns></returns>
-        IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status = null);
-
         Task<IEnumerable<TaskResponse>> GetTasksOfUserAsync(int userId, string status = null);
         /// <summary>
         ///     Finds task which belongs to user
@@ -28,8 +26,6 @@ namespace ArcadiaTest.BusinessLayer
         ///     if task with specified id was not found
         /// </exception>
         /// <returns>Found taks which belongs to user</returns>
-        TaskResponse GetTaskOfUser(int userId, int taskId);
-
         Task<TaskResponse> GetTaskOfUserAsync(int userId, int taskId);
 
         /// <summary>
@@ -40,8 +36,6 @@ namespace ArcadiaTest.BusinessLayer
         /// </exception>
         /// <param name="id">id of required task</param>
         /// <returns> Response of task</returns>
-        TaskResponse GetTask(int id);
-
         Task<TaskResponse> GetTaskAsync(int id);
 
         /// <summary>
@@ -55,8 +49,6 @@ namespace ArcadiaTest.BusinessLayer
         /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotActiveException">
         ///     If status of task that want to be patched is not Active
         /// </exception>
-        void UpdateTask(int id, MergeTaskRequest updateModel);
-
         Task UpdateTaskAsync(int id, MergeTaskRequest updateModel);
 
         /// <summary>
@@ -67,8 +59,6 @@ namespace ArcadiaTest.BusinessLayer
         /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.UserNotFoundException">
         ///     if user with specified id was not found
         /// </exception>
-        void CreateTask(int userId, CreateTaskRequest payload);
-
         Task CreateTaskAsync(int userId, CreateTaskRequest payload);
 
         /// <summary>
@@ -78,8 +68,6 @@ namespace ArcadiaTest.BusinessLayer
         /// <exception cref="ArcadiaTest.BusinessLayer.Exceptions.TaskNotFoundException">
         ///     if task with specified id was not found
         /// </exception>
-        void DeleteTask(int taskId);
-
         Task DeleteTaskAsync(int taskId);
     }
 }

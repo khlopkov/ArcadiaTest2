@@ -18,12 +18,6 @@ namespace ArcadiaTest.BusinessLayer
             this._taskChangesRepository = taskChangesRepository;
         }
 
-        public IEnumerable<TaskChangeResponse> GetTasksHistoryOfUser(int userId)
-        {
-            return this._taskChangesRepository.FindChangesByUserId(userId)
-                .Select(c => this.DtoToResponse(c));
-        }
-
         public async Task<IEnumerable<TaskChangeResponse>> GetTasksHistoryOfUserAsync(int userId)
         {
             var changes = await this._taskChangesRepository.FindChangesByUserIdAsync(userId);

@@ -11,8 +11,6 @@ namespace ArcadiaTest.BusinessLayer
         /// </summary>
         /// <param name="userId">Id of user, whose task should be found</param>
         /// <returns></returns>
-        IEnumerable<TaskChangeResponse> GetTasksHistoryOfUser(int userId);
-
         Task<IEnumerable<TaskChangeResponse>> GetTasksHistoryOfUserAsync(int userId);
     }
 }
