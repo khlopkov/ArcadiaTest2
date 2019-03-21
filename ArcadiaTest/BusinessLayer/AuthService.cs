@@ -10,7 +10,7 @@ namespace ArcadiaTest.BusinessLayer
 {
     public class AuthService : IAuthService
     {
-        public IUserRepository _userRepository;
+        private IUserRepository _userRepository;
 
         public AuthService(IUserRepository userRepository)
         {
