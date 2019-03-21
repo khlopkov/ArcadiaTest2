@@ -46,7 +46,7 @@ namespace ArcadiaTest.Middlewares
                 var claims = new Claim[]
                 {
                     new Claim(ClaimTypes.Email, user.Email),
-                    new Claim(ClaimTypes.Name, user.Name),
+                    new Claim(ClaimTypes.Name, user.Email),
                     new Claim("Id", user.Id.ToString())
                 };
                 var identity = new ClaimsIdentity(claims, "Basic");
