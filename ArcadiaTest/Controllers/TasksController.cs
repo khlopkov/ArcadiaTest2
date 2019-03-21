@@ -150,7 +150,7 @@ namespace ArcadiaTest.Controllers
 
             try
             {
-                var currentUser = this._userService.GetUserWithEmail(email);
+                var currentUser = await this._userService.GetUserWithEmailAsync(email);
                 var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatusAsync(currentUser.Id);
                 return Content(HttpStatusCode.OK, response);
             }
