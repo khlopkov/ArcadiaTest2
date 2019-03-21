@@ -14,8 +14,6 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <param name="taskId"> id of task which changes should be queried </param>
         /// <returns> Enumerable of found task changes </returns>
-        IEnumerable<TaskChangeDTO> FindChangesByTaskID(int taskId);
-
         Task<IEnumerable<TaskChangeDTO>> FindChangesByTaskIDAsync(int taskId);
 
         /// <summary>

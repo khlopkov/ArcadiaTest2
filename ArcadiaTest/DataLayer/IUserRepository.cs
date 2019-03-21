@@ -15,16 +15,12 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <param name="id"> id of user needed to be found </param>
         /// <returns> Found user or null </returns>
-        UserDTO FindUserByID(int id);
-
         Task<UserDTO> FindUserByIDAsync(int id);
 
         /// <summary>
         ///     Finds all users in database
         /// </summary>
         /// <returns> IEnumerable containing all existing users </returns>
-        IEnumerable<UserDTO> FindAllUsers();
-
         Task<IEnumerable<UserDTO>> FindAllUsersAsync();
 
         /// <summary>

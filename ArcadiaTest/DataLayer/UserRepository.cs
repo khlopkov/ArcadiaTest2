@@ -21,11 +21,6 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbContext;
         }
 
-        public IEnumerable<UserDTO> FindAllUsers()
-        {
-            return this._dbCtx.Users.ToList().ToDtos();
-        }
-
         public async Task<IEnumerable<UserDTO>> FindAllUsersAsync()
         {
             var users = await this._dbCtx.Users.ToListAsync();
@@ -41,11 +36,6 @@ namespace ArcadiaTest.DataLayer
         {
             var foundUser = await this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefaultAsync();
             return foundUser?.ToDto();
-        }
-
-        public UserDTO FindUserByID(int id)
-        {
-            return this._dbCtx.Users.Where(u => u.Id == id).FirstOrDefault()?.ToDto();
         }
 
         public async Task<UserDTO> FindUserByIDAsync(int id)

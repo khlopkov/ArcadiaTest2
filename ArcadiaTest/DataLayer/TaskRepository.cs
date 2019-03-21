@@ -19,78 +19,9 @@ namespace ArcadiaTest.DataLayer
             this._dbCtx = dbCtx;
         }
 
-        private Entities.Task FindTaskEntityById(int id)
+        private async Task<Entities.Task> FindTaskEntityByIdAsync(int id)
         {
-            return this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefault();
-        }
-
-        public IEnumerable<TasksDashboardDTO> CountTasksGroupedByStatus(int userId)
-        {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId)
-                .GroupBy(t => t.Status)
-                .Select(group => new TasksDashboardDTO() { Status = group.Key, Count = group.Count() }).ToList();
-        }
-
-        public TaskDTO FindTaskById(int id)
-        {
-            var foundTask = this.FindTaskEntityById(id);
-            return foundTask.ToDto();
-        }
-
-        public IEnumerable<TaskDTO> FindTasksByUserId(int userId)
-        {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList().ToDtos();
-        }
-
-        public IEnumerable<TaskDTO> FindTasksByUserIdAndStatus(int userId, string status)
-        {
-            return this._dbCtx.Tasks.Where(t => t.UserId == userId && t.Status == status).ToList().ToDtos();
-        }
-
-        public TaskDTO Save(TaskDTO task)
-        {
-            if (task == null)
-                throw new ArgumentNullException(nameof(task));
-
-            var taskEntity = new Entities.Task();
-            taskEntity.MergeWithDto(task);
-
-            var inserted = this._dbCtx.Tasks.Add(taskEntity);
-            this._dbCtx.SaveChanges();
-
-            return inserted.ToDto();
-        }
-
-        public TaskDTO Update(TaskDTO task)
-        {
-            if (task == null)
-                throw new ArgumentNullException(nameof(task));
-
-            if (task.Id == 0)
-                throw new IdWasNotSpecifiedException();
-
-            var taskEntity = this.FindTaskEntityById(task.Id);
-            if (taskEntity == null)
-                return null;
-
-            taskEntity.MergeWithDto(task);
-            this._dbCtx.SaveChanges();
-
-            return taskEntity.ToDto();
-        }
-
-        public void Delete(TaskDTO task)
-        {
-            if (task == null)
-                throw new ArgumentNullException(nameof(task));
-
-            if (task.Id == 0)
-                throw new IdWasNotSpecifiedException();
-
-            var taskEntity = this.FindTaskEntityById(task.Id);
-
-            this._dbCtx.Tasks.Remove(taskEntity);
-            this._dbCtx.SaveChanges();
+            return await this._dbCtx.Tasks.Where(t => t.Id == id).FirstOrDefaultAsync();
         }
 
         public async Task<TaskDTO> FindTaskByIdAsync(int id)
@@ -121,7 +52,7 @@ namespace ArcadiaTest.DataLayer
             if (task.Id == 0)
                 throw new IdWasNotSpecifiedException();
             
-            var taskEntity = this.FindTaskEntityById(task.Id);
+            var taskEntity = await this.FindTaskEntityByIdAsync(task.Id);
             if (taskEntity == null)
                 return null;
 
@@ -158,7 +89,7 @@ namespace ArcadiaTest.DataLayer
             if (task.Id == 0)
                 throw new IdWasNotSpecifiedException();
 
-            var taskEntity = this.FindTaskEntityById(task.Id);
+            var taskEntity = await this.FindTaskEntityByIdAsync(task.Id);
             this._dbCtx.Tasks.Remove(taskEntity);
             await this._dbCtx.SaveChangesAsync();
         }
