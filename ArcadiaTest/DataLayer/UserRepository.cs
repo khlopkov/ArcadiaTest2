@@ -27,11 +27,6 @@ namespace ArcadiaTest.DataLayer
             return users.ToDtos();
         }
 
-        public UserDTO FindByEmail(string email)
-        {
-            return this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefault()?.ToDto();
-        }
-
         public async Task<UserDTO> FindByEmailAsync(string email)
         {
             var foundUser = await this._dbCtx.Users.Where(u => u.Email == email).FirstOrDefaultAsync();

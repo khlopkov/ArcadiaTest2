@@ -28,8 +28,6 @@ namespace ArcadiaTest.DataLayer
         /// </summary>
         /// <param name="email">email of user, who needed to be found</param>
         /// <returns>Entity describing found user, or null if not found</returns>
-        UserDTO FindByEmail(string email);
-
         Task<UserDTO> FindByEmailAsync(string email);
     }
 }
