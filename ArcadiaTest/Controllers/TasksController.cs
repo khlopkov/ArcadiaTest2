@@ -38,15 +38,16 @@ namespace ArcadiaTest.Controllers
 
         [HttpGet]
         [Route("")]
-        public IHttpActionResult Get()
+        public async Task<IHttpActionResult> Get()
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
 
             try
             {
-                var currentUser = this._userService.GetUserWithEmail(email);
-                return Content(HttpStatusCode.OK, this._taskService.GetTasksOfUser(currentUser.Id));
+                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var response = await this._taskService.GetTasksOfUserAsync(currentUser.Id);
+                return Content(HttpStatusCode.OK, response);
             }
             catch(UserNotFoundException)
             {
@@ -56,7 +57,7 @@ namespace ArcadiaTest.Controllers
 
         [HttpPost]
         [Route("")]
-        public IHttpActionResult Post(CreateTaskRequest requestModel)
+        public async Task<IHttpActionResult> Post(CreateTaskRequest requestModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -69,8 +70,8 @@ namespace ArcadiaTest.Controllers
 
             try
             {
-                var currentUser = this._userService.GetUserWithEmail(email);
-                this._taskService.CreateTask(currentUser.Id, requestModel);
+                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                await this._taskService.CreateTaskAsync(currentUser.Id, requestModel);
             }
             catch(UserNotFoundException)
             {
@@ -82,7 +83,7 @@ namespace ArcadiaTest.Controllers
 
         [HttpPatch]
         [Route("{taskId:int}")]
-        public IHttpActionResult Patch(int taskId, MergeTaskRequest requestModel)
+        public async Task<IHttpActionResult> Patch(int taskId, MergeTaskRequest requestModel)
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
@@ -95,9 +96,9 @@ namespace ArcadiaTest.Controllers
 
             try
             {
-                var currentUser = this._userService.GetUserWithEmail(email);
-                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
-                this._taskService.UpdateTask(taskId, requestModel);
+                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                await this._taskService.GetTaskOfUserAsync(currentUser.Id, taskId);
+                await this._taskService.UpdateTaskAsync(taskId, requestModel);
             }
             catch(UserNotFoundException)
             {
@@ -117,16 +118,16 @@ namespace ArcadiaTest.Controllers
 
         [HttpDelete]
         [Route("{taskId:int}")]
-        public IHttpActionResult Delete(int taskId)
+        public async Task<IHttpActionResult> Delete(int taskId)
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
 
             try
             {
-                var currentUser = this._userService.GetUserWithEmail(email);
-                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
-                this._taskService.DeleteTask(taskId);
+                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                await this._taskService.GetTaskOfUserAsync(currentUser.Id, taskId);
+                await this._taskService.DeleteTaskAsync(taskId);
             }
             catch(UserNotFoundException)
             {
@@ -161,15 +162,15 @@ namespace ArcadiaTest.Controllers
 
         [HttpGet]
         [Route("history")]
-        public IHttpActionResult GetTasksHistory()
+        public async Task<IHttpActionResult> GetTasksHistory()
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
 
             try
             {
-                var currentUser = this._userService.GetUserWithEmail(email);
-                return Content(HttpStatusCode.OK, this._taskHistoryService.GetTasksHistoryOfUser(currentUser.Id));
+                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                return Content(HttpStatusCode.OK, await this._taskHistoryService.GetTasksHistoryOfUserAsync(currentUser.Id));
             }
             catch(UserNotFoundException)
             {
