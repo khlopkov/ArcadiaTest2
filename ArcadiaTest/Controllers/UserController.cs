@@ -27,6 +27,7 @@ namespace ArcadiaTest.Controllers
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault().Value;
+
             try
             {
                 var currentUser = this._userService.GetUserWithEmail(email);
@@ -35,6 +36,7 @@ namespace ArcadiaTest.Controllers
             {
                 Unauthorized();
             }
+
             return Content(HttpStatusCode.OK, this._userService.GetUserWithEmail(email));
         }
     }
