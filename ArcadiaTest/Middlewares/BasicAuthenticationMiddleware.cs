@@ -20,7 +20,7 @@ namespace ArcadiaTest.Middlewares
         public override async Task Invoke(IOwinContext context)
         {
             var authHeader = context.Request.Headers.Get("Authorization");
-            if (authHeader == null || authHeader == "" || authHeader.StartsWith(BasicString))
+            if (authHeader == null || authHeader == "" || !authHeader.StartsWith(BasicString))
             {
                 context.Response.Headers.Set("WWW-Authenticate", BasicString);
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
