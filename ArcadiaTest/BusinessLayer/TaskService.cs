@@ -14,8 +14,6 @@ namespace ArcadiaTest.BusinessLayer
     public class TaskService : ITaskService
     {
         public const string ACTIVE = "Active";
-        public const string RESOLVED = "Resolved";
-        public const string CANCELLED = "Cancelled";
 
         private ITasksRepository _taskRepository;
         private IUserRepository _userRepository;
