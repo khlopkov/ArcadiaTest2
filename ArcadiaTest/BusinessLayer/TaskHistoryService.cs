@@ -1,4 +1,5 @@
 ﻿using ArcadiaTest.DataLayer;
+using ArcadiaTest.Models.DTO;
 using ArcadiaTest.Models.Responses;
 using System;
 using System.Collections.Generic;
@@ -19,38 +20,27 @@ namespace ArcadiaTest.BusinessLayer
 
         public IEnumerable<TaskChangeResponse> GetTasksHistoryOfUser(int userId)
         {
-            var changes = this._taskChangesRepository.FindChangesByUserId(userId);
-            var response = new List<TaskChangeResponse>(changes.Count());
-            foreach(var change in changes)
-            {
-                var message = change.Operation;
-                message += change.OldValue == null ? "" : " from: " + change.OldValue;
-                message += change.NewValue == null ? "" : " to: " + change.NewValue;
-                response.Add(new TaskChangeResponse()
-                {
-                    Message = message,
-                    When = change.ChangedAt,
-                });
-            }
-            return response;
+            return this._taskChangesRepository.FindChangesByUserId(userId)
+                .Select(c => this.DtoToResponse(c));
         }
 
         public async Task<IEnumerable<TaskChangeResponse>> GetTasksHistoryOfUserAsync(int userId)
         {
             var changes = await this._taskChangesRepository.FindChangesByUserIdAsync(userId);
-            var response = new List<TaskChangeResponse>(changes.Count());
-            foreach(var change in changes)
+            return changes.Select(c => this.DtoToResponse(c));
+        }
+
+        private TaskChangeResponse DtoToResponse(TaskChangeDTO dto)
+        {
+            var message = dto.Operation;
+            message += dto.OldValue == null ? "" : " from: " + dto.OldValue;
+            message += dto.NewValue == null ? "" : " to: " + dto.NewValue;
+
+            return new TaskChangeResponse()
             {
-                var message = change.Operation;
-                message += change.OldValue == null ? "" : " from: " + change.OldValue;
-                message += change.NewValue == null ? "" : " to: " + change.NewValue;
-                response.Add(new TaskChangeResponse()
-                {
-                    Message = message,
-                    When = change.ChangedAt,
-                });
-            }
-            return response;
+                Message = message,
+                When = dto.ChangedAt,
+            };
         }
     }
 }
