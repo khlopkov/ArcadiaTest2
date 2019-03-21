@@ -26,19 +26,21 @@ namespace ArcadiaTest.Controllers
         [HttpGet]
         public async Task<IHttpActionResult> Get()
         {
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var email = claims.Where(c => c.Type == ClaimTypes.Email).FirstOrDefault().Value;
-
             try
             {
-                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var currentUser = await this.GetCurrentUser();
+                return Content(HttpStatusCode.OK, currentUser);
             }
             catch(UserNotFoundException)
             {
-                Unauthorized();
+                return Unauthorized();
             }
+        }
 
-            return Content(HttpStatusCode.OK, await this._userService.GetUserWithEmailAsync(email));
+        private async Task<UserResponse> GetCurrentUser()
+        {
+            var email = ((ClaimsIdentity)User.Identity).Name;
+            return await this._userService.GetUserWithEmailAsync(email);
         }
     }
 }
