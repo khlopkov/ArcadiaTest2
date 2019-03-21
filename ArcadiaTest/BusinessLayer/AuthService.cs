@@ -17,19 +17,19 @@ namespace ArcadiaTest.BusinessLayer
         }
         public UserDTO Authenticate(string email, string password)
         {
-            var userEntity = this._userRepository.FindByEmail(email);
-            if (userEntity == null)
+            var user = this._userRepository.FindByEmail(email);
+            if (user == null)
             {
                 return null;
             }
             var sha1 = System.Security.Cryptography.SHA1.Create();
             var passedPasswordHash = sha1.ComputeHash(Encoding.ASCII.GetBytes(password));
             var passedPasswordHashString = BitConverter.ToString(passedPasswordHash).ToLower().Replace("-", string.Empty);
-            if (passedPasswordHashString != userEntity.Hash)
+            if (passedPasswordHashString != user.Hash)
             {
                 return null;
             }
-            return new UserDTO(userEntity.Id, userEntity.Name, userEntity.Email);
+            return new UserDTO(user.Id, user.Name, user.Email, user.Hash);
         }
     }
 }
