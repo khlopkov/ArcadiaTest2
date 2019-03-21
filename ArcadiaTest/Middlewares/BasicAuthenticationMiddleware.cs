@@ -32,17 +32,16 @@ namespace ArcadiaTest.Middlewares
             var decodeauthToken = System.Text.Encoding.UTF8.GetString(
                 Convert.FromBase64String(authToken));
 
-            var splittedToken = decodeauthToken.Split(':');
-            if (splittedToken.Length != 2)
+            var credentials = decodeauthToken.Split(':');
+            if (credentials.Length != 2)
             {
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return;
             }
 
-            var user = this._authService.GetUserByCredentials(splittedToken[0], splittedToken[1]);
+            var user = await this._authService.GetUserByCredentialsAsync(credentials[0], credentials[1]);
             if (user != null)
             {
-                context.Set<UserDTO>("user", user);
                 var claims = new Claim[]
                 {
                     new Claim(ClaimTypes.Email, user.Email),
@@ -57,6 +56,7 @@ namespace ArcadiaTest.Middlewares
                 context.Response.StatusCode = (int)HttpStatusCode.Unauthorized;
                 return;
             }
+
             await this.Next.Invoke(context);
         }
     }
