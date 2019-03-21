@@ -56,6 +56,7 @@ namespace ArcadiaTest.BusinessLayer
             var task = this._taskRepository.FindTaskById(taskId);
             if (task == null)
                 throw new TaskNotFoundException(taskId);
+
             this._taskRepository.Delete(task);
         }
 
