@@ -1,5 +1,4 @@
 ﻿using ArcadiaTest.BusinessLayer;
-using ArcadiaTest.Models.DTO;
 using Microsoft.Owin;
 using System;
 using System.Net;
