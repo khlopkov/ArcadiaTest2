@@ -11,10 +11,12 @@ namespace ArcadiaTest.BusinessLayer
     public class AuthService : IAuthService
     {
         public IUserRepository _userRepository;
+
         public AuthService(IUserRepository userRepository)
         {
             this._userRepository = userRepository;
         }
+
         public UserDTO Authenticate(string email, string password)
         {
             var user = this._userRepository.FindByEmail(email);
