@@ -18,6 +18,8 @@ namespace ArcadiaTest.DataLayer
 
         Task<IEnumerable<TaskChangeDTO>> FindChangesByTaskIDAsync(int taskId);
 
+        IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId);
+
         /// <summary>
         ///     Finds tasks changes for task which belongs to user
         /// </summary>
