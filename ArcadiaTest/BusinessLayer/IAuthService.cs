@@ -8,6 +8,6 @@ namespace ArcadiaTest.BusinessLayer
 {
     public interface IAuthService
     {
-        UserDTO Authenticate(string email, string password);
+        UserDTO GetUserByCredentials(string email, string password);
     }
 }
