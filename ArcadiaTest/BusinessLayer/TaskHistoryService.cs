@@ -9,9 +9,9 @@ namespace ArcadiaTest.BusinessLayer
 {
     public class TaskHistoryService : ITaskHistoryService
     {
-        private TaskChangesRepository _taskChangesRepository;
+        private ITaskChangesRepository _taskChangesRepository;
 
-        public TaskHistoryService(TaskChangesRepository taskChangesRepository)
+        public TaskHistoryService(ITaskChangesRepository taskChangesRepository)
         {
             this._taskChangesRepository = taskChangesRepository;
         }
