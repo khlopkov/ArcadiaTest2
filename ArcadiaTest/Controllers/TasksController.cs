@@ -158,7 +158,7 @@ namespace ArcadiaTest.Controllers
             try
             {
                 var currentUser = this._userService.GetUserWithEmail(email);
-                var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatus(currentUser.Id);
+                var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatusAsync(currentUser.Id);
                 return Content(HttpStatusCode.OK, response);
             }
             catch(UserNotFoundException)

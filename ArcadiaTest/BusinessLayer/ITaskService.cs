@@ -17,6 +17,8 @@ namespace ArcadiaTest.BusinessLayer
         /// <param name="status">Status with which tasks should be found</param>
         /// <returns></returns>
         IEnumerable<TaskResponse> GetTasksOfUser(int userId, string status = null);
+
+        Task<IEnumerable<TaskResponse>> GetTasksOfUserAsync(int userId, string status = null);
         /// <summary>
         ///     Finds task which belongs to user
         /// </summary>
@@ -28,6 +30,8 @@ namespace ArcadiaTest.BusinessLayer
         /// <returns>Found taks which belongs to user</returns>
         TaskResponse GetTaskOfUser(int userId, int taskId);
 
+        Task<TaskResponse> GetTaskOfUserAsync(int userId, int taskId);
+
         /// <summary>
         ///     Get task with specified id
         /// </summary>
@@ -37,6 +41,8 @@ namespace ArcadiaTest.BusinessLayer
         /// <param name="id">id of required task</param>
         /// <returns> Response of task</returns>
         TaskResponse GetTask(int id);
+
+        Task<TaskResponse> GetTaskAsync(int id);
 
         /// <summary>
         ///     Finds task and merge it with fields passed in patchModel
@@ -51,6 +57,8 @@ namespace ArcadiaTest.BusinessLayer
         /// </exception>
         void UpdateTask(int id, MergeTaskRequest updateModel);
 
+        Task UpdateTaskAsync(int id, MergeTaskRequest updateModel);
+
         /// <summary>
         ///     Creates new task for user
         /// </summary>
@@ -61,6 +69,8 @@ namespace ArcadiaTest.BusinessLayer
         /// </exception>
         void CreateTask(int userId, CreateTaskRequest payload);
 
+        Task CreateTaskAsync(int userId, CreateTaskRequest payload);
+
         /// <summary>
         ///     Deletes taks with specified id
         /// </summary>
@@ -69,5 +79,7 @@ namespace ArcadiaTest.BusinessLayer
         ///     if task with specified id was not found
         /// </exception>
         void DeleteTask(int taskId);
+
+        Task DeleteTaskAsync(int taskId);
     }
 }
