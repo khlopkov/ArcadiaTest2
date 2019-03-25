@@ -13,6 +13,6 @@ export class HistoryComponent implements OnInit {
   history: TaskChange[];
 
   ngOnInit(): void {
-    this.historyService.tasksHistoryOfCurrentUser().subscribe((data) => this.history = data);
+    this.historyService.getTasksHistoryOfCurrentUser().subscribe((data) => this.history = data);
   }
 }
