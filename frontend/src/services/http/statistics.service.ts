@@ -5,6 +5,10 @@ import { Observable } from 'rxjs';
 
 const PREFIX =  'api/user/tasks';
 
+export interface TasksCountByStatusDictionary {
+    [ key: string]: number;
+}
+
 @Injectable()
 export class StatisticsService {
     constructor(
@@ -14,7 +18,7 @@ export class StatisticsService {
 
     private readonly baseUrl: string = this.httpConfig.restUrl;
 
-    getStatisticsTasksCountByStatus(): Observable<{ [ key: string ]: number }> {
+    getStatisticsTasksCountByStatus(): Observable<TasksCountByStatusDictionary> {
         return this.http.get<{ [ key: string ]: number }>(
             this.baseUrl + PREFIX + `/dashboard/byStatus`
         );
