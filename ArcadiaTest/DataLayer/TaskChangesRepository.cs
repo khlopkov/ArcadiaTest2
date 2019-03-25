@@ -27,7 +27,8 @@ namespace ArcadiaTest.DataLayer
         public async Task<IEnumerable<TaskChangeDTO>> FindChangesByUserIdAsync(int userId)
         {
             var taskChangesOfUser = await this._dbCtx.TaskChanges
-                .Where(tc => tc.Task.UserId == userId).ToListAsync();
+                .Where(tc => tc.Task.UserId == userId)
+                .ToListAsync();
             return taskChangesOfUser.Join(
                     this._dbCtx.Tasks,
                     tc => tc.TaskId,
