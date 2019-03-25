@@ -16,11 +16,15 @@ namespace ArcadiaTest.DataLayer
         /// <returns> Enumerable of found task changes </returns>
         IEnumerable<TaskChangeDTO> FindChangesByTaskID(int taskId);
 
+        Task<IEnumerable<TaskChangeDTO>> FindChangesByTaskIDAsync(int taskId);
+
+        IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId);
+
         /// <summary>
         ///     Finds tasks changes for task which belongs to user
         /// </summary>
         /// <param name="userId"> id of user which  task changes should be queried </param>
         /// <returns> Enumerable of found task changes </returns>
-        IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId);
+        Task<IEnumerable<TaskChangeDTO>> FindChangesByUserIdAsync(int userId);
     }
 }
