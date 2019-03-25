@@ -31,13 +31,13 @@ namespace ArcadiaTest.Controllers
             try
             {
                 var currentUser = this._userService.GetUserWithEmail(email);
+
+                return Content(HttpStatusCode.OK, this._userService.GetUserWithEmail(email));
             }
             catch(UserNotFoundException)
             {
-                Unauthorized();
+                return Unauthorized();
             }
-
-            return Content(HttpStatusCode.OK, this._userService.GetUserWithEmail(email));
         }
     }
 }

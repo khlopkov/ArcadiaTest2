@@ -71,13 +71,13 @@ namespace ArcadiaTest.Controllers
             {
                 var currentUser = this._userService.GetUserWithEmail(email);
                 this._taskService.CreateTask(currentUser.Id, requestModel);
+
+                return StatusCode(HttpStatusCode.Created);
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
             }
-
-            return StatusCode(HttpStatusCode.Created);
         }
 
         [HttpPatch]
@@ -98,6 +98,8 @@ namespace ArcadiaTest.Controllers
                 var currentUser = this._userService.GetUserWithEmail(email);
                 this._taskService.GetTaskOfUser(currentUser.Id, taskId);
                 this._taskService.UpdateTask(taskId, requestModel);
+
+                return StatusCode(HttpStatusCode.OK);
             }
             catch(UserNotFoundException)
             {
@@ -111,8 +113,6 @@ namespace ArcadiaTest.Controllers
             {
                 return Conflict();
             }
-
-            return StatusCode(HttpStatusCode.OK);
         }
 
         [HttpDelete]
@@ -127,6 +127,8 @@ namespace ArcadiaTest.Controllers
                 var currentUser = this._userService.GetUserWithEmail(email);
                 this._taskService.GetTaskOfUser(currentUser.Id, taskId);
                 this._taskService.DeleteTask(taskId);
+
+                return StatusCode(HttpStatusCode.NoContent);
             }
             catch(UserNotFoundException)
             {
@@ -136,8 +138,6 @@ namespace ArcadiaTest.Controllers
             {
                 return NotFound();
             }
-
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         [HttpGet]
@@ -151,6 +151,7 @@ namespace ArcadiaTest.Controllers
             {
                 var currentUser = this._userService.GetUserWithEmail(email);
                 var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatus(currentUser.Id);
+
                 return Content(HttpStatusCode.OK, response);
             }
             catch(UserNotFoundException)
