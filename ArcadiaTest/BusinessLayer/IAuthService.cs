@@ -9,8 +9,6 @@ namespace ArcadiaTest.BusinessLayer
 {
     public interface IAuthService
     {
-        UserDTO GetUserByCredentials(string email, string password);
-
         Task<UserDTO> GetUserByCredentialsAsync(string email, string password);
     }
 }

@@ -1,6 +1,7 @@
 ﻿using ArcadiaTest.BusinessLayer;
 using ArcadiaTest.BusinessLayer.Exceptions;
 using ArcadiaTest.Models.Requests;
+using ArcadiaTest.Models.Responses;
 using System;
 using System.Linq;
 using System.Net;
@@ -40,12 +41,9 @@ namespace ArcadiaTest.Controllers
         [Route("")]
         public async Task<IHttpActionResult> Get()
         {
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-
             try
             {
-                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var currentUser = await this.GetCurrentUser();
                 var response = await this._taskService.GetTasksOfUserAsync(currentUser.Id);
                 return Content(HttpStatusCode.OK, response);
             }
@@ -65,12 +63,9 @@ namespace ArcadiaTest.Controllers
             if (requestModel.DueDate != default(DateTime) && DateTime.Now.Date > requestModel.DueDate)
                 return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
 
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-
             try
             {
-                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var currentUser = await this.GetCurrentUser();
                 await this._taskService.CreateTaskAsync(currentUser.Id, requestModel);
             }
             catch(UserNotFoundException)
@@ -91,12 +86,9 @@ namespace ArcadiaTest.Controllers
             if (DateTime.Now.Date > requestModel.DueDate && requestModel.DueDate != default(DateTime))
                 return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
 
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-
             try
             {
-                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var currentUser = await this.GetCurrentUser();
                 await this._taskService.GetTaskOfUserAsync(currentUser.Id, taskId);
                 await this._taskService.UpdateTaskAsync(taskId, requestModel);
             }
@@ -120,12 +112,9 @@ namespace ArcadiaTest.Controllers
         [Route("{taskId:int}")]
         public async Task<IHttpActionResult> Delete(int taskId)
         {
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-
             try
             {
-                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var currentUser = await this.GetCurrentUser();
                 await this._taskService.GetTaskOfUserAsync(currentUser.Id, taskId);
                 await this._taskService.DeleteTaskAsync(taskId);
             }
@@ -145,12 +134,9 @@ namespace ArcadiaTest.Controllers
         [Route("dashboard/byStatus")]
         public async Task<IHttpActionResult> GetTaskDashboard()
         {
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-
             try
             {
-                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var currentUser = await this.GetCurrentUser();
                 var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatusAsync(currentUser.Id);
                 return Content(HttpStatusCode.OK, response);
             }
@@ -164,18 +150,21 @@ namespace ArcadiaTest.Controllers
         [Route("history")]
         public async Task<IHttpActionResult> GetTasksHistory()
         {
-            var claims = ((ClaimsIdentity)User.Identity).Claims;
-            var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-
             try
             {
-                var currentUser = await this._userService.GetUserWithEmailAsync(email);
+                var currentUser = await this.GetCurrentUser();
                 return Content(HttpStatusCode.OK, await this._taskHistoryService.GetTasksHistoryOfUserAsync(currentUser.Id));
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
             }
+        }
+
+        private async Task<UserResponse> GetCurrentUser()
+        {
+            var email = ((ClaimsIdentity)User.Identity).Name;
+            return await this._userService.GetUserWithEmailAsync(email);
         }
     }
 }
