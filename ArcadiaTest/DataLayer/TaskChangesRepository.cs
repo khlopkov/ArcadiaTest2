@@ -4,6 +4,8 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Web;
+using System.Threading.Tasks;
+using System.Data.Entity;
 
 namespace ArcadiaTest.DataLayer
 {
@@ -19,6 +21,12 @@ namespace ArcadiaTest.DataLayer
         public IEnumerable<TaskChangeDTO> FindChangesByTaskID(int taskId)
         {
             return this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToList().ToDtos();
+        }
+
+        public async Task<IEnumerable<TaskChangeDTO>> FindChangesByTaskIDAsync(int taskId)
+        {
+            var changes = await this._dbCtx.TaskChanges.Where(tc => tc.TaskId == taskId).ToListAsync();
+            return changes.ToDtos();
         }
 
         public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
@@ -39,6 +47,24 @@ namespace ArcadiaTest.DataLayer
                 )
                 .ToList();
         }
+
+        public async Task<IEnumerable<TaskChangeDTO>> FindChangesByUserIdAsync(int userId)
+        {
+            var taskChangesOfUser = await this._dbCtx.TaskChanges
+                .Where(tc => tc.Task.UserId == userId)
+                .ToListAsync();
+            return taskChangesOfUser.Join(
+                    this._dbCtx.Tasks,
+                    tc => tc.TaskId,
+                    t => t.Id,
+                    (tc, t) =>
+                    {
+                        var tcDto = tc.ToDto();
+                        tcDto.Task = t.ToDto();
+                        return tcDto;
+                    }
+                );
+        }
     }
 
     public static class TaskChangeExtension
@@ -58,7 +84,7 @@ namespace ArcadiaTest.DataLayer
                 };
         }
 
-        public static IEnumerable<TaskChangeDTO> ToDtos(this IReadOnlyCollection<TaskChange> taskChangeEntities)
+        public static IEnumerable<TaskChangeDTO> ToDtos(this IEnumerable<TaskChange> taskChangeEntities)
         {
             return taskChangeEntities.Select(tce => tce.ToDto()).ToList();
         }
