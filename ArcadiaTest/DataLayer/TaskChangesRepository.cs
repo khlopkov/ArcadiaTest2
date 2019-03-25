@@ -24,10 +24,30 @@ namespace ArcadiaTest.DataLayer
             return changes.ToDtos();
         }
 
+        public IEnumerable<TaskChangeDTO> FindChangesByUserId(int userId)
+        {
+            return this._dbCtx.TaskChanges
+                .Where(tc => tc.Task.UserId == userId)
+                .ToList()
+                .Join(
+                    this._dbCtx.Tasks.Where(t => t.UserId == userId).ToList(),
+                    tc => tc.TaskId,
+                    t => t.Id,
+                    (tc, t) =>
+                    {
+                        var tcDto = tc.ToDto();
+                        tcDto.Task = t.ToDto();
+                        return tcDto;
+                    }
+                )
+                .ToList();
+        }
+
         public async Task<IEnumerable<TaskChangeDTO>> FindChangesByUserIdAsync(int userId)
         {
             var taskChangesOfUser = await this._dbCtx.TaskChanges
-                .Where(tc => tc.Task.UserId == userId).ToListAsync();
+                .Where(tc => tc.Task.UserId == userId)
+                .ToListAsync();
             return taskChangesOfUser.Join(
                     this._dbCtx.Tasks,
                     tc => tc.TaskId,
