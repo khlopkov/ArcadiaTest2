@@ -14,7 +14,7 @@ export class StatisticsService {
 
     private readonly baseUrl: string = this.httpConfig.restUrl;
 
-    statisticsTasksCountByStatus(): Observable<{ [ key: string ]: number }> {
+    getStatisticsTasksCountByStatus(): Observable<{ [ key: string ]: number }> {
         return this.http.get<{ [ key: string ]: number }>(
             this.baseUrl + PREFIX + `/dashboard/byStatus`
         );

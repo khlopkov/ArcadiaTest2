@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   }
 
   fetchDashboard() {
-    this.statisticsService.statisticsTasksCountByStatus().subscribe(data => {
+    this.statisticsService.getStatisticsTasksCountByStatus().subscribe(data => {
       this.barChartData = this.dashboardToBarData(data);
     });
   }
