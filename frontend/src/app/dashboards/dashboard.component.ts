@@ -8,7 +8,7 @@ import { StatisticsService } from 'src/services/http/statistics.service';
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
-  constructor(private statistitcsService: StatisticsService) { }
+  constructor(private statisticsService: StatisticsService) { }
 
   barChartData: BarDataModel[] = [];
 
@@ -21,7 +21,7 @@ export class DashboardComponent implements OnInit {
   }
 
   fetchDashboard() {
-    this.statistitcsService.statisticsTasksCountByStatus().subscribe(data => {
+    this.statisticsService.statisticsTasksCountByStatus().subscribe(data => {
       this.barChartData = this.dashboardToBarData(data);
     });
   }
