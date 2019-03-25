@@ -26,14 +26,5 @@ namespace ArcadiaTest.BusinessLayer
 
             return new UserResponse() { Id = foundUser.Id, Name = foundUser.Name };
         }
-
-        public async Task<UserResponse> GetUserWithEmailAsync(string email)
-        {
-            var foundUser = await this._userRepository.FindByEmailAsync(email);
-            if (foundUser == null)
-                throw new UserNotFoundException();
-
-            return new UserResponse() { Id = foundUser.Id, Name = foundUser.Name };
-        }
     }
 }
