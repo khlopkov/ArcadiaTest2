@@ -16,6 +16,7 @@ namespace ArcadiaTest.BusinessLayer
         /// <param name="userId">ID of user, whose tasks should be found</param>
         /// <param name="status">Status with which tasks should be found</param>
         /// <returns></returns>
+
         Task<IEnumerable<TaskResponse>> GetTasksOfUserAsync(int userId, string status = null);
         /// <summary>
         ///     Finds task which belongs to user
