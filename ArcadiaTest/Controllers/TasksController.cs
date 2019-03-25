@@ -1,12 +1,9 @@
 ﻿using ArcadiaTest.BusinessLayer;
 using ArcadiaTest.BusinessLayer.Exceptions;
 using ArcadiaTest.Models.Requests;
-using ArcadiaTest.Models.Responses;
 using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Net;
-using System.Net.Http;
 using System.Security.Claims;
 using System.Threading.Tasks;
 using System.Web.Http;
@@ -45,16 +42,16 @@ namespace ArcadiaTest.Controllers
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-            UserResponse currentUser;
+
             try
             {
-                currentUser = this._userService.GetUserWithEmail(email);
+                var currentUser = this._userService.GetUserWithEmail(email);
+                return Content(HttpStatusCode.OK, this._taskService.GetTasksOfUser(currentUser.Id));
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
             }
-            return Content(HttpStatusCode.OK, this._taskService.GetTasksOfUser(currentUser.Id));
         }
 
         [HttpPost]
@@ -63,28 +60,24 @@ namespace ArcadiaTest.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             if (requestModel.DueDate != default(DateTime) && DateTime.Now.Date > requestModel.DueDate)
                 return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
+
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-            UserResponse currentUser;
+
             try
             {
-                currentUser = this._userService.GetUserWithEmail(email);
-            }
-            catch(UserNotFoundException)
-            {
-                return Unauthorized();
-            }
-            try
-            {
+                var currentUser = this._userService.GetUserWithEmail(email);
                 this._taskService.CreateTask(currentUser.Id, requestModel);
+
+                return StatusCode(HttpStatusCode.Created);
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
             }
-            return StatusCode(HttpStatusCode.Created);
         }
 
         [HttpPatch]
@@ -93,23 +86,24 @@ namespace ArcadiaTest.Controllers
         {
             if (!ModelState.IsValid)
                 return BadRequest(ModelState);
+
             if (DateTime.Now.Date > requestModel.DueDate && requestModel.DueDate != default(DateTime))
                 return BadRequest(DUE_DATE_LATER_TODAY_WARNING);
+
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-            UserResponse currentUser;
+
             try
             {
-                currentUser = this._userService.GetUserWithEmail(email);
+                var currentUser = this._userService.GetUserWithEmail(email);
+                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
+                this._taskService.UpdateTask(taskId, requestModel);
+
+                return StatusCode(HttpStatusCode.OK);
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
-            }
-            try
-            {
-                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
-                this._taskService.UpdateTask(taskId, requestModel);
             }
             catch(TaskNotFoundException)
             {
@@ -119,7 +113,6 @@ namespace ArcadiaTest.Controllers
             {
                 return Conflict();
             }
-            return StatusCode(HttpStatusCode.OK);
         }
 
         [HttpDelete]
@@ -128,25 +121,23 @@ namespace ArcadiaTest.Controllers
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-            UserResponse currentUser;
+
             try
             {
-                currentUser = this._userService.GetUserWithEmail(email);
+                var currentUser = this._userService.GetUserWithEmail(email);
+                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
+                this._taskService.DeleteTask(taskId);
+
+                return StatusCode(HttpStatusCode.NoContent);
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
             }
-            try
-            {
-                this._taskService.GetTaskOfUser(currentUser.Id, taskId);
-                this._taskService.DeleteTask(taskId);
-            }
             catch(TaskNotFoundException)
             {
                 return NotFound();
             }
-            return StatusCode(HttpStatusCode.NoContent);
         }
 
         [HttpGet]
@@ -155,10 +146,12 @@ namespace ArcadiaTest.Controllers
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
+
             try
             {
                 var currentUser = this._userService.GetUserWithEmail(email);
                 var response = await this._statisticsService.GetStatisticsOfTaskCountGroupedByStatus(currentUser.Id);
+
                 return Content(HttpStatusCode.OK, response);
             }
             catch(UserNotFoundException)
@@ -173,16 +166,16 @@ namespace ArcadiaTest.Controllers
         {
             var claims = ((ClaimsIdentity)User.Identity).Claims;
             var email = claims.Where(c => c.Type == ClaimTypes.Email).First().Value;
-            UserResponse currentUser;
+
             try
             {
-                currentUser = this._userService.GetUserWithEmail(email);
+                var currentUser = this._userService.GetUserWithEmail(email);
+                return Content(HttpStatusCode.OK, this._taskHistoryService.GetTasksHistoryOfUser(currentUser.Id));
             }
             catch(UserNotFoundException)
             {
                 return Unauthorized();
             }
-            return Content(HttpStatusCode.OK, this._taskHistoryService.GetTasksHistoryOfUser(currentUser.Id));
         }
     }
 }
