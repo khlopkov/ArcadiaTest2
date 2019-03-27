@@ -19,7 +19,7 @@ export class StatisticsService {
     private readonly baseUrl: string = this.httpConfig.restUrl;
 
     getStatisticsTasksCountByStatus(): Observable<TasksCountByStatusDictionary> {
-        return this.http.get<{ [ key: string ]: number }>(
+        return this.http.get<TasksCountByStatusDictionary>(
             this.baseUrl + PREFIX + `/dashboard/byStatus`
         );
     }
