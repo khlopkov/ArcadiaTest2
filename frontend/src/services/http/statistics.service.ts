@@ -6,7 +6,7 @@ import { Observable } from 'rxjs';
 const PREFIX =  'api/user/tasks';
 
 export interface TasksCountByStatusDictionary {
-    [ key: string]: number;
+    [key: string]: number;
 }
 
 @Injectable()
