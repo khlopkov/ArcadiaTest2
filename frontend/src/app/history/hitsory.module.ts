@@ -1,7 +1,7 @@
 import { HistoryComponent } from './history.component';
 import { BrowserModule } from '@angular/platform-browser';
-import { TasksService } from 'src/services/http/tasks.service';
 import { NgModule } from '@angular/core';
+import { HistoryService } from 'src/services/http/history.service';
 
 @NgModule({
   declarations: [
@@ -11,7 +11,7 @@ import { NgModule } from '@angular/core';
     BrowserModule,
   ],
   providers: [
-    TasksService,
+    HistoryService,
   ],
   bootstrap: [HistoryComponent]
 })

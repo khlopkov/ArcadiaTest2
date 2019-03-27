@@ -1,14 +1,14 @@
 import {Component, OnInit} from '@angular/core';
 
 import { BarDataModel } from './charts/models/bar.model';
-import { TasksService } from 'src/services/http/tasks.service';
+import { StatisticsService, TasksCountByStatusDictionary } from 'src/services/http/statistics.service';
 
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
 })
 export class DashboardComponent implements OnInit {
-  constructor(private taskService: TasksService) { }
+  constructor(private statisticsService: StatisticsService) { }
 
   barChartData: BarDataModel[] = [];
 
@@ -16,12 +16,12 @@ export class DashboardComponent implements OnInit {
     this.fetchDashboard();
   }
 
-  dashboardToBarData(dashboard: { [ key: string ]: number }): BarDataModel[] {
+  dashboardToBarData(dashboard: TasksCountByStatusDictionary): BarDataModel[] {
     return Object.keys(dashboard).map(key => new BarDataModel(key, dashboard[key]));
   }
 
   fetchDashboard() {
-    this.taskService.dashboard().subscribe(data => {
+    this.statisticsService.getStatisticsTasksCountByStatus().subscribe(data => {
       this.barChartData = this.dashboardToBarData(data);
     });
   }

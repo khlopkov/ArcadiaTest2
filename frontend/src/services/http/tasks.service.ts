@@ -3,7 +3,6 @@ import { HttpClient, HttpHeaders } from '@angular/common/http';
 import { HttpConfig } from '../../config';
 import { Task } from 'src/models/task.model';
 import { Observable } from 'rxjs';
-import { TaskChange } from 'src/models/task-change.model';
 
 const JSON_MIME = {'Content-type': 'application/json; charset=utf-8'};
 
@@ -16,12 +15,10 @@ export class TasksService {
         private http: HttpClient
     ) { }
 
-    private get baseUrlWithPrefix(): string {
-        return this.httpConfig.restUrl + PREFIX;
-    }
+    private readonly baseUrlWithPrefix = this.httpConfig.restUrl + PREFIX;
 
     get(): Observable<Task[]> {
-        return this.http.get<Task[]>(this.baseUrlWithPrefix, { headers: new HttpHeaders(JSON_MIME) });
+        return this.http.get<Task[]>(this.baseUrlWithPrefix);
     }
 
     post(task: Task) {
@@ -34,13 +31,5 @@ export class TasksService {
 
     delete(task: Task) {
         return this.http.delete(this.baseUrlWithPrefix + `/${task.id}`);
-    }
-
-    dashboard(): Observable<{ [ key: string ]: number }> {
-        return this.http.get<{ [ key: string ]: number }>(this.baseUrlWithPrefix + `/dashboard/byStatus`);
-    }
-
-    history(): Observable<TaskChange[]> {
-        return this.http.get<TaskChange[]>(this.baseUrlWithPrefix + '/history', { headers: new HttpHeaders(JSON_MIME)});
     }
 }
